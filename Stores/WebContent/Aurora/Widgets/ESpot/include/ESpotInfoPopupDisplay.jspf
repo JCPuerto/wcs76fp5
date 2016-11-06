@@ -1,0 +1,884 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010, 2012 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<%-- 
+  *****
+  * This JSP file initializes the ESpot info popup
+  *****
+--%>
+<!-- BEGIN ESpotInfoPopupDisplay.jspf-->
+
+<%@ page import="java.net.URLDecoder"%>
+<%@ page import="com.ibm.commerce.catalog.facade.datatypes.PreviewReportType" %>
+
+<fmt:setLocale value="${CommandContext.locale}"/>
+<fmt:setBundle basename="com.ibm.commerce.stores.preview.properties.StorePreviewer" var="resources"/>
+
+<c:if test="${empty activityTableExpandId}">
+	<c:set var="activityTableExpandId" value="0" scope="request"/>
+	<script type="text/Javascript">
+		function toggleActivityTable(tableId) {
+			var arrowElement = document.getElementById("activityArrowId_" + tableId);
+			var rowElement = document.getElementById("activityTableExpandId_" + tableId);
+			if(arrowElement.className == "opened") {
+				arrowElement.className = "unopened";
+				rowElement.style.display = "none";
+			}
+			else {
+				arrowElement.className = "opened";
+				rowElement.style.display = "block";
+			}
+		}
+	</script>
+</c:if>
+
+	<div id="ESpotInfo_popup_main_div_<c:out value="${espotName}"/>" class="ESpotInfo_popup_main_div">
+		<div id="ESpotInfo_popup_<c:out value="${espotName}"/>" class="ESpotInfo_popup" dojoType="dijit.Dialog" role="dialog" title="<c:out value="${emsName}"/>">
+			<div class="top_left" id="WC_ESpotInfo_div_1_<c:out value="${espotName}"/>"><img alt="" src="<c:out value="${jspStoreImgDir}" />images/trasparent.gif" /></div> 
+			<div class="top_right" id="WC_ESpotInfo_div_2_<c:out value="${espotName}"/>"><img alt="" src="<c:out value="${jspStoreImgDir}" />images/trasparent.gif" /></div>
+
+			<div class="header" id="ESpotInfo_popupHeader_<c:out value="${espotName}"/>">
+				<div class="close" id="WC_ESpotInfo_div_3_<c:out value="${espotName}"/>">
+					<span class="title">
+						<c:choose>
+							<c:when test="${emsName == 'searchResultSpot'}">
+								<fmt:message key="SearchQueryDataType" bundle="${resources}"/>
+							</c:when>
+							<c:otherwise>
+								<c:out value="${emsName}"/>
+							</c:otherwise>
+						</c:choose>
+					</span>
+					<a id="ESpotInfo_closeLink2_<c:out value="${espotName}"/>" role="navigation" title="<fmt:message key='LC_CLOSE'/>" href="javascript:hideESpotInfoPopup('ESpotInfo_popup_<c:out value="${espotName}"/>');">
+						<span class="icon "></span>
+					</a>
+				</div>
+			</div>
+			<div id="WC_ESpotInfo_div_5_<c:out value="${espotName}"/>" class="whitespace_background">
+				<div class="content_container scrollbar" id="WC_ESpotInfo_div_6_<c:out value="${espotName}"/>"> 
+					<c:set var="indent" value="0"/>
+
+					<c:set var="reportContents" value="${marketingSpotDatas.previewReport}"/>
+					<div class="sub_heading"><c:out value="${espotTypeInfo}"/></div>
+					<c:if test="${!empty globalreport && emsName == 'searchResultSpot'}">
+						<c:set var="reportContents" value="${globalreport.report}"/>
+						<c:set var="searchStatus" value="${globalreport.indexStatus}"/>
+<%
+	PreviewReportType previewReport = (PreviewReportType) request.getAttribute("globalreport");
+	String finalReportString = previewReport.getFinalQuery();
+	if (finalReportString != null && finalReportString.length() > 0) {
+		pageContext.setAttribute("searchQuery", URLDecoder.decode(finalReportString)); 
+	}
+%>	
+					</c:if>
+
+					<c:if test="${emsName != 'searchResultSpot'}">
+						<c:set var="hasSummary" value="0"/>
+
+						<c:forEach var="pr" items="${reportContents}">
+							<c:forTokens items="${pr}" delims="|" var="token" begin="0" end="0">
+								<c:set var="tokenKey" value="${token}" />
+							</c:forTokens>
+							<c:if test="${tokenKey == 'ReturnRecommendation'}">
+								<c:if test="${hasSummary == 0}">
+									<c:set var="hasSummary" value="1"/>
+									<div class="heading"><fmt:message key="PreviewReportSummary" bundle="${resources}"/></div>
+									<div class="summary">
+										<ul>
+								</c:if>
+								<li>
+									<fmt:message key="${tokenKey}" bundle="${resources}">
+										<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+											<c:choose>
+												<c:when test="${status.count == 1}">
+													<c:set var="dataType" value="${token}"/>
+													<fmt:param><fmt:message key="${token}DataType" bundle="${resources}"/></fmt:param>
+												</c:when>
+												<c:when test="${status.count == 2}">
+													<c:choose>
+														<c:when test="${dataType =='CatalogEntry' || dataType =='CatalogEntryId'}" >
+															<c:remove var="ceObject" scope="page"/>
+															<wcbase:useBean id="ceObject" classname="com.ibm.commerce.catalog.beans.CatalogEntryDataBean">
+																<c:set value="${token}" target="${ceObject}" property="catalogEntryID"/>
+															</wcbase:useBean>
+															<fmt:param><c:out value="${ceObject.description.name} (${ceObject.partNumber})" /></fmt:param>
+														</c:when>
+														<c:when test="${dataType =='CatalogGroup' || dataType =='CatalogGroupId'}" >
+															<c:remove var="cgObject" scope="page"/>
+															<wcbase:useBean id="cgObject" classname="com.ibm.commerce.catalog.beans.CategoryDataBean">
+																<c:set value="${token}" target="${cgObject}" property="categoryId" />
+															</wcbase:useBean>
+															<fmt:param><c:out value="${cgObject.description.name}"/></fmt:param>
+														</c:when>
+														<c:when test="${dataType =='MarketingContent' || dataType =='MarketingContentId'}" >
+															<c:remove var="mcObject" scope="page"/>
+															<wcbase:useBean id="mcObject" classname="com.ibm.commerce.marketing.beans.CollateralDataBean">
+																<c:set value="${token}" target="${mcObject}" property="collateralID" />
+															</wcbase:useBean>
+															<fmt:param><c:out value="${mcObject.name}"/></fmt:param>
+														</c:when>
+														<c:otherwise>
+															<fmt:param><c:out value="${token}"/></fmt:param>
+														</c:otherwise>
+													</c:choose>
+												</c:when>
+												<c:otherwise>
+													<fmt:param><c:out value="${token}"/></fmt:param>
+												</c:otherwise>
+											</c:choose>
+										</c:forTokens>
+									</fmt:message>
+								</li>
+							</c:if>
+						</c:forEach>
+
+						<c:if test="${hasSummary == 1}">
+								</ul>
+							</div>
+						</c:if>
+					</c:if>
+
+					<c:forEach var="pr" items="${reportContents}">
+						<c:forTokens items="${pr}" delims="|" var="token" begin="0" end="0">
+							<c:set var="tokenKey" value="${token}" />
+						</c:forTokens>
+						
+						<c:choose>
+
+							<c:when test="${tokenKey == 'PathEnd'}">
+								<c:set var="indent"value="${indent-5}"/>
+							</c:when>
+
+							<c:when test="${tokenKey == 'ScheduledActivity' || tokenKey == 'ReturnRecommendation'}">
+
+								<!-- Format: ScheduledActivity|activityId|storeId|priority|startDate|endDate|activityName -->
+								<!-- Ignore this -->
+								
+							</c:when>
+							<c:when test="${tokenKey == 'SpotFound'}">
+								<c:set var="tokens" value="${fn:split(pr, '|')}"/>
+
+								<div class="heading">
+									<c:choose>
+										<c:when test="${tokens[3] == 'SEARCH'}">
+											<c:choose>
+												<c:when test="${tokens[4] == 'dm_defaultspot'}">
+													<fmt:message key="SearchRuleSummaryForAnyKeyword" bundle="${resources}"/>
+												</c:when>
+												<c:otherwise>
+													<fmt:message key="SearchRuleSummary" bundle="${resources}"/>: <c:out value="${tokens[4]}"/>
+												</c:otherwise>
+											</c:choose>
+										</c:when>
+										<c:otherwise>
+											<fmt:message key="${tokenKey}" bundle="${resources}">
+												<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+													<fmt:param><c:out value="${token}"/></fmt:param>
+												</c:forTokens>
+											</fmt:message>
+										</c:otherwise>
+									</c:choose>
+								</div>
+							</c:when>
+							<c:when test="${tokenKey == 'EvaluateActivitiesBegin'}">
+								<div class="data_table_container">
+									<div class="header_row">
+										<div class="name_column"><fmt:message key="PreviewReportName" bundle="${resources}"/></div>
+										<div class="priority_column"><fmt:message key="PreviewReportPriority" bundle="${resources}"/></div>
+										<div class="startdate_column"><fmt:message key="PreviewReportStartDate" bundle="${resources}"/></div>
+										<div class="enddate_column"><fmt:message key="PreviewReportEndData" bundle="${resources}"/></div>
+									</div>
+							</c:when>
+							<c:when test="${tokenKey == 'EvaluateActivity'}">
+								<!-- Format: EvaluateActivity|activityId|storeId|priority|startDate|endDate|activityName -->
+
+								<c:remove var="param1" scope="page"/>
+								<c:remove var="param2" scope="page"/>
+								<c:remove var="param3" scope="page"/>
+								<c:remove var="param4" scope="page"/>
+								<c:remove var="param5" scope="page"/>
+
+								<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+									<c:choose>
+										<c:when test="${status.count == 1}">
+											<c:set var="param1" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 2}">
+											<c:set var="param2" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 3}">
+											<c:set var="param3" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 4 || status.count == 5}">
+											<c:remove var="activityDate" scope="page"/>
+											<c:set var="finalDate" value="${token}"/>
+											<c:catch>
+												<fmt:parseDate parseLocale="${dateLocale}" var="activityDate" value="${token}" pattern="yyyy-MM-dd HH:mm:ss.SSS" />
+											</c:catch>
+											<c:if test="${empty activityDate}">
+												<c:catch>
+													<fmt:parseDate parseLocale="${dateLocale}" var="activityDate" value="${token}" pattern="yyyy-MM-dd HH:mm:ss" />
+												</c:catch>
+											</c:if>
+											<c:if test="${!empty activityDate}">
+												<fmt:formatDate var="finalDate" value="${activityDate}" type="both" dateStyle="long" timeStyle="short" />
+											</c:if>
+											<c:if test="${status.count == 4}">
+												<c:set var="param4" value="${finalDate}"/>
+											</c:if>
+											<c:if test="${status.count == 5}">
+												<c:set var="param5" value="${finalDate}"/>
+											</c:if>
+										</c:when>
+										<c:when test="${status.count == 6}">
+											<c:set var="param6" value="${token}"/>
+										</c:when>
+									</c:choose>
+								</c:forTokens>
+
+								<a href="#" onclick="toggleActivityTable(<c:out value='${activityTableExpandId}'/>); return false;">
+									<div class="row expanded">
+										<div class="opened" id="activityArrowId_${activityTableExpandId}"></div>
+										<div class="name_column"><c:out value="${param6}"/></div>
+										<div class="priority_column"><c:out value="${param3}"/></div>
+										<div class="startdate_column"><c:out value="${param4}"/></div>
+										<div class="enddate_column"><c:out value="${param5}"/></div>
+									</div>
+								</a>
+
+								<div class="row_full_data" id="activityTableExpandId_${activityTableExpandId}">
+								<c:set var="activityTableExpandId" value="${activityTableExpandId + 1}" scope="request"/>
+							</c:when>
+							<c:when test="${tokenKey == 'EvaluateActivityEnd' || tokenKey == 'EvaluateActivitiesEnd'}">
+								</div>
+							</c:when>
+							<c:when test="${tokenKey == 'Branch'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format: Branch|elementId|branchType|experimentScope|elementName -->
+
+								<c:remove var="branchScope" scope="page"/>
+								<fmt:message key="${tokenKey}" bundle="${resources}">
+									<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+										<c:choose>
+											<c:when test="${status.count == 2}">
+												<fmt:param><fmt:message key="Branchtype${token}" bundle="${resources}"/></fmt:param>
+											</c:when>
+											<c:when test="${status.count == 3}">
+												<c:set var="branchScope" value="${token}"/>
+												<fmt:param><c:out value="${token}" /></fmt:param>
+											</c:when>
+											<c:otherwise>
+												<fmt:param><c:out value="${token}"/></fmt:param>
+											</c:otherwise>
+										</c:choose>
+									</c:forTokens>
+								</fmt:message>
+								
+								<c:if test="${!empty branchScope && !(branchScope == ' ')}">
+									<fmt:message key="Experiment" bundle="${resources}">
+										<fmt:param><fmt:message key="Experimentscope${branchScope}" bundle="${resources}"/></fmt:param>
+									</fmt:message>
+								</c:if>
+							</c:when>
+
+							<c:when test="${tokenKey == 'Action' || tokenKey == 'Target'}">
+								<!-- Format:Action|elementTemplateName|elementId|elementName-->
+								<!-- Format:Target|elementTemplateName|elementId|elementName -->
+
+								<div class="bold">
+									<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+									<fmt:message key="${tokenKey}" bundle="${resources}">
+										<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+											<c:choose>
+												<c:when test="${status.count == 1}">
+													<c:choose>
+														<c:when test="${token eq 'displayProductStandardSearch'}">
+															<fmt:param><fmt:message key="displayProductBySearch" bundle="${resources}"/></fmt:param>
+														</c:when>
+														<c:otherwise>
+															<fmt:param><fmt:message key="${token}" bundle="${resources}"/></fmt:param>
+														</c:otherwise>
+													</c:choose>
+												</c:when>
+												<c:otherwise>
+													<fmt:param><c:out value="${token}"/></fmt:param>
+												</c:otherwise>
+											</c:choose>
+										</c:forTokens>
+									</fmt:message>
+								</div>
+							</c:when>						 
+							<c:when test="${tokenKey == 'TargetOrder'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format:TargetOrder|CatalogGroup|dataValue|result|quantity|currency|amount -->
+								<!-- Format:TargetOrder|CatalogEntry|dataValue|result|quantity|currency|amount -->
+								<!-- Format:TargetOrder| | |result|quantity|currency|amount -->
+
+								<c:forTokens items="${pr}" delims="|" var="token" begin="1" end="1">
+									<c:set var="targetDataType" value="${token}"/>
+									<c:if test="${empty token || token == ' '}" >
+										<c:set var="targetDataType" value="" />
+									</c:if>						
+								</c:forTokens>
+								<c:set var="targetAmount" value="" />
+								<c:forTokens items="${pr}" delims="|" var="token" begin="5" end="5">
+									<c:if test="${!empty token && token != ' '}" >
+										<c:set var="targetAmount" value="Amount" />
+									</c:if>			
+								</c:forTokens>		
+								
+								<fmt:message key="${tokenKey}${targetDataType}${targetAmount}" bundle="${resources}">
+									<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+										<c:choose>
+											<c:when test="${status.count == 3}">
+												<c:set var="targetResult" value="${token}"/>
+												<fmt:param><c:out value="${token}" /></fmt:param>
+											</c:when>
+											<c:when test="${status.count == 2 && targetDataType == 'CatalogEntry' || targetDataType == 'CatalogEntryId'}">
+												<c:remove var="ceObject" scope="page"/>
+												<wcbase:useBean id="ceObject" classname="com.ibm.commerce.catalog.beans.CatalogEntryDataBean">
+													<c:set value="${token}" target="${ceObject}" property="catalogEntryID"/>
+												</wcbase:useBean>
+												<fmt:param><c:out value="${ceObject.description.name} (${ceObject.partNumber})" /></fmt:param>
+											</c:when>
+											<c:when test="${status.count == 2 && targetDataType == 'CatalogGroup' || targetDataType == 'CatalogGroupId'}">
+												<c:remove var="cgObject" scope="page"/>
+												<wcbase:useBean id="cgObject" classname="com.ibm.commerce.catalog.beans.CategoryDataBean">
+													<c:set value="${token}" target="${cgObject}" property="categoryId" />
+												</wcbase:useBean>
+												<fmt:param><c:out value="${cgObject.description.name}"/></fmt:param>
+											</c:when>			
+											<c:when test="${status.count == 5}">
+												<c:set var="targetCurrency" value="${token}"/>
+												<fmt:param><c:out value="${token}" /></fmt:param>
+											</c:when>							
+											<c:when test="${status.count == 6}">			
+												<c:if test="${empty targetCurrency || targetCurrency == ' '}" >
+													<c:set var="targetCurrency" value="${CommandContext.currency}" />
+												</c:if>					
+												<c:remove var="currencyFormatterDataBean" scope="page"/>				
+												<wcbase:useBean id="currencyFormatterDataBean" classname="com.ibm.commerce.common.beans.StoreCurrencyFormatDescriptionDataBean" >
+													<c:set property="storeId" value="${storeId}" target="${currencyFormatterDataBean}" />
+													<c:set property="langId" value="${langId}" target="${currencyFormatterDataBean}" />
+													<c:set property="currencyCode" value="${targetCurrency}" target="${currencyFormatterDataBean}" />				
+													<c:set property="numberUsage" value="-1" target="${currencyFormatterDataBean}" />
+												</wcbase:useBean>
+
+												<%-- Set decimal places to use for currency --%>
+
+												<c:set var="currencyDecimal" value="${currencyFormatterDataBean.decimalPlaces}"/>
+
+												<c:if test="${targetCurrency == 'KRW'}">
+													<c:set property="currencySymbol" value='&#8361;' target="${currencyFormatterDataBean}"/>
+												</c:if>
+												<c:if test="${targetCurrency == 'PLN'}">
+													<c:set property="currencySymbol" value='z&#322;' target="${currencyFormatterDataBean}"/>
+												</c:if>
+
+												<%-- These variables are used to hold the currency symbol --%>
+												<c:choose>
+													<c:when test="${CommandContext.locale == 'ar_EG' && targetCurrency == 'EGP'}">
+														<c:set var="CurrencySymbolToFormat" value=""/>
+														<c:set var="CurrencySymbol" value="${currencyFormatterDataBean.currencySymbol}"/>
+													</c:when>
+													<c:otherwise>
+														<c:set var="CurrencySymbolToFormat" value="${currencyFormatterDataBean.currencySymbol}"/>
+														<c:set var="CurrencySymbol" value=""/>
+													</c:otherwise>
+												</c:choose>
+													
+												<fmt:param>			
+													<fmt:formatNumber value="${token}" type="currency" currencySymbol="${CurrencySymbolToFormat}" 
+																						maxFractionDigits="${currencyDecimal}"/>
+													<c:out value="${CurrencySymbol}"/>
+												</fmt:param>							
+																													
+											</c:when>		
+											<c:otherwise>
+												<fmt:param><c:out value="${token}"/></fmt:param>
+											</c:otherwise>
+										</c:choose>
+									</c:forTokens>
+								</fmt:message>
+								<fmt:message key="TargetUserBehavior${targetResult}" bundle="${resources}" />
+								<br>
+							</c:when>
+						      
+							<c:when test="${tokenKey == 'TargetCustomerSegment'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format:TargetCustomerSegment|segmentId|result|segmentName-->
+
+								<fmt:message key="${tokenKey}" bundle="${resources}">
+								<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+									<c:choose>
+										<c:when test="${status.count == 2}">
+											<c:set var="targetResult" value="${token}"/>
+											<fmt:param><c:out value="${token}" /></fmt:param>
+										</c:when>
+										<c:otherwise>
+											<fmt:param><c:out value="${token}"/></fmt:param>
+										</c:otherwise>
+									</c:choose>
+								</c:forTokens>
+								</fmt:message>
+								<fmt:message key="TargetUserBehavior${targetResult}" bundle="${resources}"/>
+								<br>
+							</c:when>
+							
+							<c:when test="${tokenKey == 'TargetUserBehavior'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format:TargetUserBehavior|dataValue|currentCount|result-->
+
+								<fmt:message key="${tokenKey}" bundle="${resources}">
+									<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+										<c:choose>
+											<c:when test="${status.count == 3}">
+												<c:set var="targetResult" value="${token}"/>
+												<fmt:param><c:out value="${token}" /></fmt:param>
+											</c:when>
+											<c:otherwise>
+												<fmt:param><c:out value="${token}"/></fmt:param>
+											</c:otherwise>
+										</c:choose>
+									</c:forTokens>
+								</fmt:message>
+								<fmt:message key="TargetUserBehavior${targetResult}" bundle="${resources}"/>
+								<br>
+							</c:when>
+
+							<c:when test="${tokenKey == 'TargetUserBehaviorReferral'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format:TargetUserBehaviorReferral|referralUrl|result -->
+
+								<fmt:message key="${tokenKey}" bundle="${resources}">
+									<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+										<c:choose>
+											<c:when test="${status.count == 2}">
+												<c:set var="targetResult" value="${token}"/>
+												<fmt:param><c:out value="${token}" /></fmt:param>
+											</c:when>
+											<c:otherwise>
+												<fmt:param><c:out value="${token}"/></fmt:param>
+											</c:otherwise>
+										</c:choose>
+									</c:forTokens>
+								</fmt:message>
+								<fmt:message key="TargetUserBehavior${targetResult}" bundle="${resources}"/>
+								<br>
+							</c:when>
+							                   
+							<c:when test="${tokenKey == 'RequestedContent' || tokenKey == 'ReorderRecommendations' ||
+															tokenKey == 'ReduceRecommendations' || tokenKey == 'LimitRecommendations'}" >
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format:RequestedContent|dataType|requestedNumber|currentNumber -->
+
+								<fmt:message key="${tokenKey}" bundle="${resources}">
+									<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+										<c:choose>
+											<c:when test="${status.count == 1}">
+												<c:set var="dataType" value="${token}"/>
+												<fmt:param><fmt:message key="${token}DataType" bundle="${resources}"/></fmt:param>
+											</c:when>
+											<c:otherwise>
+												<fmt:param><c:out value="${token}"/></fmt:param>
+											</c:otherwise>
+										</c:choose>
+									</c:forTokens>
+								</fmt:message>
+								<br>
+							</c:when>
+
+							<c:when test="${tokenKey == 'DataReturnedFromElement' || tokenKey == 'RemovedDuplicate' ||
+															tokenKey == 'RemovedCategoryNotInCurrentCatalog' || tokenKey =='RemovedCatalogEntryNotInCurrentCatalog' || tokenKey =='RemovedDataNotFound' ||
+															tokenKey == 'RemovedCatalogEntryNotPublished'|| tokenKey== 'RemovedCatalogEntryPastEndDate' || tokenKey== 'RemovedCatalogEntryBelowInventory' ||
+															tokenKey == 'RemovedCatalogEntryInCart'|| tokenKey== 'RemovedCatalogEntryInPurchaseHistory' ||
+															tokenKey == 'RemovedPromotionNeedsCoupon'|| tokenKey== 'RemovedPromotionNeedsCode' || tokenKey =='RemovedPromotionNotEntitled'||
+															tokenKey == 'RemovedPromotionInactive' || tokenKey =='RemovedPromotionNotAvailable' || tokenKey == 'RemovedPromotionBeforeStartDate' ||
+															tokenKey == 'RemovedPromotionNotInSegment'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format:DataReturnedFromElement|dataType|dataValue-->
+
+								<fmt:message key="${tokenKey}" bundle="${resources}">
+									<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+										<c:choose>
+											<c:when test="${status.count == 1}">
+												<c:set var="dataType" value="${token}"/>
+												<fmt:param><fmt:message key="${token}DataType" bundle="${resources}"/></fmt:param>
+											</c:when>
+											<c:when test="${status.count == 2}">
+												<c:choose>
+													<c:when test="${tokenKey != 'RemovedDataNotFound' && (dataType =='CatalogEntry' || dataType =='CatalogEntryId')}" >
+														<c:remove var="ceObject" scope="page"/>
+														<wcbase:useBean id="ceObject" classname="com.ibm.commerce.catalog.beans.CatalogEntryDataBean">
+															<c:set value="${token}" target="${ceObject}" property="catalogEntryID"/>
+														</wcbase:useBean>
+														<fmt:param><c:out value="${ceObject.description.name} (${ceObject.partNumber})" /></fmt:param>
+													</c:when>
+													<c:when test="${tokenKey != 'RemovedDataNotFound' && (dataType =='CatalogGroup' || dataType =='CatalogGroupId')}" >
+														<c:remove var="cgObject" scope="page"/>
+														<wcbase:useBean id="cgObject" classname="com.ibm.commerce.catalog.beans.CategoryDataBean">
+															<c:set value="${token}" target="${cgObject}" property="categoryId" />
+														</wcbase:useBean>
+														<fmt:param><c:out value="${cgObject.description.name}"/></fmt:param>
+													</c:when>
+													<c:when test="${tokenKey != 'RemovedDataNotFound' && (dataType =='MarketingContent' || dataType =='MarketingContentId')}" >
+														<c:remove var="mcObject" scope="page"/>
+														<wcbase:useBean id="mcObject" classname="com.ibm.commerce.marketing.beans.CollateralDataBean">
+															<c:set value="${token}" target="${mcObject}" property="collateralID" />
+														</wcbase:useBean>
+														<fmt:param><c:out value="${mcObject.name}"/></fmt:param>
+													</c:when>
+													<c:otherwise>
+														<fmt:param><c:out value="${token}"/></fmt:param>
+													</c:otherwise>
+												</c:choose>
+											</c:when>
+											<c:otherwise>
+												<fmt:param><c:out value="${token}"/></fmt:param>
+											</c:otherwise>
+										</c:choose>
+									</c:forTokens>
+								</fmt:message>
+								<br>
+							</c:when>
+							<c:when test="${tokenKey == 'TriggerCustomerSearches'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format:  TriggerCustomerSearches| true/false | SearchForAnyKeyword/SearchForExactlyOne/SearchForPhraseStarting/SearchForPhraseContaining/SearchForPhraseEnding | searchTerm -->
+
+								<c:remove var="param1" scope="page"/>
+								<c:remove var="param2" scope="page"/>
+								<c:remove var="param3" scope="page"/>
+								<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+									<c:choose>
+										<c:when test="${status.count == 1}">
+											<c:set var="param1" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 2}">
+											<c:set var="param2" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 3}">
+											<c:set var="param3" value="${token}"/>
+										</c:when>
+									</c:choose>
+								</c:forTokens>
+								
+								<c:choose>
+									<c:when test="${param2 eq 'SearchForAnyKeyword' && empty param3}">
+										<fmt:message key="${tokenKey}" bundle="${resources}"/>
+									</c:when>
+									<c:otherwise>
+										<fmt:message key="${tokenKey}" bundle="${resources}"/> - 
+										<fmt:message key="${param2}" bundle="${resources}"/>: <span class="bold">"<c:out value="${param3}"/>"</span>
+									</c:otherwise>
+								</c:choose>
+								
+								<c:choose>
+									<c:when test="${param1 == true}">
+										<img alt="${param1}" src="<c:out value="${jspStoreImgDir}" />images/cmc/storepreview_datatable_check.png" />
+									</c:when>
+									<c:otherwise>
+										<img alt="${param1}" src="<c:out value="${jspStoreImgDir}" />images/cmc/storepreview_window_close_icon_press.png" />
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+							<c:when test="${tokenKey == 'ActionSpecifyTopSearchResults'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format: ActionSpecifyTopSearchResults| query | PromotedFollowingProducts | topProduct1,topProduct2, ... -->
+
+								<c:remove var="param1" scope="page"/>
+								<c:remove var="param2" scope="page"/>
+								<c:remove var="param3" scope="page"/>
+								<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+									<c:choose>
+										<c:when test="${status.count == 1}">
+											<c:set var="param1" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 2}">
+											<c:set var="param2" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 3}">
+											<c:set var="param3" value="${token}"/>
+										</c:when>
+									</c:choose>
+								</c:forTokens>
+								<fmt:message key="${tokenKey}" bundle="${resources}"/> (<c:out value="${param1}"/>)
+								<br>
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+								<fmt:message key="${param2}" bundle="${resources}"/>
+								<span class="bold">
+									<ul>
+										<c:forTokens items="${param3}" delims="," var="idtoken">
+											<c:remove var="ceObject" scope="page"/>
+											<wcbase:useBean id="ceObject" classname="com.ibm.commerce.catalog.beans.CatalogEntryDataBean">
+												<c:set value="${idtoken}" target="${ceObject}" property="catalogEntryID"/>
+											</wcbase:useBean>
+											<li><c:out value="${ceObject.description.name} (${ceObject.partNumber})" /></li>
+										</c:forTokens>
+									</ul>
+								</span>
+							</c:when>
+							<c:when test="${tokenKey == 'ActionOrderSearchResults' || tokenKey == 'ActionReplaceOrAddSearchCriteria'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format: ActionOrderSearchResults| query | SortCriteriaAre | sortDesc1 asc/desc,sortDesc2 asc/desc, ... -->
+								<!-- Format: ActionOrderSearchResults| query | PromotedProductsMeetCriteria | filter1,param1,param2; filter2,param1,param2; ... -->
+
+								<!-- Format: ActionReplaceOrAddSearchCriteria | query | ReplacedSearchKeywordWith | searchTerm1,searchTerm2, ... -->
+								<!-- Format: ActionReplaceOrAddSearchCriteria | query | AddedFollowingFilters | filter1,param1,param2; filter2,param1,param2; ... -->
+
+								<c:remove var="param1" scope="page"/>
+								<c:remove var="param2" scope="page"/>
+								<c:remove var="param3" scope="page"/>
+								<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+									<c:choose>
+										<c:when test="${status.count == 1}">
+											<c:set var="param1" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 2}">
+											<c:set var="param2" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 3}">
+											<c:set var="param3" value="${token}"/>
+										</c:when>
+									</c:choose>
+								</c:forTokens>
+								<fmt:message key="${tokenKey}" bundle="${resources}"/> (<c:out value="${param1}"/>)
+								<br>
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+								<c:choose>
+									<c:when test="${param2 == 'ReplacedSearchKeywordWith'}">
+										<fmt:message key="${param2}" bundle="${resources}">
+											<fmt:param><c:out value="${param3}"/></fmt:param>
+										</fmt:message>
+									</c:when>
+									<c:otherwise>
+										<fmt:message key="${param2}" bundle="${resources}"/>
+										<span class="bold">
+											<ul>
+												<c:choose>
+													<c:when test="${param2 == 'SortCriteriaAre'}">
+														<c:forTokens items="${param3}" delims="," var="paramToken">
+															<c:set var="sortDesc" value="${fn:split(paramToken, ' ')}"/>
+															<li><fmt:message key="${sortDesc[0]}" bundle="${resources}"/> <c:out value="${sortDesc[1]}"/></li>
+														</c:forTokens>
+													</c:when>
+													<c:otherwise>
+														<c:remove var="filter1" scope="page"/>
+														<c:remove var="filter2" scope="page"/>
+														<c:remove var="filter3" scope="page"/>
+														<c:forTokens items="${param3}" delims=";" var="filterToken">
+															<c:forTokens items="${filterToken}" delims="," var="paramToken" begin="0" varStatus="status">
+																<c:choose>
+																	<c:when test="${status.count == 1}">
+																		<c:set var="filter1" value="${paramToken}"/>
+																	</c:when>
+																	<c:when test="${status.count == 2}">
+																		<c:set var="filter2" value="${paramToken}"/>
+																	</c:when>
+																	<c:when test="${status.count == 3}">
+																		<c:set var="filter3" value="${paramToken}"/>
+																	</c:when>
+																</c:choose>
+															</c:forTokens>
+															<li>
+																<fmt:message key="${filter1}" bundle="${resources}">
+																	<fmt:param><fmt:message key="${filter2}" bundle="${resources}"/></fmt:param>
+																	<fmt:param><c:out value="${filter3}"/></fmt:param>
+																</fmt:message>
+															</li>
+														</c:forTokens>
+													</c:otherwise>
+												</c:choose>
+											</ul>
+										</span>
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+							<c:when test="${tokenKey == 'TargetSearchCriteriaAndResult'}">
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<!-- Format: TargetSearchCriteriaAndResult | true/false | SearchCriteria[Not]Used | filter1,param1,param2; filter2,param1,param2; ... -->
+								<!-- Format: TargetSearchCriteriaAndResult | true/false | SearchResult[Not]Contains | product1,product2, ... -->
+
+								<c:remove var="param1" scope="page"/>
+								<c:remove var="param2" scope="page"/>
+								<c:remove var="param3" scope="page"/>
+								<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+									<c:choose>
+										<c:when test="${status.count == 1}">
+											<c:set var="param1" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 2}">
+											<c:set var="param2" value="${token}"/>
+										</c:when>
+										<c:when test="${status.count == 3}">
+											<c:set var="param3" value="${token}"/>
+										</c:when>
+									</c:choose>
+								</c:forTokens>
+								<fmt:message key="${tokenKey}" bundle="${resources}"/>
+								<br>
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+								<fmt:message key="${param2}" bundle="${resources}"/>
+								<span class="bold">
+									<ul>
+										<c:choose>
+											<c:when test="${param2 == 'SearchResultContains' || param2 == 'SearchResultNotContains'}">
+												<c:forTokens items="${param3}" delims="," var="idtoken">
+													<c:remove var="ceObject" scope="page"/>
+													<wcbase:useBean id="ceObject" classname="com.ibm.commerce.catalog.beans.CatalogEntryDataBean">
+														<c:set value="${idtoken}" target="${ceObject}" property="catalogEntryID"/>
+													</wcbase:useBean>
+													<li><c:out value="${ceObject.description.name} (${ceObject.partNumber})" /></li>
+												</c:forTokens>
+											</c:when>
+											<c:otherwise>
+												<c:forTokens items="${param3}" delims=";" var="filterToken">
+
+													<c:remove var="filter1" scope="page"/>
+													<c:remove var="filter2" scope="page"/>
+													<c:remove var="filter3" scope="page"/>
+													<c:forTokens items="${filterToken}" delims="," var="paramToken" begin="0" varStatus="status">
+														<c:choose>
+															<c:when test="${status.count == 1}">
+																<c:set var="filter1" value="${paramToken}"/>
+															</c:when>
+															<c:when test="${status.count == 2}">
+																<c:set var="filter2" value="${paramToken}"/>
+															</c:when>
+															<c:when test="${status.count == 3}">
+																<c:set var="filter3" value="${paramToken}"/>
+																<c:if test="${filter2 == 'catalogId_categoryId'}">
+																	<c:set var="catId" value="${fn:split(paramToken,'_')}"/>
+																	<c:remove var="cgObject" scope="page"/>
+																	<wcbase:useBean id="cgObject" classname="com.ibm.commerce.catalog.beans.CategoryDataBean">																
+																		<c:set value="${catId[1]}" target="${cgObject}" property="categoryId" />
+																	</wcbase:useBean>
+																	<c:set var="filter3" value="${cgObject.description.name}"/>
+																</c:if>
+															</c:when>
+														</c:choose>
+													</c:forTokens>
+													<li>
+														<fmt:message key="${filter1}" bundle="${resources}">
+															<fmt:param><fmt:message key="${filter2}" bundle="${resources}"/></fmt:param>
+															<fmt:param><c:out value="${filter3}"/></fmt:param>
+														</fmt:message>
+													</li>
+												</c:forTokens>
+											</c:otherwise>
+										</c:choose>
+									</ul>
+								</span>
+
+								<c:choose>
+									<c:when test="${param1 == true}">
+										<img alt="${param1}" src="<c:out value="${jspStoreImgDir}" />images/cmc/storepreview_datatable_check.png" />
+									</c:when>
+									<c:otherwise>
+										<img alt="${param1}" src="<c:out value="${jspStoreImgDir}" />images/cmc/storepreview_window_close_icon_press.png" />
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+							<c:when test="${tokenKey == 'NextScheduledActivityTransition'}">
+								<fmt:message key="${tokenKey}" bundle="${resources}">
+									<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+										<c:choose>
+											<c:when test="${status.count == 1}">
+												<c:remove var="activityDate" scope="page"/>
+												<c:set var="finalDate" value="${token}"/>
+												<c:catch>
+													<fmt:parseDate parseLocale="${dateLocale}" var="activityDate" value="${token}" pattern="yyyy-MM-dd HH:mm:ss.SSS" />
+												</c:catch>
+												<c:if test="${empty activityDate}">
+													<c:catch>
+														<fmt:parseDate parseLocale="${dateLocale}" var="activityDate" value="${token}" pattern="yyyy-MM-dd HH:mm:ss" />
+													</c:catch>
+												</c:if>
+												<c:if test="${!empty activityDate}">
+													<fmt:formatDate var="finalDate" value="${activityDate}" type="both" dateStyle="long" timeStyle="short" />
+												</c:if>
+												<c:set var="param1" value="${finalDate}"/>
+												<fmt:param><c:out value="${param1}"/></fmt:param>
+											</c:when>
+											<c:otherwise>
+												<fmt:param><c:out value="${token}"/></fmt:param>
+											</c:otherwise>
+										</c:choose>
+									</c:forTokens>
+								</fmt:message>										
+							</c:when>
+
+							<c:otherwise>
+								<c:forEach var="z" begin="0" end="${indent}">&nbsp;</c:forEach>
+
+								<fmt:message key="${tokenKey}" bundle="${resources}">
+									<c:forTokens items="${pr}" delims="|" var="token" begin="1" varStatus="status">
+										<fmt:param><c:out value="${token}"/></fmt:param>
+									</c:forTokens>
+								</fmt:message>
+
+								<c:if test="${tokenKey == 'PathBegin'}">
+									<c:set var="indent" value="${indent + 5}"/>
+								</c:if>
+								<br>
+							</c:otherwise>						
+						</c:choose>
+
+					</c:forEach>
+					<c:if test="${!empty searchStatus}">
+						<div class="heading"><c:out value="${searchStatus}"/></div>
+					</c:if>
+					<c:if test="${!empty searchQuery}">
+						<div class="data_table_container">
+
+							<a href="#" onclick="toggleActivityTable(<c:out value='${activityTableExpandId}'/>); return false;">
+								<div class="row expanded">
+									<div class="unopened" id="activityArrowId_${activityTableExpandId}"></div>
+									<div class="name_column"><fmt:message key="SearchQueryExpression" bundle="${resources}"/></div>
+								</div>
+							</a>
+
+							<div style="display:none" class="row_full_data" id="activityTableExpandId_${activityTableExpandId}">
+								<c:out value="${searchQuery}"/>
+							</div>
+
+							<c:set var="activityTableExpandId" value="${activityTableExpandId + 1}" scope="request"/>
+						</div>
+					</c:if>
+ 				</div>
+				<div class="pagination_container">
+					<div class="pagination">						
+					</div>
+				</div>
+			</div>
+			<div class="footer" id="WC_ESpotInfo_div_7_<c:out value="${espotName}"/>">
+				<div class="bot_right" id="WC_ESpotInfo_div_9_<c:out value="${espotName}"/>"></div>
+				<div class="bot_left" id="WC_ESpotInfo_div_8_<c:out value="${espotName}"/>"></div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript"> dojo.addOnLoad(function() {  parseWidget("ESpotInfo_popup_<c:out value="${espotName}"/>"); } );</script>
+
+
+<!-- END ESpotInfoPopupDisplay.jspf-->

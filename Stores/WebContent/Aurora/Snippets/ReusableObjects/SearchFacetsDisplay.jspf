@@ -1,0 +1,82 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<!-- BEGIN SearchFacetsDisplay.jspf-->
+	
+<div class="body588" id="WC_CatalogSearchResultFacet_div_1">
+	<c:set var="f" value="0" />
+	<c:set var="sType" value="${WCParam.sType}"/>
+	<c:if test="${empty sType}">
+		<c:set var="sType" value="SimpleSearch"/>
+	</c:if>
+
+	<span class="refine_header"><fmt:message key="SEARCH_NARROW_RESULTS_BY" bundle="${storeText}"/></span>
+	<div class="left_sidebar_divider"></div>
+
+	<c:if test="${totalCount > 0}">
+		<c:forEach var="facetField" items="${globalfacets}">
+			<c:if test="${facetField.value eq 'parentCatgroup_id_search'}">
+				<c:if test="${fn:length(facetField.entry) > 0}">
+			     	<%@ include file="../../Snippets/Search/CategoryFacetDisplay.jspf" %>
+	   				<c:set var="f" value="${f + 1}" />
+				</c:if>
+			</c:if>
+		</c:forEach>
+
+		<c:forEach var="facetField" items="${globalfacets}">
+			<c:if test="${fn:length(facetField.entry) > 1}">
+				<c:choose>				
+					<c:when test="${facetField.value eq 'parentCatgroup_id_search'}">
+					</c:when>
+					<c:when test="${facetField.value eq 'mfName_ntk_cs'}">
+						<%@ include file="../../Snippets/Search/BrandFacetDisplay.jspf" %>
+						<c:set var="f" value="${f + 1}" />
+					</c:when>
+					<c:when test="${fn:startsWith(facetField.value, 'price_')}">
+						<c:if test="${globalpricemode != 0}">
+							<c:set var="facetsGreaterThanZero" value="0"/>
+							<c:forEach var="item" items="${facetField.entry}">
+								<c:if test="${item.count > 0}">
+									<c:set var="facetsGreaterThanZero" value="${facetsGreaterThanZero + 1}"/>
+								</c:if>
+							</c:forEach>
+							<c:if test="${facetsGreaterThanZero > 1}">
+								<%@ include file="../../Snippets/Search/PriceFacetDisplay.jspf" %>
+								<c:set var="f" value="${f + 1}" />					
+							</c:if>
+						</c:if>
+					</c:when>
+					<c:otherwise>
+						<c:set var="attributeSelected" value="false"/>
+						<c:forEach var="breadcrumb" items="${globalbreadcrumbs.breadCrumbTrailEntryView}">
+							<c:if test="${fn:startsWith(breadcrumb.value, facetField.value)}">
+								<c:set var="attributeSelected" value="true"/>
+							</c:if>
+						</c:forEach>
+
+						<c:if test="${!attributeSelected}">
+							<%@ include file="../../Snippets/Search/FacetDisplay.jspf" %>
+							<c:set var="f" value="${f + 1}" />
+						</c:if>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+		</c:forEach>
+	</c:if>
+
+	<c:if test="${f == 0}">
+		<fmt:message key="SEARCH_NO_FURTHER_REFINEMENT" bundle="${storeText}"/>
+	</c:if>
+</div>
+
+<!-- END SearchFacetsDisplay.jspf-->

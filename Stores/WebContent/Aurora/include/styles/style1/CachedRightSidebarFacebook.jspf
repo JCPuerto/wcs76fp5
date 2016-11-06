@@ -1,0 +1,50 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<%-- 
+    **** Display Facebook Like button on Home Page ****  
+--%>
+<div class="social_facebook_container">
+    <div class="left_border">&nbsp;</div>
+    <div id="WC_CachedHomeSidebarDisplay_FBLike_div" class="content social_facebook_container_like_homepage_width" tabindex='0'>
+	    <fb:like id="social_facebook_Like_HomeSidebarDisplay" href="<c:out value="${TopCategoriesDisplayURL}"/>" layout="button_count" width="125" height="30" action="like" colorscheme="light" ref="homepage" ></fb:like>
+    </div>
+    <div class="right_border"></div>
+
+    <div class="clear_float"></div>
+    <div class="sidebar_ad"></div>
+
+	<div class="activity_top_left_border"></div>
+	<div class="activity_horizontal_top_border"></div>
+	<div class="activity_top_right_border"></div>
+
+	<div class="clear_float"></div>
+
+	<div class="activity_vertical_left_border">
+		<div class="activity_vertical_right_border">
+			<div class="activity_content">
+				<div id="WC_CachedHomeSidebarDisplay_FBActivity_div" tabindex='0' >
+					<fb:activity id="social_facebook_Activity_HomeSidebarDisplay" width="173" height="265" border_color="#ffffff" header="false" ref="homepage" ></fb:activity>
+    			</div>
+    		</div>
+		</div>
+	</div>
+
+	<div class="clear_float"></div>
+
+	<div class="activity_bottom_left_border"></div>
+	<div class="activity_horizontal_bottom_border"></div>
+	<div class="activity_bottom_right_border"></div>
+
+	<div class="clear_float"></div>
+</div>

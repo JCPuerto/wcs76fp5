@@ -1,0 +1,362 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<%--
+*****
+This object snippet displays the contents for the quick info pop-up dialog. This should be included in any 
+page where we need to show quick info pop-up dialog , and the contents are updated dynamically by AJAX calls 
+present in the CatalogEntryThumbnailDisplay.js file.
+*****
+--%>
+<!-- BEGIN CatalogEntryQuickInfoDetails.jspf-->
+<c:if test="${WCParam.omitHeader != 1}">
+	<flow:ifEnabled feature="AjaxMyAccountPage">
+		<script type="text/javascript">
+			dojo.addOnLoad(function() {
+				categoryDisplayJS.setAjaxMyAccount(true);
+			});
+		</script>
+	</flow:ifEnabled>
+	<flow:ifDisabled feature="AjaxMyAccountPage">
+		<script type="text/javascript">
+			dojo.addOnLoad(function() {
+				categoryDisplayJS.setAjaxMyAccount(false);
+			});
+		</script>
+	</flow:ifDisabled>
+
+	<flow:ifEnabled feature="RequisitionList">
+		<c:if test="${userType !='G'}">
+			<%out.flush();%>
+				<c:import url="${jspStoreDir}ShoppingArea/OrderCreationSection/RequisitionListSubsection/RequisitionListPopupDisplay.jsp">
+				</c:import>
+			<%out.flush();%>
+		</c:if>
+	</flow:ifEnabled>
+	 
+	<script type="text/javascript" src="<c:out value="${jsAssetsDir}javascript/CatalogArea/CatalogEntryThumbnailDisplay.js"/>"></script>
+
+	<div id="second_level_category_popup_main_div">
+		<div id="second_level_category_popup" dojoType="dijit.Dialog" >
+			<div class="top_left" id="WC_CatalogEntryQuickInfoDetailsf_div_1"><img alt="" src="<c:out value="${jspStoreImgDir}" />images/trasparent.gif" /></div>
+		  <div class="top_right" id="WC_CatalogEntryQuickInfoDetailsf_div_2"><img alt="" src="<c:out value="${jspStoreImgDir}" />images/trasparent.gif" /></div>
+			<div class="header" id="popupHeader"> 
+				<div class="close" id="WC_CatalogEntryQuickInfoDetailsf_div_3">
+				    <a id="closeLink" href="javascript:hidePopup('second_level_category_popup');" onkeydown="javaScript:setbackFocus(event);" onmousedown="javaScript:setbackFocus(event);">
+				        <span onclick="javaScript:hidePopup('second_level_category_popup');" class="icon" id="WC_CatalogEntryQuickInfoDetailsf_div_4">
+				            <img alt="" src="<c:out value="${jspStoreImgDir}${vfileColor}" />popup_close.png" />
+				        </span>
+				        <fmt:message key="QuickInfo_Close" bundle="${storeText}"/>
+				    </a>
+				</div>
+			</div>
+			
+			<div id="attribute_UOM_HUR" class="dijitHidden">
+				<fmt:message key="ATTR_UOM_HUR" bundle="${storeText}"/>
+			</div>
+			<div id="attribute_UOM_DAY" class="dijitHidden">
+				<fmt:message key="ATTR_UOM_DAY" bundle="${storeText}"/>
+			</div>
+			<div id="attribute_UOM_WEE" class="dijitHidden">
+				<fmt:message key="ATTR_UOM_WEE" bundle="${storeText}"/>
+			</div>
+			<div id="attribute_UOM_MON" class="dijitHidden">
+				<fmt:message key="ATTR_UOM_MON" bundle="${storeText}"/>
+			</div>
+			<div id="attribute_UOM_ANN" class="dijitHidden">
+				<fmt:message key="ATTR_UOM_ANN" bundle="${storeText}"/>
+			</div>
+			
+			<div class="bodyarea" id="WC_CatalogEntryQuickInfoDetailsf_div_5">
+			    <div class="bodycontent" id="WC_CatalogEntryQuickInfoDetailsf_div_6">
+			       <div class="title" id="WC_CatalogEntryQuickInfoDetailsf_div_7">
+						<div id="productIdQuickInfo" style="display:none"></div>		       
+				       <h2 id="productName"></h2>
+				       <h1 id="productSKUValue"></h1>
+				     </div>
+			       
+			       <div class="purchase_details" id="WC_CatalogEntryQuickInfoDetailsf_div_8">
+							<div class="purchase_price" id="productPrice"></div>
+							<c:if test="${isBrazilStore}">
+								<span id="promoDetails" class="promo_price">
+									<span id="BrazilFeaturedNonPaymentPromotion"></span>
+									<span class="installment_price">
+										<strong id="BrazilCatalogEntryFeaturedInstallmentOption"></strong>
+									</span>
+								</span>
+							</c:if>
+			     			<div class="purchase_quanitity" id="productQuantity">
+									<div class="left">
+			   							<label for="productPopUpQty"><fmt:message key="QuickInfo_Qty" bundle="${storeText}"/>: </label>
+			   							<input type="text" name="quantity" id="productPopUpQty" class="quantity" value="1" size="2"/>
+			   						</div>
+			   						<div class="order_button left button_margin">
+			   							
+			   							<flow:ifEnabled feature="AjaxAddToCart"> 
+			   								<div id="addToCartAjaxButton">
+											<span class="primary_button">
+												<span class="button_container">
+													<span class="button_bg">
+														<span class="button_top">
+															<span class="button_bottom">   
+																<a id="addToCartLinkAjax" href="javascript:;" >
+																	<fmt:message key="QuickInfo_AddToCart" bundle="${storeText}"/>
+																</a>
+															</span>
+														</span>
+													</span>	
+												</span>
+											</span>
+											</div>
+										</flow:ifEnabled>
+										<flow:ifDisabled feature="AjaxAddToCart">
+											<div id="addToCartButton">
+											<span class="primary_button">
+												<span class="button_container">
+													<span class="button_bg">
+														<span class="button_top">
+															<span class="button_bottom">   
+																<a id="addToCartLink" href="#" >
+																	<fmt:message key="QuickInfo_AddToCart" bundle="${storeText}"/>
+																</a>
+															</span>
+														</span>
+													</span>	
+												</span>
+											</span>											
+											</div>
+										</flow:ifDisabled>
+										
+										<div style="display:none" id="configureButton">
+											<c:if test="${showDynamicKit == 'true'}">
+												<span class="primary_button">
+													<span class="button_container">
+														<span class="button_bg">
+															<span class="button_top">
+																<span class="button_bottom">   
+																	<a href="javascript:;" id="configure">
+																		<fmt:message key="PRODUCT_CONFIGURE" bundle="${storeText}" />
+																	</a>
+																</span>
+															</span>	
+														</span>
+													</span>
+												</span>
+											</c:if>
+										</div>
+			     					</div>		     						
+			     			</div>
+			     			
+			     			<div class="clear_float" id="WC_CatalogEntryQuickInfoDetailsf_div_13"></div>
+			       </div>
+			       
+			       <div class="product_details" id="WC_CatalogEntryQuickInfoDetailsf_div_14">
+			         <div class="product_visual" id="WC_CatalogEntryQuickInfoDetailsf_div_15">
+			       		<div style='display:none;' id="baseUrlImageDir"><c:out value="${jspStoreImgDir}" /></div>
+				       	<img alt="" src="<c:out value="${jspStoreImgDir}" />images/NoImageIcon.jpg" border="0" class="product_image" id="productFullImage" />
+			         </div>
+			         
+			         <div class="product_information" id="WC_CatalogEntryQuickInfoDetailsf_div_16">
+				         <div id="productActions">
+		     					<flow:ifEnabled feature="AjaxAddToCart">
+												<flow:ifEnabled  feature="wishList"><%-- classic/single wish list --%>
+													<div id="addToWishListLinkAjaxDivContainer">
+													<div class="tertiary_button_shadow">
+														<div class="tertiary_button">
+															<a id="addToWishListLinkAjax" href="">
+																<fmt:message key="QuickInfo_AddToList" bundle="${storeText}" /> 
+															</a>
+														</div>
+													</div>
+													</div>                 																
+												</flow:ifEnabled>
+												<flow:ifEnabled  feature="SOAWishlist"><%-- multiple wish list --%>
+													<%out.flush();%>
+														<c:import url="${jspStoreDir}Snippets/MultipleWishList/MultipleWishListButtonForQuickInfo.jsp"></c:import>
+													<%out.flush();%>
+												<div id="MultipleWishListDropDown" style="display:none" dojoType="wc.widget.RefreshArea" controllerId="MultipleWishListInQuickInfoController" role="wairole:region" waistate:live="polite" waistate:atomic="false" waistate:relevant="all"></div>
+												<script type="text/javascript">dojo.addOnLoad(function() { parseWidget("MultipleWishListDropDown"); } );</script>																           																												
+												</flow:ifEnabled>
+												
+												<flow:ifEnabled feature="ProductCompare">
+													<div id="addToCompareLinkContainer">
+													<div class="tertiary_button_shadow">
+														<div class="tertiary_button">
+															<a id="addToCompareLink" href="">
+																<fmt:message key="QuickInfo_AddToCompare" bundle="${storeText}" /> 
+															</a>
+														</div>
+													</div>
+													</div>
+												</flow:ifEnabled>
+												<flow:ifEnabled feature="AjaxCheckout">
+													<div id="replaceCartItemAjaxContainer">
+													<div class="tertiary_button_shadow">
+														<div class="tertiary_button">
+															<a href="" id="replaceCartItemAjax"> <fmt:message key="QuickInfo_REPLACEINCART" bundle="${storeText}"/></a>
+														</div>
+													</div>
+													</div>
+												</flow:ifEnabled>
+												<flow:ifDisabled feature="AjaxCheckout">
+													<div id="replaceCartItemNonAjaxContainer">
+													<div class="tertiary_button_shadow">
+														<div class="tertiary_button">
+														<a href="#" id="replaceCartItemNonAjax"> <fmt:message key="QuickInfo_REPLACEINCART" bundle="${storeText}"/></a></li>
+														</div>
+													</div>
+													</div>
+												</flow:ifDisabled>
+												<flow:ifEnabled feature="RequisitionList">
+													<c:if test="${userType !='G'}">
+														<div id="addToNewRequisitionListContainer">
+															<div class="tertiary_button_shadow">
+																<div class="tertiary_button">
+																<a href="" id="addToNewRequisitionList"> <fmt:message key="ADD_TO_NEW_REQUISITIONLIST" bundle="${storeText}"/></a>
+																</div>
+															</div>
+														</div>
+														<div id="addToExistingRequisitionListContainer">
+															<div class="tertiary_button_shadow">
+																<div class="tertiary_button">
+																	<a href="" id="addToExistingRequisitionList"> <fmt:message key="ADD_TO_EXISTING_REQUISITIONLIST" bundle="${storeText}"/></a>
+																</div>
+															</div>
+														</div>
+													</c:if>
+												</flow:ifEnabled>										
+									</flow:ifEnabled>
+									<flow:ifDisabled feature="AjaxAddToCart">
+												<flow:ifEnabled  feature="wishList">
+												<div id="addToWishListLinkContainer">
+													<div class="tertiary_button_shadow">
+														<div class="tertiary_button">
+															<a id="addToWishListLink" href="#"> <fmt:message key="QuickInfo_AddToList" bundle="${storeText}"/> </a>
+														</div>
+													</div>
+												</div>
+												</flow:ifEnabled>
+												<flow:ifEnabled  feature="SOAWishlist"><%-- multiple wish list --%>
+													<%out.flush();%>
+														<c:import url="${jspStoreDir}Snippets/MultipleWishList/MultipleWishListButtonForQuickInfo.jsp"></c:import>				
+													<%out.flush();%>	
+													<div id="MultipleWishListDropDown" style="display:none" dojoType="wc.widget.RefreshArea" controllerId="MultipleWishListInQuickInfoController" role="wairole:region" waistate:live="polite" waistate:atomic="false" waistate:relevant="all"></div>
+													<script type="text/javascript">dojo.addOnLoad(function() { parseWidget("MultipleWishListDropDown"); } );</script>													
+												</flow:ifEnabled>
+																						
+												<flow:ifEnabled feature="ProductCompare">
+													<div id="addToCompareLinkContainer">
+														<div class="tertiary_button_shadow">
+															<div class="tertiary_button">
+															<a href="" id="addToCompareLink"> <fmt:message key="QuickInfo_AddToCompare" bundle="${storeText}"/></a>
+															</div>
+														</div>
+													</div>
+												</flow:ifEnabled>
+												<flow:ifEnabled feature="AjaxCheckout">
+													<div id="replaceCartItemAjaxContainer">
+														<div class="tertiary_button_shadow">
+															<div class="tertiary_button">
+																<a href="" id="replaceCartItemAjax"> <fmt:message key="QuickInfo_REPLACEINCART" bundle="${storeText}"/></a>
+															</div>
+														</div>
+													</div>
+												</flow:ifEnabled>
+												<flow:ifDisabled feature="AjaxCheckout">
+													<div id="replaceCartItemNonAjaxContainer">
+														<div class="tertiary_button_shadow">
+															<div class="tertiary_button">
+																<a href="#" id="replaceCartItemNonAjax"> <fmt:message key="QuickInfo_REPLACEINCART" bundle="${storeText}"/></a>
+															</div>
+														</div>
+													</div>
+												</flow:ifDisabled>
+												<flow:ifEnabled feature="RequisitionList">
+													<c:if test="${userType !='G'}">
+													<div id="addToNewRequisitionListContainer">
+														<div class="tertiary_button_shadow">
+															<div class="tertiary_button">
+																<a href="" id="addToNewRequisitionList"><fmt:message key="ADD_TO_NEW_REQUISITIONLIST" bundle="${storeText}"/></a>
+															</div>
+														</div>
+													</div>
+													<div id="addToExistingRequisitionListContainer">
+														<div class="tertiary_button_shadow">
+															<div class="tertiary_button">
+																<a href="" id="addToExistingRequisitionList"><fmt:message key="ADD_TO_EXISTING_REQUISITIONLIST" bundle="${storeText}"/></a>
+															</div>
+														</div>
+													</div>
+													</c:if>										
+												</flow:ifEnabled>										
+									</flow:ifDisabled>
+							<%@ include file="CatalogEntryQuickInfoDetailsExt.jspf" %>
+							<%@ include file="GiftRegistryCatalogEntryQuickInfoDetailsExt.jspf" %>
+							</div>
+						
+			       			<p id="productAttributes"></p>
+			       			
+			       			<div class="product_description" id="productLongDescription"></div>
+			       			
+			       			<div class="product_description" id="productDescriptiveAttributes"></div>
+			       			
+			       			<a href="" title="<fmt:message key="QuickInfo_More" bundle="${storeText}"/>" id="productMoreInfoLink"><fmt:message key="QuickInfo_More" bundle="${storeText}"/></a>
+			       			
+			       			<p id="moreinfo"><fmt:message key="ClickMoreInfo" bundle="${storeText}"/></p>
+			       			
+			       			<p class="product_description" id="productPromotions"></p>
+		       				
+							<c:if test="${isBrazilStore}">
+								<div class="free_shipping" id="free_shipping_promotion_div"></div>
+		       				</c:if>
+		       				
+		       				<div class="product_specs" id="productSpecification" style="display:none">
+								<br/>
+		       						<p><fmt:message key="CONFIGURATION" bundle="${storeText}" />:
+		       							<ul class="product_specs" id="productSpec">
+		       							</ul>
+		       						</p>
+							</div>
+			         </div>
+			         
+			     		 <div class="clear_float" id="WC_CatalogEntryQuickInfoDetailsf_div_17"></div>
+				<span style="display:none" id="requiredFieldText"><fmt:message key="Checkout_ACCE_required" bundle="${storeText}"/></span>
+			         <span style="display:none" id="selectText"><fmt:message key="QuickInfo_Select" bundle="${storeText}"/></span>
+			       	 <span tabindex="0" id="focusConveyer" onfocus="javaScript:gobackFocus();"></span>
+		          </div>
+			       
+			    </div>
+			</div>
+			
+			<div class="footer" id="WC_CatalogEntryQuickInfoDetailsf_div_18">
+		    <div class="bot_left" id="WC_CatalogEntryQuickInfoDetailsf_div_19"></div>
+		    <div class="bot_right" id="WC_CatalogEntryQuickInfoDetailsf_div_20"></div>
+		  </div>
+		  	<!--[if lte IE 6.5]><iframe id="dropDownIFrame" scrolling="no" frameborder="0" src="<c:out value="${jspStoreImgDir}"/>images/empty.gif"></iframe><![endif]-->
+		</div>
+	</div>
+	<script type="text/javascript">dojo.addOnLoad(function() { parseWidget("second_level_category_popup"); } );</script>
+	<c:if test="${isDnDQuickinfo}">
+		<script type="text/javascript">	
+			//make quickInfo draggable
+			dojo.require("wc.widget.Moveable");
+			dojo.addOnLoad(function(){	
+				var params = {skip:true,skipIds:['productName','productSKUValue','productPrice','productFullImage','productLongDescription'],skipTags:['label','li'],skipClasses:['product_description'],opacity:${isTransparentQuickinfo?0.9:1}};
+				new wc.widget.Moveable('second_level_category_popup', params);	
+		
+			});
+		</script>
+	</c:if>
+</c:if>
+<!-- END CatalogEntryQuickInfoDetails.jspf-->
+

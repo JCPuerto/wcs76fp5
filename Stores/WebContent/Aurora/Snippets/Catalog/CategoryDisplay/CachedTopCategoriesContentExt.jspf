@@ -1,0 +1,133 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<div id="content588">
+   <div id="box">
+			<%out.flush();%>
+			<c:import url="${jspStoreDir}Snippets/Marketing/ESpot/ContentAreaESpot.jsp">
+				<c:param name="emsName" value="HomePageRow1Ads" />
+				<c:param name="numberContentPerRow" value="1" />
+				<c:param name="catalogId" value="${WCParam.catalogId}" />
+				<c:param name="adWidth" value="586" />
+				<c:param name="adHeight" value="216" />
+				<c:param name="errorViewName" value="AjaxOrderItemDisplayView" />
+			</c:import>
+			<%out.flush();%>
+		
+			<%out.flush();%>
+			<c:import url="${jspStoreDir}Snippets/Marketing/ESpot/ContentAreaESpot.jsp">
+				<c:param name="emsName" value="HomePageRow2Ads" />
+				<c:param name="numberCategoriesPerRow" value="4" />
+				<c:param name="catalogId" value="${WCParam.catalogId}" />
+				<c:param name="errorViewName" value="AjaxOrderItemDisplayView" />
+			</c:import>
+			<%out.flush();%>
+			
+			<%out.flush();%>
+			<c:import url="${jspStoreDir}Snippets/Marketing/ESpot/ContentAreaESpot.jsp">
+				<c:param name="emsName" value="HomePageRow3Ads" />
+				<c:param name="numberContentPerRow" value="2" />
+				<c:param name="catalogId" value="${WCParam.catalogId}" />
+				<c:param name="errorViewName" value="AjaxOrderItemDisplayView" />
+			</c:import>
+			<%out.flush();%>
+			
+			<%out.flush();%>
+			<c:import url="${jspStoreDir}Snippets/Marketing/ESpot/ContentAreaESpot.jsp">
+				<c:param name="emsName" value="HomePageGeneralFeaturedProducts" />
+				<c:param name="catalogId" value="${WCParam.catalogId}" />
+				<c:param name="errorViewName" value="AjaxOrderItemDisplayView" />
+			</c:import>
+			<%out.flush();%>
+
+			<%out.flush();%>
+				<flow:ifEnabled feature="RemoteWidget">
+					<c:url var="feedURL" value="${restURLScheme}://${pageContext.request.serverName}:${restURLPort}${restURI}/stores/${WCParam.storeId}/MarketingSpotData/HomePageDealOfTheWeek">
+						<c:param name="responseFormat" value="atom" />
+						<c:param name="langId" value="${langId}" />
+						<c:param name="currency" value="${CommandContext.currency}"/>
+					</c:url>
+					
+				    <fmt:message var="dealofweekstr" key='DEALOFWEEK' bundle='${remoteWidgetText}' scope="request"/>
+					<c:import url="${jspStoreDir}Snippets/Marketing/ESpot/ContentAreaESpot.jsp">
+						<c:param name="storeId" value="${WCParam.storeId}" />
+						<c:param name="catalogId" value="${catalogId}" />
+						<c:param name="langId" value="${langId}" />
+						<c:param name="espotTitle" value="dealofweekstr" />
+						<c:param name="emsName" value="HomePageDealOfTheWeek" />
+						<c:param name="errorViewName" value="AjaxOrderItemDisplayView" />
+						<c:param name="widgetIconStyle" value="top" />
+						<c:param name="showWidget" value="true" />
+						<c:param name="showFeed" value="true" />
+						<c:param name="sidebarWidgetId" value="" />
+						<c:param name="bannerWidgetId" value="" />
+						<c:param name="feedURL" value="${feedURL}"/>
+					</c:import>
+				</flow:ifEnabled>
+			<%out.flush();%>
+
+			<%out.flush();%>
+			<c:import url="${jspStoreDir}Snippets/Marketing/ESpot/ContentAreaESpot.jsp">
+				<c:param name="emsName" value="HomePageRow4Ads" />
+				<c:param name="numberContentPerRow" value="1" />
+				<c:param name="catalogId" value="${WCParam.catalogId}" />
+				<c:param name="errorViewName" value="AjaxOrderItemDisplayView" />
+			</c:import>
+			<%out.flush();%>
+
+			<c:set var="emsName" value="HomePageFeaturedProducts"/>
+			<div id="HompageScrollableEspot" class="genericESpot">
+			    <div class="ESpotInfo"><a href="#" onclick="showESpotInfoPopup('ESpotInfo_popup_<c:out value="${emsName}"/>'); return false;"><div class="ESpotInfoIcon"></div></a></div> 
+				<div class="caption" id="CachedTopCategoriesDisplay_div_1a" style="display:none">[<c:out value="${emsName}"/>]</div>
+				<div class="contentgrad_header" id="CachedTopCategoriesDisplay_div_1">
+					 <div class="left_corner" id="CachedTopCategoriesDisplay_div_2"></div>
+					 <div class="left" id="CachedTopCategoriesDisplay_div_3"><span class="contentgrad_text" role="heading" aria-level="1"><fmt:message key="CLEARANCE_SALE" bundle="${storeText}" /></span></div>
+					 <div class="right_corner" id="CachedTopCategoriesDisplay_div_4"></div>
+				</div>
+				<div class="body588" id="CachedTopCategoriesDisplay_div_5">
+					<div id="id" dojoType="wc.widget.ScrollablePane" autoScroll='false' scrollByPage="true" itemSize="135" altPrev = '<fmt:message key="SCROLL_LEFT" bundle="${storeText}" />' altNext = '<fmt:message key="SCROLL_RIGHT" bundle="${storeText}" />' tempImgPath = "<c:out value='${jspStoreImgDir}'/>images/empty.gif">
+						<%out.flush();%>
+						<c:import url="${jspStoreDir}Snippets/Catalog/CategoryDisplay/ProductRecommendationsDisplay.jsp">
+							<c:param name="storeId" value="${storeId}"/>
+							<c:param name="catalogId" value="${catalogId}"/>
+							<c:param name="langId" value="${langId}"/>
+						</c:import>
+						<%out.flush();%>					
+					</div>
+					<script type="text/javascript">dojo.addOnLoad(function() { parseWidget("id"); });</script>
+					<br />
+				</div>
+				
+				<div class="footer" id="CachedTopCategoriesDisplay_div_6">
+					 <div class="left_corner" id="CachedTopCategoriesDisplay_div_7"></div>
+					 <div class="left" id="CachedTopCategoriesDisplay_div_8"></div>
+					 <div class="right_corner" id="CachedTopCategoriesDisplay_div_9"></div>
+				</div>
+			</div>
+			
+			<flow:ifEnabled feature="IntelligentOffer">
+				<%-- Begin - Added for Coremetrics Intelligent Offer to Display top seller dynamic recommendations for the site--%>
+				<%out.flush();%>
+				<c:import url="${jspStoreDir}Snippets/Marketing/ESpot/IntelligentOfferESpot.jsp">
+					<c:param name="emsName" value="HomePageIntelligentOffer" />
+					<c:param name="catalogId" value="${WCParam.catalogId}" />
+					<c:param name="parentCategoryId" value="_TS_" />
+				</c:import>
+				<%out.flush();%>
+				<%-- End - Added for Coremetrics Intelligent Offer --%>
+			</flow:ifEnabled>
+
+   </div>
+</div>
+

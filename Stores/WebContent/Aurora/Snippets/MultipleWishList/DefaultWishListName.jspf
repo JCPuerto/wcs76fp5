@@ -1,0 +1,57 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<%-- Only place the default wish name in the variable defaultWishListName. This snippet will not display anything. --%>
+
+<c:choose>
+	<c:when test="${userType != 'G'}">
+		<wcf:getData type="com.ibm.commerce.giftcenter.facade.datatypes.GiftListType" var="defaultWishlist" expressionBuilder="findDefaultWishListForUser">	
+			<wcf:contextData name="storeId" data="${storeId}"/>
+		</wcf:getData>
+		
+		<c:choose>
+			<c:when test="${empty defaultWishlist}">								
+				<fmt:message key="ADD_TO_WISHLIST" bundle="${remoteWidgetText}" var="defaultWishListName">
+				  <fmt:param><fmt:message key="DEFAULT_WISHLIST" bundle="${remoteWidgetText}"/></fmt:param>				  				
+				</fmt:message>							
+			</c:when>
+			<c:otherwise>
+				<%-- save the long name for the title attribute in <a> in HTML --%>
+				<fmt:message key="ADD_TO_WISHLIST" bundle="${remoteWidgetText}" var="longDefaultWishListName">					
+					<fmt:param value="${defaultWishlist.description.name}"/>		  				
+				</fmt:message>
+
+				<fmt:message key="ADD_TO_WISHLIST" bundle="${remoteWidgetText}" var="defaultWishListName">					
+					<fmt:param value="${defaultWishlist.description.name}"/>		  				
+				</fmt:message>							
+				
+				<c:if test="${fn:length(defaultWishlist.description.name)>maxCharsToDisplay}">			
+					<c:set var="defaultWishListName" value="${fn:substring(defaultWishlist.description.name, 0, maxCharsToDisplay)}"/>
+					<fmt:message key="ADD_TO_WISHLIST_SHORT" bundle="${remoteWidgetText}" var="defaultWishListName">					
+						<fmt:param value="${defaultWishListName}"/>		  				
+					</fmt:message>	
+				</c:if>
+								
+				
+			</c:otherwise>
+		</c:choose>
+		
+
+	</c:when>
+	<c:otherwise>
+		<%-- not logged in --%>
+		<fmt:message key="WISHLIST" bundle="${storeText}" var="defaultWishListName"/>
+	</c:otherwise>
+</c:choose>
+

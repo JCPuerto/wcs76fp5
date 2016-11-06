@@ -1,0 +1,43 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010, 2012 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<%-- 
+  *****
+  * This JSPF integrates third party social network provider with the stores remote widget customization tooling (RemoteWidgetToolDisplay.jsp)
+  *	In this case KickApps is used.  To use a different vendor replace the contents of this file. 
+  *****
+--%>
+
+<script type="text/javascript">
+	var affiliateId = "<c:out value="${affiliateId}"/>";
+	var sidebarWidgetId = "<wcf:out value="${param.sidebarWidgetId}" escapeFormat="js"/>";
+	var sidebarColors = "<wcf:out value="${param.sidebarColors}" escapeFormat="js"/>";
+	if(sidebarColors == ""){
+		sidebarColors = "background";
+	}
+	var bannerWidgetId = "<wcf:out value="${param.bannerWidgetId}" escapeFormat="js"/>";
+	var bannerColors = "<wcf:out value="${param.bannerColors}" escapeFormat="js"/>";
+	if(bannerColors == ""){
+		bannerColors = "background";
+	}
+	var feedLayer = "<wcf:out value="${param.feedLayer}" escapeFormat="js"/>";
+	if(feedLayer == ""){
+		feedLayer = "feed_list";
+	}
+	var feedURL = "<wcf:out value="${param.feedURL}" escapeFormat="js"/>";
+	var saveWidgetText = "<fmt:message key="GET_WIDGET_SAVE_WIDGET" bundle="${remoteWidgetText}"/>";
+	var shareWidgetText = "<fmt:message key="GET_WIDGET_SHARE_WIDGET" bundle="${remoteWidgetText}"/>";
+</script>
+
+<script type="text/javascript" src="http://serve.a-widget.com/kickFlash/scripts/swfobject2.js"></script>
+<script type="text/javascript" src="<c:out value="${jsAssetsDir}javascript/UserArea/KickAppsToolingLogic.js"/>"></script> 

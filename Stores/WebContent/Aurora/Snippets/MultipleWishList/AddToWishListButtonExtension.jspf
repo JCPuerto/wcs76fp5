@@ -1,0 +1,23 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<!-- BEGIN AddToWishListButtonExtension.jspf  -->
+<div class="wishlist_button_drop">
+	<a waistate:controls="multipleWishListSelectPanel" 
+		onkeypress="javascript:MultipleWishLists.showAddToListPanel<c:out value="${from}"/>(event,'addToWishListButton<c:out value="${from}"/>','addToWishListPanel');" 
+		onclick="javascript:MultipleWishLists.showAddToListPanel<c:out value="${from}"/>(null,'addToWishListButton<c:out value="${from}"/>','addToWishListPanel');"
+		href="javascript:void(0);">	
+		<img border="0" onmouseout="this.src='<c:out value='${jspStoreImgDir}${vfileColorBIDI}/addicon.png'/>'" onmouseover="this.src='<c:out value='${jspStoreImgDir}${vfileColorBIDI}/addicon_down.png'/>'" src="<c:out value='${jspStoreImgDir}${vfileColorBIDI}/addicon.png'/>" title="<fmt:message key="WISHLIST" bundle="${storeText}" />" alt="<fmt:message key="WISHLIST" bundle="${storeText}" />" />
+	</a>
+</div>

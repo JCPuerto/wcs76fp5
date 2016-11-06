@@ -1,0 +1,97 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<%-- 
+  *****
+  * This JSP page displays the product details.  It shows the following information:
+  *  - Full-sized image, name, and long description of the product
+  *  - Discount description for the product, if available
+  *  - Contract price and list price of the product
+  *  - A list of defining attributes (such as size and color) if the product has variations, along with a list of values for each attribute (for example, red and blue for color or large and x-large for size)
+  *  - Descriptive attributes, displayed as name:value
+  *  - 'Quantity' box to enter the quantity (default is 1)
+  *  - 'Add to shopping cart' button, 'Add to wish list' button for B2C stores, 'Add to Requisition List' button for B2B stores
+  * This is an example of how this file could be included into a page: 
+  *<c:import url="../../../Snippets/Catalog/CatalogEntryDisplay/CachedProductOnlyDisplay.jsp">
+  *	        <c:param name="storeId" value="${storeId}"/>
+  *	        <c:param name="catalogId" value="${catalogId}"/>
+  *	        <c:param name="langId" value="${langId}"/>
+  *	        <c:param name="productId" value="${productId}"/>
+  *	        <c:param name="parent_category_rn" value="${parent_category_rn}"/>
+  *	        <c:param name="shouldCachePage" value="${shouldCachePage}"/>
+  *	    </c:import>
+  *****
+--%>
+			
+			<jsp:useBean id="angleThumbAttachment_map" class="java.util.HashMap" type="java.util.Map"/>
+			<jsp:useBean id="angleFullImageAttachment_map" class="java.util.HashMap" type="java.util.Map"/>
+			
+			<c:set var="thumbnailCount" value="1" />
+			<c:set var="fullImageCount" value="1" />
+			<c:forEach items="${attachments}" var="attachment">
+				    <c:if test="${'IMAGE_SIZE_40' == attachment.usage}">
+					    <c:set var="image40Attachment" value="${attachment}" />
+				    </c:if>
+				    <c:if test="${'ANGLEIMAGES_THUMBNAIL' == attachment.usage}">
+						<c:set target="${angleThumbAttachment_map}" property="${thumbnailCount}" value="${attachment}"/>
+						<c:set var="thumbnailCount" value="${thumbnailCount + 1}" />
+				    </c:if>
+				    <c:if test="${'ANGLEIMAGES_FULLIMAGE' == attachment.usage}">
+					    <c:set target="${angleFullImageAttachment_map}" property="${fullImageCount}" value="${attachment}"/>
+				    	<c:set var="fullImageCount" value="${fullImageCount + 1}" />
+				    </c:if>
+				    
+			</c:forEach>	
+			
+			<c:choose>
+			 		<c:when test="${!empty image40Attachment}">
+						<c:set var="productCompareImagePath" value="${staticAssetContextRoot}/${image40Attachment.attachmentAssetPath}" />
+			 		</c:when>
+					<c:when test="${!empty thumbNail}">
+						<c:set var="productCompareImagePath" value="${objectPath}${thumbNail}" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="productCompareImagePath" value="${jspStoreImgDir}images/NoImageIcon_sm45.jpg" />
+					</c:otherwise>
+			 </c:choose>
+			 
+			<%-- 
+			  ***
+				*	Start: Product angle images
+				* Product angle images are loaded as attachments. Expected to have 2 sets loaded as 'ANGLEIMAGES_THUMBNAIL' and 'ANGLEIMAGES_FULLIMAGE'
+				* attachment usages.
+				***
+			--%>
+			<c:set var="angledImageCount" value="${fn:length(angleThumbAttachment_map)}" />
+			<c:if test="${angledImageCount > 0}">
+				<span class="angles">
+				<c:forEach items="${angleThumbAttachment_map}" varStatus="aStatus">
+					<c:set var="thumbnailAttachment" value="${aStatus.current.value}" />
+					<c:set var="fullImageAttachment" value="${angleFullImageAttachment_map[aStatus.current.key]}" />
+	  				<c:forEach var="metaData" items="${thumbnailAttachment.metaData}">
+						<c:if test="${metaData.typedKey == 'shortdesc'}">
+							<c:set var="attchShortDesc" value="${metaData.typedValue}" />
+						</c:if>
+					</c:forEach>  				
+									
+					<c:choose>
+						<c:when test="${aStatus.first}">
+							<a id="WC_CachedProductOnlyDisplay_links_1_<c:out value='${aStatus.count}'/>" href="JavaScript:changeThumbNail('productAngleImg<c:out value='${aStatus.index}'/>','<c:out value="${staticAssetContextRoot}/${fullImageAttachment.attachmentAssetPath}"/>');"><img id="productAngleImg<c:out value='${aStatus.index}'/>" src="<c:out value="${staticAssetContextRoot}/${thumbnailAttachment.attachmentAssetPath}"/>" alt="<c:out value="${attchShortDesc}"/>" class="on" /></a>
+						</c:when>
+						<c:otherwise>
+							<a id="WC_CachedProductOnlyDisplay_links_2_<c:out value='${aStatus.count}'/>" href="JavaScript:changeThumbNail('productAngleImg<c:out value='${aStatus.index}'/>','<c:out value="${staticAssetContextRoot}/${fullImageAttachment.attachmentAssetPath}"/>');"><img id="productAngleImg<c:out value='${aStatus.index}'/>" src="<c:out value="${staticAssetContextRoot}/${thumbnailAttachment.attachmentAssetPath}"/>" alt="<c:out value="${attchShortDesc}"/>" class="off" /></a>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+				</span><br />
+			</c:if>

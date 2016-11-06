@@ -1,0 +1,50 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<!-- BEGIN BrandFacetDisplay.jspf -->
+
+	<span class="left_sidebar_header"><fmt:message key="SEARCH_FACET_MANUFACTURER" bundle="${storeText}"/></span>
+	<c:set var="totalCount" value="0" />
+	<ul>
+		<c:forEach var="item" items="${facetField.entry}">
+			<wcf:url var="FacetSearchDisplayViewURL" value="SearchDisplay">
+				<wcf:param name="langId" value="${langId}"/>
+				<wcf:param name="storeId" value="${WCParam.storeId}"/>
+				<wcf:param name="catalogId" value="${WCParam.catalogId}"/>	
+				<wcf:param name="categoryId" value="${WCParam.categoryId}"/>		
+				<wcf:param name="pageView" value="${pageView}"/>
+				<wcf:param name="beginIndex" value="0"/>
+				<wcf:param name="pageSize" value="${WCParam.pageSize}"/>
+				<wcf:param name="searchTerm" value="${searchTerm}" />
+				<wcf:param name="filterTerm" value="${WCParam.filterTerm}" />
+				<wcf:param name="manufacturer" value="${WCParam.manufacturer}" />
+				<wcf:param name="minPrice" value="${WCParam.minPrice}" />
+				<wcf:param name="maxPrice" value="${WCParam.maxPrice}" />
+				<wcf:param name="searchTermScope" value="${WCParam.searchTermScope}"/>
+				<wcf:param name="searchType" value="${searchType}"/>
+				<wcf:param name="sType" value="${sType}"/>
+				<wcf:param name="metaData" value="${metaData}"/>
+				<wcf:param name="facet" value="${item.value}"/>
+				<wcf:param name="resultCatEntryType" value="${WCParam.resultCatEntryType}"/>						
+				<wcf:param name="showResultsPage" value="true"/>
+			</wcf:url>
+			<li>
+				<a id="SBN_facet_<c:out value="${item.label}"/>" href="<c:out value="${FacetSearchDisplayViewURL}" escapeXml="false" />"><c:out value="${item.label}" /> (<c:out value="${item.count}" />)</a>
+			</li>
+			<c:set var="totalCount" value="${totalCount + item.count}" />
+		</c:forEach>
+	</ul>
+
+	<div class="left_sidebar_divider"></div>
+<!-- END BrandFacetDisplay.jspf -->

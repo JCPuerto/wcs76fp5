@@ -1,0 +1,26 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<%-- 
+  *****
+  * This is a JSP fragments for extensions. It defines some blank constant, by default, and
+  * will be replace by the store enhancements included file.
+  *  
+  * Note: These file will be updated ( constants removed ) once FEP build has been completed, thereby will have
+  * a blank age by default.   
+  *****
+--%>
+   <c:set var="eSpotFreeShipping"                       value=" " />
+   <c:set var="eSpotFurnitureDiscount"                  value=" " />
+   <c:set var="eSpotPaymentPromotion"                   value=" " />

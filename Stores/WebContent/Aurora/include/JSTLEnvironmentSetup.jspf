@@ -1,0 +1,347 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2003, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<%-- 
+  *****
+  * This file retrieves and prepares a lot of information which are used by all the store JSP files.
+  * This file creates JSTL variables which can just be referenced by the store JSP files that include
+  * it.
+  *****
+--%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib uri="http://commerce.ibm.com/foundation" prefix="wcf" %>
+<%@ page session="false"%>
+<%@ page pageEncoding="UTF-8"%>
+<%--
+  ****
+  * BEGIN Comment out for use in the JSP preview environment.
+--%>
+<%@ page import="javax.servlet.jsp.jstl.fmt.LocalizationContext" %>
+<%@ page import="java.util.Locale" %>
+<%@ page import="com.ibm.commerce.command.CommandContext" %>
+<%@ page import="com.ibm.commerce.server.ECConstants" %>
+<%@ page import="com.ibm.commerce.datatype.WcParam" %>
+<%@ page errorPage="/GenericJSPPageError.jsp" %>
+<%
+// check to see if the wcparam is available; initialise it if it is not available
+if( null == request.getAttribute(com.ibm.commerce.server.ECConstants.EC_INPUT_PARAM)){
+	request.setAttribute(com.ibm.commerce.server.ECConstants.EC_INPUT_PARAM, new WcParam(request));
+}
+%>
+<%--
+  * END Comment out for use in the JSP preview environment.
+  ****
+--%>
+
+
+<%-- The commerce useBean tag is used to activate the StoreDataBean --%>
+<wcbase:useBean id="sdb" classname="com.ibm.commerce.common.beans.StoreDataBean" scope="request" />
+
+<%-- This flow tag is used to change styles --%>
+<flow:fileRef id="vfileColor" fileId="vfile.color"/>
+<flow:fileRef id="StyleDir" fileId="StyleDir"/>
+<flow:fileRef id="vfileStylesheet" fileId="vfile.stylesheet"/>
+<flow:fileRef id="vfileStylesheetie" fileId="vfile.stylesheetie"/>
+<flow:fileRef id="vfileStylesheetie7" fileId="vfile.stylesheetie7"/>
+<flow:fileRef id="vfileStylesheetprint" fileId="vfile.stylesheetprint"/>
+<flow:fileRef id="vfileColorBIDI" fileId="vfile.color"/>
+
+<%-- These are variables to use on pages --%>
+<c:set var="locale" value="${CommandContext.locale}" scope="page" />
+<c:set var="langId" value="${CommandContext.languageId}" scope="page" />
+<c:set var="storeName" value="${sdb.storeEntityDescriptionDataBean.displayName}" scope="page" />
+
+<%-- urlLangId parameter can be passed to wcf:url tags. If passed, this urlLangId will be used to look up
+the URL keywords. If keywords are not found for this urlLangId, then store default langId will be used to look up
+the URL keywords. By default set page langId as urlLangId. If store URLs are supported in only one language, then set that
+Id here --%>
+<c:set var="urlLangId" value="${langId}"/>
+
+<%-- A flag to determine if this is a B2B store or not. --%>
+<c:set var="b2bStore" value="false"/>
+<c:set var="displayListPriceInProductPage" value="true"/>
+
+<c:choose>
+       <c:when test="${CommandContext.locale eq 'iw_IL'}">
+              <c:set var="shortLocale" value="he"/>
+       </c:when>
+       <c:otherwise>
+              <c:set var="shortLocale" value="${fn:substring(CommandContext.locale,0,2)}"/>
+       </c:otherwise>
+</c:choose>
+
+<%-- These are variables to pass to the cached pages --%>
+<c:set var="userType" value="${CommandContext.user.registerType}" scope="page" />
+<c:set var="lastCmdName" value="${CommandContext.commandName}" scope="page" />
+<c:set var="storeId" value="${CommandContext.storeId}"/>
+<c:if test="${!empty WCParam.catalogId}">
+	<c:set var="catalogId" value="${WCParam.catalogId}"/>
+</c:if>
+<c:set var="userId" value="${CommandContext.userId}"/>
+<c:if test="${CommandContext.locale == 'iw_IL' || CommandContext.locale == 'ar_EG'}" >
+	<c:set var="vfileColorBIDI" value="${vfileColorBIDI}/bidi/"/>
+</c:if>
+
+<%-- 
+  *****
+  * For CategoryDisplay command, we can use the parameter called "catalogIdentifier" to identify the catalog instead of using the "catalogId".
+  * This command will then resolve the catalogId based on the Identifier and pass it as an attribute.
+  * In this specific case, the catalogId is not available in WCParam.
+  * We will get the catalogId from the scope and put it in the WCParam. 
+  *****
+--%>
+
+<c:if test="${empty WCParam.catalogId}" >
+	<c:set target="${WCParam}" property="catalogId" value="${WCParam.catalogId}" />
+</c:if>
+
+<%-- URL pointing to the hosted store home directory.  Use this to reference images --%>
+<c:set var="storeImgDir" value="${sdb.filePath}" scope="page" />
+<%-- WebAsset directory of the hosted store.  Includes JSPs, HTML, Image files, etc --%>
+<c:set var="storeDir" value="${sdb.jspPath}" scope="page" />
+
+<%-- URL pointing to the shared image directory.  Use this to reference images --%>
+<c:set var="jspStoreImgDir" value="${sdb.jspStoreDirFilePath}" scope="page" />
+<%-- WebAsset directory of the shared file directory.  Includes JSPs, HTML, Image files, etc --%>
+<c:set var="jspStoreDir" value="/${sdb.jspStoreDir}/" scope="page" />
+
+<%-- Path used to retrieve the JavaScript assets.  Use this to reference your JavaScript files. --%>
+<c:set var="jsAssetsDir" value="${sdb.jspStoreDirFilePath}" scope="page" />
+
+<%--
+Example directories:
+storeImgDir - /wcsstore/<hostedstoredir>/
+jspStoreImgDir - /wcsstore/<sharedstorefrontassetstoredir>/ 
+storeDir - /<hostedstoredir>/
+jspStoreDir - /<sharedstorefrontassetstoredir>/ 
+--%>
+
+
+<%-- Load the store bundles --%>
+<fmt:setLocale value="${CommandContext.locale}" />
+<fmt:setBundle basename="${jspStoreDir}storetext" var="storeText" />
+
+
+<%--	currency symbol of this store 
+			example usage:
+			<c:out value="${currencyFormatterDB.currencySymbol}" escapeXml="false"/>
+--%>
+<wcbase:useBean id="currencyFormatterDB" classname="com.ibm.commerce.common.beans.StoreCurrencyFormatDescriptionDataBean" scope="page" >
+	<c:set property="storeId" value="${storeId}" target="${currencyFormatterDB}" />
+	<c:set property="langId" value="${langId}" target="${currencyFormatterDB}" />
+	<c:set property="currencyCode" value="${CommandContext.currency}" target="${currencyFormatterDB}" />
+	<c:set property="numberUsage" value="-1" target="${currencyFormatterDB}" />
+</wcbase:useBean>
+
+<%-- Set decimal places to use for currency --%>
+
+<c:set var="currencyDecimal" value="${currencyFormatterDB.decimalPlaces}"/>
+
+<c:if test="${CommandContext.currency == 'KRW'}">
+	<c:set property="currencySymbol" value='&#8361;' target="${currencyFormatterDB}"/>
+</c:if>
+<c:if test="${CommandContext.currency == 'PLN'}">
+	<c:set property="currencySymbol" value='z&#322;' target="${currencyFormatterDB}"/>
+</c:if>
+
+
+<c:set var="dojolocale" value="${fn:replace(locale, '_' , '-')}" />
+<c:set var="dojolocale" value="${fn:toLowerCase(dojolocale)}" />
+
+<c:set var="dojoDir" value="${staticAssetContextRoot}/dojo15"/>
+<c:set var="dojoFile" value="${dojoDir}/dojo/dojo.js"/>
+<c:set var="dojoConfigParams" value="parseOnLoad: false, isDebug: false, useCommentedJson: true,locale: '${dojolocale}' "/>
+
+<%@ page import="com.ibm.commerce.server.ConfigProperties" %>
+<%@ page import="com.ibm.commerce.server.WebModuleConfig" %>
+<%@ page import="com.ibm.commerce.server.WcsApp" %>
+<%
+    	// Add support for possible SSL Accelerator port setup in WC config file.
+    	// There could be a setup for using different ports for SSL and nonSSL 
+    	// which are not 443 and 80 respectively.
+    	
+    	// Uncomment the code below if using SSL Accelerator and want to read the values from the configuration file.
+    	// Reading from config file can have a negative effect on performance. A better approach is to just enter the
+    	// port values in this file directly by putting value in inSSLAcceleratorPort and inNonSSLAcceleratorPort
+    	// variables below.
+    	//WebModuleConfig storeWebModule = ConfigProperties.singleton().getWebModule(WcsApp.storeWebModuleName);
+    	int inSSLAcceleratorPort = 443;
+    	//if (storeWebModule.getInSSLPort() != null) {
+    	//	inSSLAcceleratorPort = new Integer(storeWebModule.getInSSLPort()).intValue();
+    	//}
+    	int inNonSSLAcceleratorPort = 80;
+    	//if (storeWebModule.getInNonSSLPort() != null) {
+    	//	inNonSSLAcceleratorPort = new Integer(storeWebModule.getInNonSSLPort()).intValue();
+    	//}
+    	request.setAttribute("inSSLAcceleratorPort", inSSLAcceleratorPort);
+    	request.setAttribute("inNonSSLAcceleratorPort", inNonSSLAcceleratorPort);
+%>
+<c:set var="request" value="${pageContext.request}"/>
+<c:choose>
+	<c:when test="${request.serverPort != 80 && request.serverPort != 443 && request.serverPort != requestScope.inSSLAcceleratorPort && request.serverPort != requestScope.inNonSSLAcceleratorPort}">
+		<c:set var="portUsed" value=":${request.serverPort}"/>
+	</c:when>
+	<c:otherwise>
+		<c:set var="portUsed" value=""/>
+	</c:otherwise>
+</c:choose>
+
+<c:set var="schemeToUse" value="http"/>
+<c:choose>
+	<c:when test="${request.serverPort == requestScope.inSSLAcceleratorPort}">
+		<c:set var="schemeToUse" value="https"/>
+	</c:when>
+	<c:when test="${request.serverPort == requestScope.inNonSSLAcceleratorPort}">
+		<c:set var="schemeToUse" value="http"/>
+	</c:when>
+	<c:otherwise>
+		<c:set var="schemeToUse" value="${request.scheme}"/>
+	</c:otherwise>
+</c:choose>
+
+<c:set var="contextPathUsed" value=""/>
+<c:set var="absoluteUrl" value=""/>
+<c:if test="${!empty requestScope['requestURIPath'] && requestScope['requestURIPath'] != null && !empty requestScope['requestServletPath'] && requestScope['requestServletPath'] != null}">
+	<c:set var="contextPathUsed" value="${fn:substringBefore(requestScope['requestURIPath'],requestScope['requestServletPath'])}"/>
+	<c:set var="contextAndServletPath" value="${contextPathUsed}${requestScope['requestServletPath']}/"/>
+	<c:set var="absoluteUrl" value="${schemeToUse}://${request.serverName}${portUsed}${contextPathUsed}${requestScope['requestServletPath']}/"/>
+</c:if>
+
+<c:set var="profileShippingNickname" value="Default_Shipping_${storeId}"/>
+<c:set var="profileBillingNickname" value="Default_Billing_${storeId}"/>
+
+<%-- Defines the maximum number of sub categories that are displayed for each top category in the sidebar. --%>
+<c:set var="maxSubCategoriesPerCategoryInSidebar" value="18" scope="request"/>
+<c:set var="maxTotalCategoriesInSidebar" value="40" scope="request"/>
+<c:set var="maxTopCategoriesInHeader" value="4" scope="request"/>
+<c:set var="maxOrderItemsPerPage" value="20"/>
+<c:set var="maxOrderItemsToInspect" value="50"/>
+
+<%-- Oracle has a limitation on the number of identifiers on an "in" clause --%>
+<c:set var="maxSKUs" value="1000"/>
+
+<%-- Maximum number of menu items to show in each column of the header menu. --%>
+<c:set var="maxItemsPerColumn" value="6"/>
+
+<%-- Determines whether or not the show all menu item is displayed even when all the menu items can be displayed for a particular menu.
+If set to true then the show all menu item will always be displayed.
+If set to false then the show all menu item will only be displayed if there are to many menu items to be displayed in the menu. --%>
+<c:set var="forceDisplayShowAll" value="false"/>
+
+<%-- For the Coremetrics enablement, the store assumes that the Coremetrics javascript libraries are placed inside 'Stores.war/coremetrics' folder --%>
+<c:set var="coremetricsJSDir" value="/wcsstore/coremetrics/"/>
+
+<%-- These variables are used to determine if the corresponding orders will be categorized and displayed in the order status section. --%>
+<c:set var="showProcessedOrders" value="true"/>
+<c:set var="showWaitingForApprovalOrders" value="false"/>
+<c:set var="showScheduledOrders" value="false"/>
+
+<%-- The variable showPONumber is used to indicate if the purchase order number should be displayed for this store. --%>
+<c:set var="showPONumber" value="false"/>
+
+<%-- This variable is used to determine if in the Privacy Policy section, we should show Children's Policy --%>
+<c:set var="showChildrenPrivacyPolicy" value="true"/>
+
+<%-- Default view in which products are displayed--%>
+<c:set var="defaultPageView" value="image"/>
+
+<%-- This variable is used to determine if Header Links can be displayed in two lines --%>
+<c:set var="headerLinksInTwoLines" value="true"/>
+
+<%-- This variable is used to set the parseLocale attribute of parseDate. It is set to en_US to overcome unsupported locales like ar_EG --%>
+<c:set var="dateLocale" value="en_US"/>
+
+<%-- This variable is used to determine if the checkout navigation bar should be displayed on the shopping cart page. --%>
+<c:set var="displayCheckoutNavBarOnShoppingCartPage" value="false"/>
+
+<%-- These variables are used to hold the currency symbol --%>
+<c:choose>
+		<c:when test="${CommandContext.locale == 'ar_EG' && CommandContext.currency == 'EGP'}">
+			<c:set var="CurrencySymbolToFormat" value=""/>
+			<c:set var="CurrencySymbol" value="${currencyFormatterDB.currencySymbol}"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="CurrencySymbolToFormat" value="${currencyFormatterDB.currencySymbol}"/>
+			<c:set var="CurrencySymbol" value=""/>
+		</c:otherwise>
+</c:choose>
+
+<%-- This variable is used to determine if the should support payment type promotions on the shipping & billing method page. --%>
+<c:set var="supportPaymentTypePromotions" value="false"/>
+
+<%-- These variables are used to store the frequency values for a recurring order.--%>
+<c:set var="RecurringOrderFrequency1" value="1"/>
+<c:set var="RecurringOrderFrequency2" value="1"/>
+<c:set var="RecurringOrderFrequency3" value="1"/>
+<c:set var="RecurringOrderFrequency4" value="2"/>
+<c:set var="RecurringOrderFrequency5" value="3"/>
+<c:set var="RecurringOrderFrequency6" value="4"/>
+
+<%-- These variables are used to store the UOM of recurring order frequencies. The possible values are: DAY, HUR, MON, WEE, ANN--%>
+<c:set var="RecurringOrderFrequencyUOM1" value="DAY"/>
+<c:set var="RecurringOrderFrequencyUOM2" value="DAY"/>
+<c:set var="RecurringOrderFrequencyUOM3" value="WEE"/>
+<c:set var="RecurringOrderFrequencyUOM4" value="WEE"/>
+<c:set var="RecurringOrderFrequencyUOM5" value="WEE"/>
+<c:set var="RecurringOrderFrequencyUOM6" value="WEE"/>
+<c:set var="RecurringOrderFrequencyDayUOM" value="DAY"/>
+<c:set var="RecurringOrderFrequencyWeekUOM" value="WEE"/>
+<c:set var="RecurringOrderFrequencyMonthUOM" value="MON"/>
+
+<%-- These variables are used to store the frequency display texts for recurring orders. --%>
+<fmt:message var="RecurringOrderFrequencyText1" key="SCHEDULE_ORDER_INTERVAL_1" bundle="${storeText}"/>
+<fmt:message var="RecurringOrderFrequencyText2" key="EVERY_DAY" bundle="${storeText}"/>
+<fmt:message var="RecurringOrderFrequencyText3" key="EVERY_WEEK" bundle="${storeText}"/>
+<fmt:message var="RecurringOrderFrequencyText4" key="EVERY_X_WEEKS" bundle="${storeText}">
+	<fmt:param value="${RecurringOrderFrequency4}"></fmt:param>
+</fmt:message>
+<fmt:message var="RecurringOrderFrequencyText5" key="EVERY_X_WEEKS" bundle="${storeText}">
+	<fmt:param value="${RecurringOrderFrequency5}"></fmt:param>
+</fmt:message>
+<fmt:message var="RecurringOrderFrequencyText6" key="EVERY_X_WEEKS" bundle="${storeText}">
+	<fmt:param value="${RecurringOrderFrequency6}"></fmt:param>
+</fmt:message>
+
+<%-- This variable is used to store the notice period for cancelling a recurring order in seconds. --%>
+<c:set var="cancelRecurringOrderNoticePeriod" value="43200"/>
+
+<%-- This variable is used to store the notice period for cancelling a subscription in seconds. --%>
+<c:set var="cancelSubscriptionNoticePeriod" value="43200"/>
+
+<%@ include file="JSTLEnvironmentSetupExt.jspf" %>
+<%@ include file="JSTLEnvironmentSetupExtForRemoteWidgets.jspf" %>
+<%@ include file="../ShoppingArea/Configurator/SterlingConfiguratorIntegrationSetup.jspf" %>
+<%@ include file="JSTLEnvironmentSetupBrazilExt.jspf" %>
+<%@ include file="JSTLEnvironmentSetupExtForDigitalWallet.jspf" %>
+<%@ include file="JSTLEnvironmentSetupExtForFacebook.jspf" %>
+<c:set var="defaultDisplayPriceRuleName" value="List price rule"/>
+
+<%-- Constants used by subscriptions products --%>
+<c:set var="subsFulfillmentFrequencyAttrName" value="fulfillmentFrequency"/>
+<c:set var="subsPaymentFrequencyAttrName" value="paymentFrequency"/>
+<c:set var="subsTimePeriodAttrName" value="timePeriod"/>
+
+<%-- Since this env file is included at lot of places, make sure that we construct HomePageURLWithLang SEO URL only once --%>
+<c:if test = "${empty TopCategoriesDisplayURL}">
+		<wcf:url var="TopCategoriesDisplayURLTemp" value="TopCategories1" patternName="HomePageURLWithLang">
+			<wcf:param name="langId" value="${langId}" />
+			<wcf:param name="storeId" value="${WCParam.storeId}" />
+			<wcf:param name="catalogId" value="${WCParam.catalogId}" />
+			<wcf:param name="urlLangId" value="${urlLangId}"/>
+		</wcf:url>
+		<%-- Put the variable in request scope, so that imported JSP's will also find this var --%>
+		<c:set var="TopCategoriesDisplayURL" value="${TopCategoriesDisplayURLTemp}" scope="request"/>
+</c:if>
+

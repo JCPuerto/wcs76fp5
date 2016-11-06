@@ -1,0 +1,34 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2012 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+	<c:set var="displayAttachment" value="false" />
+	<c:set var="excludeUsageStr" value="ANGLEIMAGES_THUMBNAIL,ANGLEIMAGES_FULLIMAGE,ANGLEIMAGES_HDIMAGE,IMAGE_SIZE_55,IMAGE_SIZE_40" />
+	<c:set var="AttachmentDataBeans" value="${catobject.allAttachments}" />			
+	
+	<c:forEach items="${AttachmentDataBeans}" var="attachmentDB" varStatus="status">
+		<%-- checks the usage type of this attachment and see if should exclude this attachment from display --%>
+		  <c:set var="exclude" value="false" />
+		  	 <c:forTokens items="${excludeUsageStr}" delims="," var="usageType">
+				<c:if test="${usageType == attachmentDB.attachmentRelationUsage.identifier}">
+					<c:set var="exclude" value="true" />
+				</c:if>
+			</c:forTokens>
+			<c:if test="${!exclude}">
+				<c:set var="displayAttachment" value="true" />
+			</c:if>
+	</c:forEach>
+	
+	
+	
+	

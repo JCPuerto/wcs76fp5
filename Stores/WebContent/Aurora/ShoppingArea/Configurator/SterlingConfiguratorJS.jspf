@@ -1,0 +1,18 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<c:if test="${showDynamicKit eq 'true'}">
+	<script type="text/javascript" src="<c:out value="${jsAssetsDir}javascript/Configurator/DynamicKits.js"/>"></script>
+	<script type="text/javascript" src="<c:out value="${jsAssetsDir}javascript/Configurator/ConfiguratorServicesDeclaration.js"/>"></script>
+</c:if>

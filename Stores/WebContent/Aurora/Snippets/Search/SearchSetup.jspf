@@ -1,0 +1,343 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<%-- 
+  *****
+  * This JSP file initializes the solr search
+  *****
+--%>
+<!-- BEGIN SearchSetup.jspf-->
+
+<%@page import="org.apache.solr.client.solrj.response.SpellCheckResponse"%>
+<%@page import="org.apache.solr.client.solrj.response.QueryResponse"%>
+<%@page import="org.apache.solr.common.SolrDocumentList"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Map"%>
+<%@page import="com.ibm.commerce.registry.StoreCopy"%>
+<%@page import="com.ibm.commerce.registry.StoreRegistry"%>
+<%@page import="com.ibm.commerce.catalog.facade.datatypes.CatalogNavigationViewType"%>
+<%@page import="com.ibm.commerce.foundation.internal.server.services.search.util.SpecialCharacterHelper"%>
+<%@page import="com.ibm.commerce.datatype.WcParam" %>
+<%@page import="com.ibm.commerce.foundation.internal.server.services.search.config.solr.SolrSearchConfigurationRegistry"%>
+
+<c:if test="${empty includedSearchSetupJSPF && WCParam.advanced != 'true'}">
+	<c:set var="includedSearchSetupJSPF" value="1" scope="request"/>
+
+	<c:if test="${!empty WCParam.searchTerm && empty WCParam.facet && empty WCParam.metaData}">
+		<c:set var="updatedSearchTermHistory" value="${cookie.searchTermHistory.value}|${WCParam.searchTerm}" scope="request"/>
+<%
+	// record the search terms used in this session, for recommendation in the keyword autosuggest box for later use.
+	Cookie searchTermHistory = new Cookie("searchTermHistory", (String) request.getAttribute("updatedSearchTermHistory"));
+	searchTermHistory.setPath("/");
+	response.addCookie(searchTermHistory);
+%>
+	</c:if>
+
+<%
+	WcParam wcp = (WcParam)request.getAttribute("WCParam");
+	
+	// need to check if the responseSearchTerm attribute is set in the request object by the SearchDisplayCmd
+	// if the original search term is enclosed by quotes, the modified search term will be set as this request attribute and pass to this view.	
+	Object searchTerm = request.getAttribute("responseSearchTerm");
+	if (searchTerm == null) {
+		searchTerm = wcp.get("searchTerm");
+		request.setAttribute("responseSearchTerm",searchTerm);
+	}
+
+		request.setAttribute("intentSearchTerm"
+			,SpecialCharacterHelper
+			.escapeDollar(searchTerm));
+		
+		request.setAttribute("handledSearchTerm"
+			,SpecialCharacterHelper
+			.escapeDollar(searchTerm));
+
+		request.setAttribute("handledFilterTerm"
+			,SpecialCharacterHelper
+			.escapeDollar(wcp.get("filterTerm")));
+
+		request.setAttribute("handledManufacturer"
+			,SpecialCharacterHelper
+			.escapeDollar(wcp.get("manufacturer")));
+			
+		request.setAttribute("handledAdvancedFacetList"
+			,SpecialCharacterHelper
+			.escapeDollar(wcp.get("advancedFacetList")));
+			
+		String trackingThreshold = SolrSearchConfigurationRegistry
+				.getInstance().getExtendedConfigurationPropertyValue(
+						"SearchStatisticsResultPagesTrackingThreshold");
+		if (trackingThreshold != null && trackingThreshold.length() > 0) {
+			request.setAttribute("statisticsResultPagesTrackingThreshold", trackingThreshold);
+		}
+%>
+	<c:set var="intentSearchTerm" value="${requestScope.intentSearchTerm}" scope="request"/>
+	<c:set var="newSearchTerm" value="${requestScope.handledSearchTerm}" scope="request"/>
+	<c:set var="newFilterTerm" value="${requestScope.handledFilterTerm}" scope="request"/>
+	<c:set var="newManufacturer" value="${requestScope.handledManufacturer}" scope="request"/>
+	<c:set var="newAdvancedFacetList" value="${requestScope.handledAdvancedFacetList}" scope="request"/>
+
+	<c:set var="pageView" value="${WCParam.pageView}" scope="request"/>
+	<c:if test="${empty pageView}" >
+		<c:set var="pageView" value="${defaultPageView}" scope="request"/>
+		<c:if test="${WCParam.searchTermScope == 3}">
+			<c:set var="pageView" value="detailed" scope="request"/>
+		</c:if>
+	</c:if>
+	<c:set var="pageSize" value="${WCParam.pageSize}" scope="request"/>
+	<c:if test="${empty pageSize}" >
+		<c:set var="pageSize" value="12" scope="request"/>
+	</c:if>
+	<!-- 
+		Check if the responseSearchType attribute exists in the request object before checking 
+		WCParam as the SearchDisplayCmd can change the searchType. 
+		
+		If the original search term is enclosed by quotes, the responseSearchType attribute will be 
+		set to 1001 (which means exact phrase) by the SearchDisplayCmd 
+		
+		(Constants are defined in 
+		com.ibm.commerce.foundation.internal.server.services.search.metadata.solr.SolrSearchServiceConstants)
+	
+		The following search types are supported: 
+		----------------------------------------------------------------------------------------------------------
+			Match type              |   Search Type		|         Description                         
+		----------------------------------------------------------------------------------------------------------
+		1.  ANY 					|		0			|  INCLUDE products, kits, bundles
+									|					|  EXCLUDE product level SKUs and category level SKUs
+									|					|
+		2.  EXACT					|		1			|  INCLUDE products, kits, bundles
+									|					|  EXCLUDE product level SKUs and category level SKUs
+									|					|
+		3.  ALL						|		2			|  INCLUDE products, kits, bundles
+									|					|  EXCLUDE product level SKUs and category level SKUs
+									|					|
+		4.  NONE					|		3			|  INCLUDE products, kits, bundles
+									|					|  EXCLUDE product level SKUs and category level SKUs							
+									|					|
+		5.  ANY						|		10			|  INCLUDE products, kits, bundles, product level SKUs, category level SKUs
+									|					|  EXCLUDE 
+									|					|
+		6.  EXACT					|		11			|  INCLUDE products, kits, bundles, product level SKUs, category level SKUs
+									|					|  EXCLUDE 
+									|					|
+		7.  ALL						|		12			|  INCLUDE products, kits, bundles, product level SKUs, category level SKUs
+									|					|  EXCLUDE 
+									|					|
+		8.  NONE					|		13			|  INCLUDE products, kits, bundles, product level SKUs, category level SKUs
+									|					|  EXCLUDE 
+									|					|
+		9.  ANY						|		100			|  INCLUDE product level SKUs, category level SKUs
+									|					|  EXCLUDE products, kits, bundles	
+									|					|
+		10.  EXACT					|		101			|  INCLUDE product level SKUs, category level SKUs
+									|					|  EXCLUDE products, kits, bundles
+									|					|
+		11.  ALL					|		102			|  INCLUDE product level SKUs, category level SKUs
+									|					|  EXCLUDE products, kits, bundles
+									|					|
+		12.  NONE					|		103			|  INCLUDE product level SKUs, category level SKUs
+									|					|  EXCLUDE products, kits, bundles
+									|					|
+		13.  ANY					|		1000		|  INCLUDE products, kits, bundles, category level SKUs
+									|	  (Default)		|  EXCLUDE product level SKUs
+									|					|
+		14.  EXACT					|		1001		|  INCLUDE products, kits, bundles, category level SKUs
+									|					|  EXCLUDE product level SKUs
+									|					|
+		15.  ALL					|		1002		|  INCLUDE products, kits, bundles, category level SKUs
+									|					|  EXCLUDE product level SKUs
+									|					|
+		16.  NONE					|		1003		|  INCLUDE products, kits, bundles, category level SKUs
+									|					|  EXCLUDE product level SKUs								
+									|					|
+		17.  ANY					|		10000		|  INCLUDE category level SKUs
+									|					|  EXCLUDE products, kits, bundles, product level SKUs
+									|					|						
+		17.  EXACT					|		10001		|  INCLUDE category level SKUs
+									|					|  EXCLUDE products, kits, bundles, product level SKUs						
+									|					|						
+		18.  ALL					|		10002		|  INCLUDE category level SKUs
+									|					|  EXCLUDE products, kits, bundles, product level SKUs	
+									|					|						
+		19.  NONE					|		10003		|  INCLUDE category level SKUs
+									|					|  EXCLUDE products, kits, bundles, product level SKUs	
+			
+	-->
+	<c:set var="searchType" value="${responseSearchType}" scope="request"/>
+	<c:if test="${empty searchType}" >
+		<c:set var="searchType" value="${WCParam.searchType}" scope="request"/>
+		<c:if test="${empty searchType}" >
+			<c:set var="searchType" value="1000" scope="request"/>
+		</c:if>
+	</c:if>
+	<c:set var="advancedSearchResult" value="false" scope="request"/>
+	<c:set var="errorMinPriceFlag" value="false" scope="request"/>
+	<c:set var="errorMaxPriceFlag" value="false" scope="request"/>
+	<c:set var="recordStart" value="0" scope="request"/>
+	<c:set var="recordEnd" value="0" scope="request"/>
+	<c:set var="totalCount" value="0" scope="request"/>
+	<c:set var="completeIndicator" value="false" scope="request"/>
+	<c:set var="currentPage" value="0" scope="request"/>
+	<c:set var="totalPages" value="0" scope="request"/>
+	<c:set var="SearchDisplayViewPrevURL" value="" scope="request"/>
+	<c:set var="SearchDisplayViewNextURL" value="" scope="request"/>
+	<c:set var="numberProductsPerRow" value="4" scope="request"/>
+
+	<c:choose>
+		<c:when test ="${!empty WCParam.categoryId}">
+			<c:set var="currentCategoryId" value="${WCParam.categoryId}"/>
+		</c:when>
+		<c:otherwise>
+			<c:set var="currentCategoryId" value="${catUniqueId}"/>
+		</c:otherwise>
+	</c:choose>
+
+	<c:if test="${!errorMinPriceFlag && !errorMaxPriceFlag}">
+		<c:choose>
+			<c:when test="${WCParam.searchTermScope == 3}">
+				<c:set var="navigationView" value="getCatalogNavigationAttachmentView" scope="request"/>
+				<c:set var="searchProfile" value="IBM_findCatalogEntryByUnstructureField" scope="request"/>
+			</c:when>
+			<c:when test="${WCParam.searchTermScope == 2}">
+				<c:set var="navigationView" value="getCatalogNavigationView" scope="request"/>
+				<c:set var="searchProfile" value="IBM_findCatalogEntryByName" scope="request"/>
+			</c:when>
+			<c:otherwise>
+				<c:set var="navigationView" value="getCatalogNavigationView" scope="request"/>
+				<c:set var="searchProfile" value="IBM_findCatalogEntryByNameAndShortDescription" scope="request"/>
+			</c:otherwise>
+		</c:choose>
+		<c:choose>
+			<c:when test="${pageView == 'detailed' and searchProfile == 'IBM_findCatalogEntryByNameAndShortDescription'}">
+				<c:set var="navigationView" value="getCatalogNavigationView" scope="request"/>
+				<c:set var="searchProfile" value="IBM_findCatalogEntryByNameAndShortDescriptionInDetail" scope="request"/>
+			</c:when>
+		</c:choose>
+		<wcf:getData type="com.ibm.commerce.catalog.facade.datatypes.CatalogNavigationViewType" var="catalogNavigationView" 
+			expressionBuilder="${navigationView}" scope="request" varShowVerb="showCatalogNavigationView" 
+			maxItems="${pageSize}" recordSetStartNumber="${WCParam.beginIndex}" scope="request">
+			<wcf:param name="searchProfile" value="${searchProfile}" />
+			<wcf:param name="searchTerm" value="${newSearchTerm}" />
+			<wcf:param name="intentSearchTerm" value="${intentSearchTerm}" />
+			<wcf:param name="searchType" value="${searchType}" />
+			<wcf:param name="searchSource" value="${WCParam.searchSource}" />
+			<wcf:param name="metaData" value="${WCParam.metaData}" />
+			<wcf:param name="orderBy" value="${WCParam.orderBy}" />
+			<wcf:param name="facet" value="${WCParam.facet}" />
+			<wcf:param name="advancedFacetList" value="${newAdvancedFacetList}"/>
+			<wcf:param name="categoryId" value="${currentCategoryId}" />
+			<wcf:param name="filterTerm" value="${newFilterTerm}" />
+			<wcf:param name="filterType" value="${WCParam.filterType}" />
+			<wcf:param name="filterFacet" value="${WCParam.filterFacet}" />
+			<wcf:param name="manufacturer" value="${newManufacturer}" />
+			<wcf:param name="minPrice" value="${WCParam.minPrice}" />
+			<wcf:param name="maxPrice" value="${WCParam.maxPrice}" />
+			<wcf:contextData name="storeId" data="${WCParam.storeId}" />
+			<wcf:contextData name="catalogId" data="${WCParam.catalogId}" />
+		</wcf:getData>
+		<c:set var="globalfacets" value="${catalogNavigationView.facetView}" scope="request"/>
+		<c:set var="globalresults" value="${catalogNavigationView.catalogEntryView}" scope="request"/>
+		<c:set var="globalbreadcrumbs" value="${catalogNavigationView.breadCrumbTrailView}" scope="request"/>
+		<c:set var="globalreport" value="${catalogNavigationView.previewReport}" scope="request"/>
+		<c:set var="spellcheck" value="${catalogNavigationView.metaData.spellcheck}" scope="request"/>
+		<c:set var="metaData" value="${catalogNavigationView.metaData.metastring}" scope="request"/>
+		<c:set var="totalCount" value="${showCatalogNavigationView.recordSetTotal}" scope="request"/>
+		<c:set var="searchTerm" value="${responseSearchTerm}" scope="request"/>
+		<c:set var="searchMissed" value="false" scope="request"/>
+		<c:set var="globalpricemode" value="${catalogNavigationView.metaData.price}" scope="request"/>
+		<c:set var="mpe_id" value="${catalogNavigationView.metaData.espot}" scope="request" />
+        <c:set var="intv_id" value="${catalogNavigationView.metaData.activity}" scope="request" />
+        <c:set var="experimentId" value="${catalogNavigationView.metaData.experiment}" scope="request" />
+		<c:set var="testElementId" value="${catalogNavigationView.metaData.testelement}" scope="request" />
+<%
+		Cookie priceModeCookie = new Cookie("priceMode", (String) request.getAttribute("globalpricemode"));
+		priceModeCookie.setPath("/");
+		response.addCookie(priceModeCookie);
+%>
+
+		<c:if test="${!empty newSearchTerm}">
+			<c:set var="contentSearchTerm" value="${newSearchTerm}" scope="request"/>
+			<%@ include file="SearchContentSetup.jspf" %>
+		</c:if>
+
+		<c:set var="totalSearchCount" value="${totalCount + totalContentCount}"/>
+
+		<c:if test="${totalSearchCount eq 0 && !(empty spellcheck && empty contentspellcheck)}" >
+			<!-- 
+				Perform a second search under the current category using the first suggested keyword.
+			 -->
+			<c:set var="originalSearchTerm" value="${intentSearchTerm}" scope="request"/>
+			<c:set var="spellCheckToUse" value="${spellcheck}"/>
+			<c:if test="${empty spellCheckToUse}">
+				<c:set var="spellCheckToUse" value="${contentspellcheck}"/>
+			</c:if>
+			<c:forEach var="alternative" items="${spellCheckToUse}" varStatus="counter">
+				<c:if test="${counter.count eq 1}">
+					<c:set var="searchTerm" value="${alternative}" scope="request"/>
+				</c:if>
+			</c:forEach>
+
+			<wcf:getData type="com.ibm.commerce.catalog.facade.datatypes.CatalogNavigationViewType" var="catalogNavigationView" 
+				expressionBuilder="${navigationView}" scope="request" varShowVerb="showCatalogNavigationView" 
+				maxItems="${pageSize}" recordSetStartNumber="${WCParam.beginIndex}" scope="request">
+				<wcf:param name="searchProfile" value="${searchProfile}" />
+				<wcf:param name="searchTerm" value="${searchTerm}" />
+				<wcf:param name="originalSearchTerm" value="${originalSearchTerm}" />
+				<wcf:param name="searchType" value="${searchType}" />
+				<wcf:param name="searchSource" value="S" />
+				<wcf:param name="metaData" value="${WCParam.metaData}" />
+				<wcf:param name="orderBy" value="${WCParam.orderBy}" />
+				<wcf:param name="facet" value="${WCParam.facet}" />
+				<wcf:param name="advancedFacetList" value="${newAdvancedFacetList}"/>
+				<wcf:param name="categoryId" value="${currentCategoryId}" />
+				<wcf:param name="filterTerm" value="${newFilterTerm}" />
+				<wcf:param name="filterType" value="${WCParam.filterType}" />
+				<wcf:param name="filterFacet" value="${WCParam.filterFacet}" />
+				<wcf:param name="manufacturer" value="${newManufacturer}" />
+				<wcf:param name="minPrice" value="${WCParam.minPrice}" />
+				<wcf:param name="maxPrice" value="${WCParam.maxPrice}" />
+				<wcf:contextData name="storeId" data="${WCParam.storeId}" />
+				<wcf:contextData name="catalogId" data="${WCParam.catalogId}" />
+			</wcf:getData>
+			<c:set var="globalfacets" value="${catalogNavigationView.facetView}" scope="request"/>
+			<c:set var="globalresults" value="${catalogNavigationView.catalogEntryView}" scope="request"/>
+			<c:set var="globalbreadcrumbs" value="${catalogNavigationView.breadCrumbTrailView}" scope="request"/>
+			<c:set var="globalreport" value="${catalogNavigationView.previewReport}" scope="request"/>
+			<c:set var="metaData" value="${catalogNavigationView.metaData.metastring}" scope="request"/>
+			<c:set var="totalCount" value="${showCatalogNavigationView.recordSetTotal}" scope="request"/>
+			<c:set var="searchMissed" value="true" scope="request"/>
+			<c:set var="mpe_id" value="${catalogNavigationView.metaData.espot}" scope="request" />
+	       	 <c:set var="intv_id" value="${catalogNavigationView.metaData.activity}" scope="request" />
+	       	 <c:set var="experimentId" value="${catalogNavigationView.metaData.experiment}" scope="request" />
+			<c:set var="testElementId" value="${catalogNavigationView.metaData.testelement}" scope="request" />
+
+			<c:if test="${!empty searchTerm}">
+				<c:set var="contentSearchTerm" value="${searchTerm}" scope="request"/>
+				<%@ include file="SearchContentSetup.jspf" %>
+			</c:if>
+			<c:set var="totalSearchCount" value="${totalCount + totalContentCount}"/>
+		</c:if>
+	</c:if>
+	
+	<c:if test="${! empty statisticsResultPagesTrackingThreshold && statisticsResultPagesTrackingThreshold * pageSize <= WCParam.beginIndex}">
+		<!-- Exceeded threshold for tracking search rules -->
+		<c:remove var="experimentId" />
+	</c:if>
+
+	<flow:ifEnabled feature="Analytics">
+		<%@ include file="AnalyticsSearch.jspf" %>
+	</flow:ifEnabled>
+</c:if>
+
+<!-- END SearchSetup.jspf-->

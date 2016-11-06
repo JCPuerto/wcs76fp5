@@ -1,0 +1,466 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<%-- 
+  *****
+  * This JSP page displays the attachments for catalog entry through the new store front services. 
+  * It is included by CatalogAttachmentAssetsDisplay.jsp. 
+  * This is an example of how this file could be included into a page: 
+  * <%@ include file="CatalogEntryAttachmentAssetsDisplay.jspf"%>
+  *****
+--%>
+
+	<wcf:getData type="com.ibm.commerce.catalog.facade.datatypes.CatalogNavigationViewType" var="catalogNavigationView" 
+			expressionBuilder="getCatalogEntryViewAttachmentsByID" varShowVerb="showCatalogNavigationView" maxItems="1" recordSetStartNumber="0" scope="request">
+		<wcf:param name="UniqueID" value="${WCParam.productId}" />
+		<wcf:contextData name="storeId" data="${WCParam.storeId}" />
+		<wcf:contextData name="catalogId" data="${WCParam.catalogId}" />
+	</wcf:getData>
+	<c:set var="catEntry" value="${catalogNavigationView.catalogEntryView[0]}" />
+	<c:set var="catEntryName" value="${WCParam.catEntryName}" />
+	<c:set var="Attachments" value="${catEntry.attachments}" />
+	<c:set var="currentAttachmentCount" value="0" />
+	<c:set var="showHeader" value="true"/>
+	
+	<c:forEach items="${Attachments}" var="attachment" varStatus="status">
+			<c:set var="displayAttachment" value="true" />
+			<%-- if usage is specified, only display attachment of the specified usage. --%>
+			
+			<c:choose>
+				<c:when test="${!empty param.usage}">
+				    <c:if test="${!param.usage == attachment.usage}">
+					    <c:set var="displayAttachment" value="false" />
+				    </c:if>
+				</c:when>
+				<c:otherwise>
+					<%-- checks the usage type of this attachment and see if should exclude this attachment from display --%>        
+		            <c:forTokens items="${param.excludeUsageStr}" delims="," var="usageType">
+					    <c:if test="${usageType == attachment.usage}">
+						    <c:set var="displayAttachment" value="false" />
+					    </c:if>
+				    </c:forTokens>
+				</c:otherwise>
+			</c:choose>			
+			
+			<c:if test="${displayAttachment}">
+		    <c:set var="currentAttachmentCount" value="${currentAttachmentCount+1}" />
+			
+				<c:if test="${!isSiteMap && showHeader}">
+					<div id="CatalogAttachmentAssetsDisplay_div_1">
+					<div class="info_table info_table_width">
+						<div class="row">
+							<div class="label1 strong"><fmt:message key="ATTACHMENT" bundle="${storeText}" /></div>
+							<div class="info_content1 strong"><fmt:message key="DESCRIPTION" bundle="${storeText}" /></div>
+							<div class="label2 strong"><fmt:message key="USAGE" bundle="${storeText}" /></div>
+							<div class="clear_float"></div>
+						</div>
+						<c:set var="showHeader" value="false"/>
+				</c:if>		
+				    
+			    <c:set var="mimeType" value="${attachment.mimeType}" />
+			    
+			    <c:set var="mimePart" value="" />
+			    <c:forTokens items="${mimeType}" delims="/" var="mimePartFromType" end="0">
+				    <c:set var="mimePart" value="${mimePartFromType}" />
+			    </c:forTokens>
+			    
+  				<c:forEach var="metaData" items="${attachment.metaData}">
+  					
+					<c:if test="${metaData.typedKey == 'name'}">
+						<c:set var="attchName" value="${metaData.typedValue}" />
+					</c:if>
+					<c:if test="${metaData.typedKey == 'shortdesc'}">
+						<c:set var="attchShortDesc" value="${metaData.typedValue}" />
+					</c:if>
+					<c:if test="${metaData.typedKey == 'longdesc'}">
+						<c:set var="attchLongDesc" value="${metaData.typedValue}" />
+					</c:if>
+					<c:if test="${metaData.typedKey == 'image'}">
+						<c:set var="attchImage" value="${metaData.typedValue}" />
+					</c:if>
+				</c:forEach>  				
+				 
+			    <c:choose>
+				    <c:when test="${(mimePart eq 'image') || (mimePart eq 'images')}">
+						<c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		  <p>
+						   	</c:when>
+						   	<c:otherwise>
+						   		<div class="row">
+						   	</c:otherwise>
+						</c:choose>
+						    <c:choose>
+							    <c:when test="${!empty URL}">
+										<c:if test="${!isSiteMap}">
+									    <div class="label1">
+										</c:if> 
+									    <a href="<c:out value='${URL}'/>" id="WC_CatalogAttachmentAssetsDisplay_links_1_<c:out value='${status.count}'/>">
+										    <img
+											    src='<c:out value="${staticAssetContextRoot}/${attachment.attachmentAssetPath}"/>'
+											    <c:choose>
+												   	<c:when test="${isSiteMap}">
+												   		alt='<c:out value="${catEntryName}"/>'
+												   	</c:when>
+												   	<c:otherwise>
+												   		alt='<c:out value="${attachment.longDescription}"/>'
+												   	</c:otherwise>
+													</c:choose>
+											    <c:if test="${not empty attachHeight}">
+												    height="<c:out value='${attachHeight}' />"
+											    </c:if>
+											    <c:if test="${not empty attachWidth}">
+												    width="<c:out value='${attachWidth}' />"
+											    </c:if>
+											    <c:if test="${not empty attachControls}">
+												    border="<c:out value='${attachControls}' />" 
+											    </c:if>
+											    <c:if test="${not empty attachBorder}">
+												    controls="<c:out value='${attachBorder}' />"
+											    </c:if> 
+										    />
+									    </a>
+										<c:if test="${!isSiteMap}">
+										</div>
+										<div class="info_content1">
+										<c:if test="${!empty(attchShortDesc)}">
+											&nbsp;<c:out value="${attchShortDesc}"/>
+											<br/>
+										</c:if>																			
+										<c:if test="${!empty(attchLongDesc)}">
+											&nbsp;<c:out value="${attchLongDesc}"/>
+										</c:if>	
+										</div>
+										<div class="label2">
+										<c:if test="${!empty(attchName)}">
+											<c:out value="${attchName}"/>
+										</c:if>	
+										</div>
+										<div class="clear_float"> </div>
+										</c:if> 
+							    </c:when>
+							    <c:otherwise>			
+										<c:if test="${!isSiteMap}">
+										<div class="label1">
+										</c:if>
+									    <img
+										    src='<c:out value="${staticAssetContextRoot}/${attachment.attachmentAssetPath}"/>'
+										    <c:choose>
+													<c:when test="${isSiteMap}">
+												   	alt='<c:out value="${catEntryName}"/>'
+												  </c:when>
+												  <c:otherwise>
+												   	alt='<c:out value="${attchLongDesc}"/>'
+												  </c:otherwise>
+												</c:choose>
+										    <c:if test="${not empty attachHeight}">
+											    height="<c:out value='${attachHeight}' />"
+										    </c:if>
+										    <c:if test="${not empty attachWidth}">
+											    width="<c:out value='${attachWidth}' />"
+										    </c:if>
+										    <c:if test="${not empty attachControls}">
+											    border="<c:out value='${attachControls}' />" 
+										    </c:if>
+										    <c:if test="${not empty attachBorder}">
+											    controls="<c:out value='${attachBorder}' />"
+										    </c:if>
+									    /> 
+										<c:if test="${!isSiteMap}">
+										</div>
+										<div class="info_content1">
+										<c:if test="${!empty(attchShortDesc)}">
+											&nbsp;<c:out value="${attchShortDesc}"/>
+											<br/>
+										</c:if>										
+										<c:if test="${!empty(attchLongDesc)}">
+											&nbsp;<c:out value="${attchLongDesc}"/>
+										</c:if>	
+										</div>
+										<div class="label2">
+										<c:if test="${!empty(attchName)}">
+											<c:out value="${attchName}"/>
+										</c:if>	
+										</div>
+										<div class="clear_float"> </div>
+										</c:if>
+							    </c:otherwise>
+						    </c:choose>
+				    	<c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		</p>
+						   	</c:when>
+						   	<c:otherwise>
+						   		</div>
+						   	</c:otherwise>
+						</c:choose>
+				    </c:when>
+					
+    			    <c:when test="${(mimePart eq 'application') || (mimePart eq 'applications') || ( mimePart eq 'text') 							
+											||(mimePart eq 'textyv' ) || (mimePart eq 'video') || (mimePart eq 'audio')	
+											|| (mimePart eq 'model')}"> 
+					   
+					   
+					    <c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		   <p class="left">
+						   	</c:when>
+						   	<c:otherwise>
+						   		<div class="row">
+						   	</c:otherwise>
+						</c:choose>
+			    			<c:choose>
+								<c:when test="${(mimeType eq 'application/x-shockwave-flash')}" >
+								<c:if test="${!isSiteMap}">
+								<div class="label1">
+								</c:if>
+									<object data="${staticAssetContextRoot}/${attachment.attachmentAssetPath}"
+										<c:choose>
+											<c:when test="${not empty attachHeight}">
+												height="<c:out value='${attachHeight}' />"
+											</c:when>
+											<c:otherwise>
+												height="60"
+											</c:otherwise>
+										</c:choose>
+										<c:choose>
+											<c:when test="${not empty attachWidth}">
+												width="<c:out value='${attachWidth}' />"
+											</c:when>
+											<c:otherwise>
+												width="60"
+											</c:otherwise>
+										</c:choose>
+										type="application/x-shockwave-flash">
+											<param name="movie" value="${staticAssetContextRoot}/${attachment.attachmentAssetPath}" />
+											<param name="quality" value="high"/>
+											<param name="bgcolor" value="#FFFFFF"/>
+											<param name="wmode" value="transparent"/>
+											<param name="pluginurl" value="http://www.macromedia.com/go/getflashplayer"/>
+									</object>
+									<c:if test="${!isSiteMap}">
+									</div>
+									<div class="info_content1">
+									<c:if test="${!empty(attchShortDesc)}">
+										&nbsp;<c:out value="${attchShortDesc}"/>
+										<br/>
+									</c:if>									
+									<c:if test="${!empty(attchLongDesc)}">
+										&nbsp;<c:out value="${attchLongDesc}"/>
+									</c:if>
+									</div>
+									<div class="label2">
+									<c:if test="${!empty(attchName)}">
+										<c:out value="${attchName}"/>
+									</c:if>	
+									</div>
+									<div class="clear_float"> </div>
+									</c:if>
+								</c:when>
+								<c:otherwise>
+									<c:if test="${!isSiteMap}">
+									<div class="label1">
+									</c:if>
+									<c:set var="MimeStatus" value="1" />
+									<a href="<c:out value='${staticAssetContextRoot}/${attachment.attachmentAssetPath}'/>"target="_blank" id="WC_CatalogAttachmentAssetsDisplay_links_2_<c:out value='${status.count}'/>">
+										<img src='<c:out value="${jspStoreImgDir}${attchImage}"/>'
+											alt='<c:out value="${attchLongDesc}"/>'
+											align="left" /> 
+									</a>
+									<c:if test="${!isSiteMap}">
+										&nbsp;
+										<a href="<c:out value='${staticAssetContextRoot}/${attachment.attachmentAssetPath}'/>" target="_blank" id="WC_CatalogAttachmentAssetsDisplay_links_download_<c:out value='${status.count}'/>" class="catalog_link">
+											<fmt:message key="DOWNLOAD" bundle="${storeText}"/> 
+										</a>
+									</div>
+									<div class="info_content1">
+									<c:if test="${!empty(attchShortDesc)}">
+										&nbsp;<c:out value="${attchShortDesc}"/>
+										<br/>
+									</c:if>										
+									<c:if test="${!empty(attchLongDesc)}">
+										&nbsp;<c:out value="${attchLongDesc}"/>
+									</c:if>		
+									</div>
+									<div class="label2">
+									<c:if test="${!empty(attchName)}">
+										<c:out value="${attchName}"/>
+									</c:if>	
+									</div>
+									<div class="clear_float"> </div>
+									</c:if>
+								</c:otherwise>
+							</c:choose>
+						<c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		   </p>
+						   	</c:when>
+						   	<c:otherwise>
+						   		</div>
+						   	</c:otherwise>
+						</c:choose>
+					</c:when>			
+				    <c:when test="${empty mimePart}">
+					    <c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		   <p class="left">
+						   	</c:when>
+						   	<c:otherwise>
+						   		<div class="row">
+						   	</c:otherwise>
+						</c:choose>
+							<c:if test="${!isSiteMap}">
+							<div class="label1">
+							</c:if>
+
+							<c:set var="http" value=""/>
+							<c:if test='${ fn:indexOf(attachment.attachmentAssetPath,"://") == -1 }'>
+								<c:set var="http" value="http://"/>
+							</c:if>
+						    <a href="<c:out value='${http}${attachment.attachmentAssetPath}'/>" target="_new" id="WC_CatalogAttachmentAssetsDisplay_links_3_<c:out value='${status.count}'/>"> 
+							    <c:out value="${attachment.attachmentAssetPath}"/>
+						    </a>
+
+							<c:if test="${!isSiteMap}">
+							</div>
+							<div class="info_content1">
+						    <c:if test="${!empty(attchShortDesc)}">
+							    &nbsp;<c:out value="${attchShortDesc}"/>
+							    <br/>
+						    </c:if>							
+						    <c:if test="${!empty(attchLongDesc)}">
+							    &nbsp;<c:out value="${attchLongDesc}"/>
+						    </c:if>
+							</div>
+							<div class="label2">
+								<c:if test="${!empty(attchName)}">
+									<c:out value="${attchName}"/>
+								</c:if>	
+							</div>
+							<div class="clear_float"> </div>
+							</c:if>
+					    <c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		   </p>
+						   	</c:when>
+						   	<c:otherwise>
+						   		</div>
+						   	</c:otherwise>
+						</c:choose>
+				    </c:when>
+			
+				    <c:when test="${(mimePart eq 'uri')}">
+					    
+					    <c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		   <p class="left">
+						   	</c:when>
+						   	<c:otherwise>
+						   		<div class="row">
+						   	</c:otherwise>
+						</c:choose>
+							<c:if test="${!isSiteMap}">
+							<div class="label1">
+							</c:if>
+						    <fmt:bundle basename="web.ReusableObjects.AttachmentDisplay">
+							    <fmt:message key="MoreInfo" />
+						    </fmt:bundle> 
+						    <a href="<c:out value='${staticAssetContextRoot}/${attachment.attachmentAssetPath}' />" target="_blank" id="WC_CatalogAttachmentAssetsDisplay_links_4_<c:out value='${status.count}'/>"> 
+							    <c:out value="${attchName}" />
+						    </a> 
+							<c:if test="${!isSiteMap}">
+							</div>
+							<div class="info_content1">
+						    <c:if test="${!empty(attchShortDesc)}">
+							    &nbsp;<c:out value="${attchShortDesc}"/>
+							    <br/>
+						    </c:if>							
+						    <c:if test="${!empty(attchLongDesc)}">
+							    &nbsp;<c:out value="${attchLongDesc}"/>
+						    </c:if>
+							</div>
+							<div class="label2">
+								<c:if test="${!empty(attchName)}">
+									<c:out value="${attchName}"/>
+								</c:if>	
+							</div>
+							<div class="clear_float"> </div>
+							</c:if>
+						    <c:set var="MimeStatus" value="2" />
+					    <c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		   </p>
+						   	</c:when>
+						   	<c:otherwise>
+						   		</div>
+						   	</c:otherwise>
+						</c:choose>
+				    </c:when>
+			
+				    <c:otherwise>
+					    <c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		   <p class="left">
+						   	</c:when>
+						   	<c:otherwise>
+						   		<div class="row">
+						   	</c:otherwise>
+						</c:choose>
+							<c:if test="${!isSiteMap}">
+							<div class="label1">
+							</c:if>
+						    <fmt:bundle basename="web.ReusableObjects.AttachmentDisplay">
+							    <fmt:message key="UnknownAttachmentType" />
+						    </fmt:bundle>
+							<c:if test="${!isSiteMap}">
+							</div>
+							<div class="info_content1">
+						    <c:if test="${!empty(attchShortDesc)}">
+							    &nbsp;<c:out value="${attchShortDesc}"/>
+							    <br/>
+						    </c:if>							
+						    <c:if test="${!empty(attchLongDesc)}">
+							    &nbsp;<c:out value="${attchLongDesc}"/>
+						    </c:if>
+							</div>
+							<div class="label2">
+								<c:if test="${!empty(attchName)}">
+									<c:out value="${attchName}"/>
+								</c:if>	
+							</div>
+							<div class="clear_float"> </div>
+							</c:if>
+						    <c:set var="MimeStatus" value="3" />
+					    <c:choose>
+						   	<c:when test="${isSiteMap}">
+						   		   </p>
+						   	</c:when>
+						   	<c:otherwise>
+						   		</div>
+						   	</c:otherwise>
+						</c:choose>
+				    </c:otherwise>					
+					    
+			    </c:choose>								
+			</c:if>
+	</c:forEach>
+	<c:if test="${!isSiteMap}">
+		<c:if test="${currentAttachmentCount != 0}">
+		</div>
+		</div>
+		</c:if>
+	</c:if>
+
+
+<!-- END CatalogEntryAttachmentAssetsDisplay.jspf -->

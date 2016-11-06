@@ -1,0 +1,167 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<div id="MultipleWishListPopup_<c:out value="${action}"/>" class="multiple_wishlist_popups_div" style="display:none">
+	<div id="MultipleWishListPopup_<c:out value="${action}"/>_popup" dojoType="dijit.Dialog" class="multiple_wishlist_popup" parseOnLoad="true">
+	<div class="top_left" id="WC_MultipleWishListPopup_<c:out value="${action}"/>_div_1"><img alt="" src="<c:out value="${jspStoreImgDir}" />images/trasparent.gif" /></div>
+	  <div class="top_right" id="WC_MultipleWishListPopup_<c:out value="${action}"/>_div_2"><img alt="" src="<c:out value="${jspStoreImgDir}" />images/trasparent.gif" /></div>
+		<div class="header" id="popupHeader"> 
+			<div class="close" id="WC_MultipleWishListPopup_<c:out value="${action}"/>_div_3">
+			    <a id="MultipleWishList_closeLink" href="javascript:dijit.byId('MultipleWishListPopup_<c:out value="${action}"/>_popup').hide();" onkeydown="javaScript:setbackFocus(event);" onmousedown="javaScript:setbackFocus(event);">
+			        <img class="icon" alt="<fmt:message key="QuickInfo_Close" bundle="${storeText}"/>" src="<c:out value="${jspStoreImgDir}${vfileColor}" />popup_close.png" onclick="javascript:dijit.byId('MultipleWishListPopup_<c:out value="${action}"/>_popup').hide();"/>
+			        <fmt:message key="QuickInfo_Close" bundle="${storeText}"/>
+			    </a>
+			</div>
+		</div>
+		
+		    <div id="MultipleWishListPopup_div_1" class="bodycontent">
+				<h2><fmt:message key="MULTIPLE_WISHLIST_${action}" bundle="${remoteWidgetText}"/></h2>			
+			<c:choose>
+				<c:when test="${action eq 'create'}">
+					<span><label for="newListName"><fmt:message key="MULTIPLE_WISHLIST_create_header" bundle="${remoteWidgetText}"/></label></span>
+					
+					<form method="post" id="createForm" name="createForm" action="GiftListServiceCreate" onkeypress='return event.keyCode!=13'>
+						<input type="hidden" name="errorViewName" value="NonAjaxAccountWishListDisplayView"/>
+						<input type="hidden" name="storeId" value="<c:out value="${WCParam.storeId}"/>" />
+						<input type="hidden" name="catalogId" value="<c:out value="${WCParam.catalogId}"/>" />
+						<input type="hidden" name="langId" value="<c:out value="${langId}"/>" />
+						<input type="hidden" name="URL" value="NonAjaxAccountWishListDisplayView"/>						
+						<input type="text" size="35" maxlength="64" value="" name="name" id="newListName" onkeypress='if(event.keyCode==13) javascript:MultipleWishLists.create();'/>
+					</form>
+					
+					<div class="multiple_wishlist_actions_border">
+					<span class="primary_button ">
+						<span class="button_container">
+							<span class="button_bg">
+								<span class="button_top">
+									<span class="button_bottom wishList_save">
+										<a href="javascript:MultipleWishLists.create();" id="MultipleWishListPopup_a_create_save">
+										<fmt:message key="SAVE" bundle="${storeText}"/>
+										</a>
+									</span>
+								</span>
+							</span>
+						</span>
+					</span>
+					<span class="secondary_button">
+						<span class="button_container">
+							<span class="button_bg">
+								<span class="button_top">
+									<span class="button_bottom">
+										<a href="javascript:dijit.byId('MultipleWishListPopup_<c:out value="${action}"/>_popup').hide();" id="MultipleWishListPopup_a_create_cancel">
+											<fmt:message key="CANCEL" bundle="${storeText}"/>
+										</a>
+									</span>
+								</span>
+							</span>
+						</span>
+					</span>	
+					</div>
+				</c:when>
+				<c:when test="${action eq 'edit'}">
+					<span><label for="multiple_wishlist_currentName"><fmt:message key="MULTIPLE_WISHLIST_edit_header" bundle="${remoteWidgetText}"/></label></span>
+					<form method="post" id="wishlistNameUpdateForm" name="wishlistNameUpdateForm" action="GiftListServiceUpdateDescription" onkeypress='return event.keyCode!=13'>
+						<input type="hidden" name="errorViewName" value="NonAjaxAccountWishListDisplayView"/>
+						<input type="hidden" name="storeId" value="<c:out value="${WCParam.storeId}"/>" />
+						<input type="hidden" name="catalogId" value="<c:out value="${WCParam.catalogId}"/>" />
+						<input type="hidden" name="langId" value="<c:out value="${langId}"/>" />
+						<input type="hidden" name="URL" value="NonAjaxAccountWishListDisplayView"/>
+						<input type="hidden" name="giftListId" value="<c:out value="${WCParam.listId}"/>"/>
+						<input type="text" name="name" size="35" maxlength="64" value="" id="multiple_wishlist_currentName" onkeypress='if(event.keyCode==13) javascript:MultipleWishLists.edit();'/>
+					</form>
+					<div class="multiple_wishlist_actions_border">
+					<span class="primary_button ">
+						<span class="button_container">
+							<span class="button_bg">
+								<span class="button_top">
+									<span class="button_bottom wishList_save">
+										<a href="javascript:MultipleWishLists.edit();" id="MultipleWishListPopup_a_edit_save">
+										<fmt:message key="SAVE" bundle="${storeText}"/>
+										</a>
+									</span>
+								</span>
+							</span>
+						</span>
+					</span>
+					<span class="secondary_button">
+						<span class="button_container">
+							<span class="button_bg">
+								<span class="button_top">
+									<span class="button_bottom">
+										<a href="javascript:dijit.byId('MultipleWishListPopup_<c:out value="${action}"/>_popup').hide();" id="MultipleWishListPopup_a_edit_cancel">
+											<fmt:message key="CANCEL" bundle="${storeText}"/>
+										</a>
+									</span>
+								</span>
+							</span>
+						</span>
+					</span>	
+					</div>
+				</c:when>
+				<c:when test="${action eq 'delete'}">
+					<div id="MultipleWishListPopup_div_2">
+						<fmt:message key="MULTIPLE_WISHLIST_delete_header" bundle="${remoteWidgetText}">
+							<fmt:param value="<span id='delete_wishList_name'></span>"/>
+						</fmt:message>
+					</div>
+					<form method="post" id="wishlistDeleteForm" name="wishlistDeleteForm" action="GiftListServiceDeleteGiftList" onkeypress='return event.keyCode!=13'>
+						<input type="hidden" name="errorViewName" value="NonAjaxAccountWishListDisplayView"/>
+						<input type="hidden" name="storeId" value="<c:out value="${WCParam.storeId}"/>" />
+						<input type="hidden" name="catalogId" value="<c:out value="${WCParam.catalogId}"/>" />
+						<input type="hidden" name="langId" value="<c:out value="${langId}"/>" />
+						<input type="hidden" name="URL" value="NonAjaxAccountWishListDisplayView"/>
+						<input type="hidden" name="giftListId" value=""/>
+					</form>
+					<div class="multiple_wishlist_actions_border">
+					<span class="primary_button ">
+						<span class="button_container">
+							<span class="button_bg">
+								<span class="button_top">
+									<span class="button_bottom fixed_width_button">
+										<a href="javascript:MultipleWishLists.deleteList();" id="MultipleWishListPopup_a_delete_yes">
+										<fmt:message key="YES" bundle="${storeText}"/>
+										</a>
+									</span>
+								</span>
+							</span>
+						</span>
+					</span>
+					<span class="secondary_button">
+						<span class="button_container">
+							<span class="button_bg">
+								<span class="button_top">
+									<span class="button_bottom fixed_width_button">
+										<a href="javascript:dijit.byId('MultipleWishListPopup_<c:out value="${action}"/>_popup').hide();" id="MultipleWishListPopup_a_delete_no">
+											<fmt:message key="NO" bundle="${storeText}"/>
+										</a>
+									</span>
+								</span>
+							</span>
+						</span>
+					</span>	
+					</div>
+				</c:when>				
+			</c:choose>		    
+
+	
+		</div>
+		
+		<div class="footer" id="WC_MultipleWishListPopup_<c:out value="${action}"/>_div_18">
+		    <div class="bot_left" id="WC_MultipleWishListPopup_<c:out value="${action}"/>_div_19"></div>
+		    <div class="bot_right" id="WC_MultipleWishListPopup_<c:out value="${action}"/>_div_20"></div>
+		  	<!--[if lte IE 6.5]><iframe id="MultipleWishListDropDownIFrame" scrolling="no" frameborder="0" src="<c:out value="${jspStoreImgDir}"/>images/empty.gif"></iframe><![endif]-->
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">dojo.addOnLoad(function() {parseWidget("MultipleWishListPopup_<c:out value='${action}'/>"); } );</script>

@@ -1,0 +1,89 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<%-- 
+  *****
+  * This JSP fragment displays the products compare zone.
+  * The compare zone can display at most 4 products.
+  * It includes 2 buttons:
+  *		- "Clear", which removes the products currently displayed in the zone.
+  *		- "Compare", which re-directs the browser to the CompareProductsDisplay page to compare products side-by-side. 
+  *****
+--%>
+
+<!-- BEGIN CompareZoneDisplay.jspf-->
+
+<script type="text/javascript" src="<c:out value="${jsAssetsDir}javascript/CatalogArea/CompareProduct.js"/>"></script>
+<script type="text/javascript">
+	dojo.addOnLoad(function() { 
+		//Set the global variables
+		compareProductJS.setCommonParameters("<c:out value='${langId}'/>", "<c:out value='${WCParam.storeId}'/>","<c:out value='${WCParam.catalogId}'/>");
+		
+		<fmt:message key="COMPARE_ITEM_EXISTS" bundle="${storeText}" var="COMPARE_ITEM_EXISTS" />
+		<fmt:message key="COMPATE_MAX_ITEMS" bundle="${storeText}" var="COMPATE_MAX_ITEMS" />
+		<fmt:message key="COMPAREZONE_ADDED" bundle="${storeText}" var="COMPAREZONE_ADDED" />
+		<fmt:message key="COMPARE_ITEMS_CLEAR" bundle="${storeText}" var="COMPARE_ITEMS_CLEAR" />
+		
+		MessageHelper.setMessage("COMPARE_ITEM_EXISTS", <wcf:json object="${COMPARE_ITEM_EXISTS}"/>);
+		MessageHelper.setMessage("COMPATE_MAX_ITEMS", <wcf:json object="${COMPATE_MAX_ITEMS}"/>);
+		MessageHelper.setMessage("COMPAREZONE_ADDED", <wcf:json object="${COMPAREZONE_ADDED}"/>);
+		MessageHelper.setMessage("COMPARE_ITEMS_CLEAR", <wcf:json object="${COMPARE_ITEMS_CLEAR}"/>);
+		parseWidget("compareZone");
+		compareProductJS.init();
+	});
+</script>
+
+	<div class="compare_content_top" id="WC_CompareZoneDisplayf_div_1"></div>
+	
+    <flow:ifEnabled feature='ProductDnD'>
+			<c:set var="compareDisplayKey" value="COMPARE_DROP_ZONE_INSTRUCTIONS_WITH_DND"  />
+	</flow:ifEnabled>
+	
+	<flow:ifDisabled feature='ProductDnD'>
+			<c:set var="compareDisplayKey" value="COMPARE_DROP_ZONE_INSTRUCTION_WITHOUT_DND"  />
+	</flow:ifDisabled>	
+
+	<flow:ifDisabled feature='ProductQuickView'>
+		<flow:ifDisabled feature='ProductDnD'>		
+			<c:set var="compareDisplayKey" value="COMPARE_DROP_ZONE_INSTRUCTION_WITHOUT_DND_AND_QUICK_INFO"  />					
+		</flow:ifDisabled>		
+	</flow:ifDisabled>
+	
+	<div dojoType="dojo.dnd.Target" jsId="compareZone" id="compareZone" class="contentarea" accept="item, product, package, bundle">
+			<%out.flush();%>
+			<c:import url="${jspStoreDir}ShoppingArea/CatalogSection/CatalogEntrySubsection/CompareZoneContentDisplay.jsp">
+				<c:param name="compareDisplayKey" value="${compareDisplayKey}"/>
+			</c:import>
+			<%out.flush();%>
+	</div>
+	<div class="compare_content_bottom" id="WC_CompareZoneDisplayf_div_3"></div>
+	<div class="footerbuttons" id="WC_CompareZoneDisplayf_div_4">
+		 <div align="center"  id="WC_CompareZoneDisplayf_div_5">
+			<div class="tertiary_button_shadow">
+				<div class="tertiary_button"> 
+					<a href="JavaScript: compareProductJS.clear();" class="button_text" id="WC_CompareZoneDisplayf_links_1_1"><fmt:message key='COMPARE_CLEAR' bundle='${storeText}'/></a>
+				</div>
+			</div>
+			
+			<div class="tertiary_button_shadow">
+				<div class="tertiary_button">  
+					<a href="JavaScript: compareProductJS.compareProducts();" class="button_text" id="WC_CompareZoneDisplayf_links_2_1"><fmt:message key='COMPARE_BUTTON' bundle='${storeText}'/></a>
+				</div>
+			</div>
+				<br clear="all" />
+		</div>
+	</div>
+	<div class="compare_bottom" id="WC_CompareZoneDisplayf_div_10"></div>
+
+<!-- END CompareZoneDisplay.jspf-->

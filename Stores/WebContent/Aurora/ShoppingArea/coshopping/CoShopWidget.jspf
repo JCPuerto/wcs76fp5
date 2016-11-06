@@ -1,0 +1,80 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<script type="text/javascript">
+ 		var djConfig = { parseOnLoad:false, baseUrl:"<c:out value="${staticAssetContextRoot}"/>/ceadojo/dojo/" };
+</script>
+
+<script type="text/javascript" src="<c:out value="${staticAssetContextRoot}"/>/ceadojo/dojo/dojo.js"></script>
+	
+<script type="text/javascript">
+	try{
+		ceadojo.registerModulePath("collaboration","${dojoDir}/wc/collaboration");
+		ceadojo.require("collaboration.widget.Coshop");
+		ceadojo.require("collaboration.widget.CoshopUtilities");
+	}catch(err) {
+		console.log('ceadojo is missing, ', err);
+	}
+</script>
+
+<wcf:url var="homepage" value="TopCategories1">
+  <wcf:param name="langId" value="${langId}" />
+  <wcf:param name="storeId" value="${storeId}" />
+  <wcf:param name="catalogId" value="${catalogId}" />
+</wcf:url>
+
+<script type="text/javascript">
+	dojo.addOnLoad(function() {  
+	try{
+		if ( window.top._ceaCollabDialog == undefined){		
+			var url = collaboration.widget.CoshopUtilities.processURL(window.location.href);
+		    this.coshop = new collaboration.widget.Coshop({
+		        joinCollaborationURI: url,
+		        defaultCollaborationUri: url,
+		        hideSendPageButton: collaboration.widget.CoshopUtilities.hideSendPageButton,
+		        hideURLField: collaboration.widget.CoshopUtilities.hideURLField,
+		        startInFollowMeMode: collaboration.widget.CoshopUtilities.startInFollowMeMode
+		    });	     	     
+			this.coshop.isStorePreview=isStorePreview('<c:out value="${contextPathUsed}"/>', collaboration.widget.CoshopUtilities.previewContextPath);
+			this.coshop.homePageURL = '<c:out value="${homepage}"/>';
+			
+			//appending the widget to the page_shawdow node of the base store so we have a logical flow of HTML nodes, 
+			//the widget may be attached to any other node on the page. 
+			ceadojo.byId('page_shadow').appendChild(this.coshop.domNode); 			
+			if (window.location.href.indexOf("showCoshoppingDialog")>-1) {
+				this.coshop.openInvitationDialog();
+			}
+	  	} else {
+	  	
+	  		//changing the icon in dnd avatar to indicate dnd is disabled.
+	  		dojo.subscribe("/dnd/source/over", function(source) {		
+				var m = new dojo.dnd.manager();
+				if (source!=null & m.avatar !=null && m.avatar !=undefined) {
+					if(dojo.cookie('coShoppingDisableDnd')!=undefined && dojo.cookie('coShoppingDisableDnd') == 'true') {
+						dojo.addClass(m.avatar.node, 'disableDnd');
+					}
+				}		
+			});
+			
+	  		ceadojo.subscribe("/wc/collaboration/dndDisabled", window.top._ceaCollabDialog, "dndDisabled");
+	  		ceadojo.subscribe("/wc/collaboration/CategoryDisplayRefreshed",window.top._ceaCollabDialog, "disableQuickInfoButtons");
+	 		ceadojo.style(ceadojo.byId('headerCoshoppingArea'), 'display','none');//there is already a coshopping widget, hide the link	 
+	 		window.top._ceaCollabDialog.isStorePreview=isStorePreview('<c:out value="${contextPathUsed}"/>', collaboration.widget.CoshopUtilities.previewContextPath);
+	 		window.top._ceaCollabDialog.absoluteURIPath='<c:out value="${absoluteUrl}"/>';
+	  	}  	
+	 }catch(err) {
+	 	console.log("error instantiating widget, ", err);
+	 }
+	});
+</script>

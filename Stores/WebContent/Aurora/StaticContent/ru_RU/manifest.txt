@@ -1,0 +1,3 @@
+0, StaticContent/Recipe.html, Recipe.html
+1, StaticContent/Manual.html, Manual.html
+2, StaticContent/Video.html, Video.html

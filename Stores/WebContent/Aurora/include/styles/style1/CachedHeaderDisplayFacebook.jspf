@@ -1,0 +1,44 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2008, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<%-- 
+    **** Display Facebook Connect / Menu with submenu as Disconnect link on Mast Header ****  
+--%>
+
+<!-- BEGIN CachedHeaderDisplayFacebook.jspf -->
+<script type="text/javascript" src="<c:out value="${jsAssetsDir}javascript/FBintegration.js"/>?locale=<c:out value="${locale}"/>&appId=<c:out value="${facebookAppId}"/>"></script>
+<%-- the header for Social Integration area --%>
+<span id="SocialIntegrationArea">
+	<span id="header-fb-login-button-span" > 
+		<a href="javascript:void(0);" tabindex="0" onclick="javascript:fbIntegrationJS.onClickFacebookLogin();return false;"  class="h_tnav_but" id="headerFBlogin"><fmt:message key="HEADER_CONNECT_TO_FACEBOOK" bundle="${storeText}" />
+			<img class="img_align" id="WC_FacebookConnectDisconnectDisplayImg_1" src="<c:out value="${jspStoreImgDir}images/socialIntegration/facebook.png" escapeXml="false" />" alt="" /></a>
+	</span> 
+	
+	<span id="header-fb-logout-button-span" class="nodisplay" > 
+		<span id="header_menu_facebook_loaded" style="display:none;">
+			<span onMouseMove="javascript:fbIntegrationJS.openDropDown();" onMouseLeave="javascript:fbIntegrationJS.closeDropDown();" id="menu_DropDown_Facebook" class="headerMenu_DropDown_Facebook" dojoType="wc.widget.WCDropDownButton" title="<fmt:message key="FACEBOOK_DROPDOWN_ACTIVATE" bundle="${storeText}" />" alt="<fmt:message key="FACEBOOK_DROPDOWN_ACTIVATE" bundle="${storeText}" />" >
+			    <span onItemHover="javascript:fbIntegrationJS.menuItemHover();" dojoType="wc.widget.WCMenu" maxItemsPerColumn="6" forceDisplayShowAll="false" showAllText="<fmt:message key="SHOW_ALL_FACEBOOK_OPTIONS" bundle="${storeText}" />" class="dropdown" id="WC_CachedHeaderDisplayFacebook_div">
+			        <span dojoType="dijit.MenuItem" onClick="javascript:fbIntegrationJS.onClickFacebookLogout();return false;" id="WC_CachedHeaderDisplayFacebook_div_2">
+			            <span>
+							<a href="javascript:void(0);" tabindex="0" class="h_tnav_but" id="headerFBlogout"><fmt:message key="HEADER_DISCONNECT_FROM_FACEBOOK" bundle="${storeText}" />
+								<img class="img_align" id="WC_FacebookConnectDisconnectDisplayImg_2" src="<c:out value="${jspStoreImgDir}images/socialIntegration/facebook.png" escapeXml="false" />" alt="" /></a>
+			            </span>
+			        </span>
+			    </span>
+			</span>
+		</span>
+		
+	</span> 
+    <fmt:message key="DIVIDING_BAR" bundle="${storeText}" />
+</span>	
+<!-- END CachedHeaderDisplayFacebook.jspf -->
