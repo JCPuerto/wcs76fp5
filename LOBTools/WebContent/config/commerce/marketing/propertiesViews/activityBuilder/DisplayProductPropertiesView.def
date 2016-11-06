@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<Definitions>
+	<!---
+		Properties view for the {@link mktDisplayProductElementObject Recommend Catalog Entry action}.		
+	-->
+	<FlowElementProperties definitionName="mktDisplayProductProperties">
+
+		<PropertyGroup collapsable="false" name="displayproductcriteria">
+			
+			<PropertyGroup collapsable="false" name="templateNameGroup">
+				<EnablementCondition contextName="searchEnabled" enablementValue="true" conditionId="searchEnabledContextValueCondition"/>
+				<MultiValueSelector helpText="${mktMarketingResources.help_displayProductMethod}" promptText="${mktMarketingResources.displayProductMethod}" useRadioButtons="true">
+					<MultiValueSelection displayName="${mktMarketingResources.displayProductNames_specifyList}" name="specifyList">
+						<Xml name="values">
+							<recommendationMethod>specifyList</recommendationMethod>
+							<elemTemplateName significant="false">displayProduct</elemTemplateName>
+							<useUserSearchTerm significant="false">false</useUserSearchTerm>
+							<searchTermList significant="false"></searchTermList>
+						</Xml>
+					</MultiValueSelection>
+					<MultiValueSelection displayName="${mktMarketingResources.displayProductNames_keywordSearch}" name="keywordSearch">
+						<Xml name="values">
+							<recommendationMethod>keywordSearch</recommendationMethod>
+							<elemTemplateName significant="false">displayProductStandardSearch</elemTemplateName>
+							<useUserSearchTerm significant="false">false</useUserSearchTerm>
+						</Xml>
+					</MultiValueSelection>
+					<MultiValueSelection displayName="${mktMarketingResources.displayProductNames_customerKeywordSearch}" name="customerKeywordSearch">
+						<Xml name="values">
+							<recommendationMethod>customerKeywordSearch</recommendationMethod>
+							<elemTemplateName significant="false">displayProductStandardSearch</elemTemplateName>
+							<useUserSearchTerm significant="false">true</useUserSearchTerm>
+							<searchTermList significant="false"></searchTermList>
+						</Xml>
+					</MultiValueSelection>
+					<MultiValueSelection displayName="${mktMarketingResources.displayProductNames_filterSearch}" name="filterSearch">
+						<Xml name="values">
+							<recommendationMethod>filterSearch</recommendationMethod>
+							<elemTemplateName significant="false">displayProductStandardSearch</elemTemplateName>
+							<useUserSearchTerm significant="false">false</useUserSearchTerm>
+							<searchTermList significant="false"></searchTermList>
+						</Xml>
+					</MultiValueSelection>
+				</MultiValueSelector>
+			</PropertyGroup>
+						
+			<PropertyGroup collapsable="false" name="specifyListGroup">
+				<EnablementCondition conditionId="specifyList" enablementValue="specifyList" propertyName="recommendationMethod"/>
+				<PropertyChildListEditor listDefinitionName="mktProductSequenceGrid" name="prodEditor" objectTypes="ChildCatentry,ChildInheritedCatentry" promptText="${mktMarketingResources.products}" required="true" 
+				sequencePropertyName="sequence" validatorTypes="noProductsSelected"/>
+			</PropertyGroup>
+			
+			<PropertyGroup collapsable="false" name="keywordSearchGroup">
+				<EnablementCondition conditionId="keywordSearch" enablementValue="keywordSearch" propertyName="recommendationMethod"/>
+				<PropertyInputText helpText="${mktMarketingResources.help_displayProduct_searchValues}" promptText="${mktMarketingResources.searchValues}" 
+						propertyName="searchTermList" />
+			</PropertyGroup>
+			
+			<PropertyGroup collapsable="false" name="displayProductSearchGroup">
+				<EnablementCondition conditionId="displayProductStandardSearch" enablementValue="displayProductStandardSearch" propertyName="elemTemplateName"/>
+				<PropertyChildListEditor helpText="${mktMarketingResources.help_displayProduct_searchFilters}" listDefinitionName="mktSearchFiltersGrid" 
+					name="searchFilterEditor" objectTypes="mfName_ntk,partNumber_ntk,mfPartNumber_ntk,catenttype_id_ntk_cs,name,shortDescription,ChildCatalogGroup,ChildInheritedCatalogGroup" promptText="${mktMarketingResources.displayProduct_searchFilters}" 
+					required="false" sequencePropertyName="sequence" validatorTypes="noFiltersSelected"/>	
+				 
+				<PropertyStepper helpText="${mktMarketingResources.help_displayProduct_displayMax}" minimumValue="1" maximumValue="5" promptText="${mktMarketingResources.displayProduct_displayMax}" propertyName="displayMax"/>				
+				<PropertyChildListEditor helpText="${mktMarketingResources.help_orderSearchResult_orderBy}" listDefinitionName="mktOrderByGrid" 
+				name="orderByEditor" objectTypes="searchActionOrderBy" promptText="${mktMarketingResources.displayProduct_orderBy}" required="false"
+				sequencePropertyName="sequence" validatorTypes="sortCriteriaUniquenessValidator, noSortCriteriaSpecified"/>
+			</PropertyGroup>
+		</PropertyGroup>
+
+	</FlowElementProperties>
+</Definitions>

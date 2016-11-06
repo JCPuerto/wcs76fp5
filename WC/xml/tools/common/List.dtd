@@ -1,0 +1,73 @@
+<!--
+ *===================================================================
+ * Licensed Materials - Property of IBM 
+ *
+ * WebSphere Commerce
+ *
+ * (c) Copyright International Business Machines Corporation. 2003
+ *     All rights reserved.
+ *
+ * US Government Users Restricted Rights - Use, duplication or
+ * disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+ *===================================================================
+-->
+
+<!ELEMENT action ( parameter?, (scrollcontrol*, controlpanel*, button*, view*, jsFile*)* ) >
+<!ATTLIST action
+          resourceBundle          CDATA          #REQUIRED
+          formName                CDATA          #IMPLIED
+          helpKey                 CDATA          #IMPLIED
+          beanClass               CDATA          #IMPLIED
+          charOnRight             CDATA          #IMPLIED
+          strSize                 CDATA          #IMPLIED
+>
+
+<!ELEMENT parameter EMPTY>
+<!ATTLIST parameter
+          listsize                CDATA          #REQUIRED
+          startindex              CDATA          #REQUIRED
+          resultsize              CDATA          #IMPLIED
+          resultssize             CDATA          #IMPLIED
+          endindex                CDATA          #IMPLIED
+          orderby                 CDATA          #IMPLIED
+          itemName                CDATA          #IMPLIED
+          ActionXMLFile           CDATA          #IMPLIED
+          XMLFile                 CDATA          #IMPLIED
+          context                 CDATA          #IMPLIED
+          contextConfigXML        CDATA          #IMPLIED
+          view                    CDATA          #IMPLIED
+>
+
+<!ELEMENT scrollcontrol EMPTY>
+<!ATTLIST scrollcontrol
+          title                   CDATA          #IMPLIED
+          display                 (true | false) #REQUIRED
+>
+
+<!ELEMENT controlpanel EMPTY>
+<!ATTLIST controlpanel
+          display                 (true | false) #REQUIRED
+>
+
+<!ELEMENT button (menu+)>
+
+<!ELEMENT menu EMPTY>
+<!ATTLIST menu
+          name                    CDATA          #REQUIRED
+          action                  CDATA          #REQUIRED
+          users                   CDATA          #IMPLIED
+          selection               CDATA          #IMPLIED
+          component               CDATA          #IMPLIED
+>
+
+<!ELEMENT view EMPTY>
+<!ATTLIST view
+          name                    CDATA          #REQUIRED
+          action                  CDATA          #REQUIRED
+>
+
+<!ELEMENT jsFile EMPTY>
+<!ATTLIST jsFile
+          src                     CDATA          #IMPLIED
+>
+

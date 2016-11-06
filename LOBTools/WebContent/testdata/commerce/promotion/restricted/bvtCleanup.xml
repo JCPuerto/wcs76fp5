@@ -1,0 +1,56 @@
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2009 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+
+
+<testcase>
+	<!-- Open Promotion tool -->
+	<action name="wcfAutoOpenToolAction">
+		<param name="toolId" value="promotionManagement"/>
+	</action>
+	
+	<!-- Select store -->
+	<action name="wcfAutoSelectStoreAction">
+		<param name="storeKey" value="promotionBVTStoreIdentifier"/>
+	</action>
+	
+	<!-- Clean up the data created for Promotion BVT -->
+	<!-- Find the saved new promotion object -->
+	<action name="wcfAutoFindObjectAction">
+		<param name="searchType" value="FindPromotions"/>
+		<param name="searchKey" value="bvt_promotion_name"/>
+		<param name="objectKey" value="promotion"/>
+	</action>
+	<!-- To Deactivate the promotion -->
+	<action name="wcfAutoRunCustomServiceAction">
+		<param name="object" value="promotion"/>
+		<param name="url" value="/cmc/DeactivatePromotion"/>
+	</action>
+	
+	<!-- Delete the created promotion -->
+	<action name="wcfAutoDeleteObjectAction">
+		<param name="object" value="promotion"/>
+	</action>
+	
+	<!-- Find the deleted promotion object -->
+	<action name="wcfAutoFindObjectAction">
+		<param name="searchType" value="FindPromotions"/>
+		<param name="searchKey" value="bvt_promotion_name"/>
+		<param name="objectKey" value="deletedPromotion"/>
+	</action>
+	
+	<!-- Verify that the promotion was *not* found -->
+	<action name="wcfAutoVerifyNoObjectAction">
+		<param name="object" value="deletedPromotion"/>
+	</action>
+</testcase>

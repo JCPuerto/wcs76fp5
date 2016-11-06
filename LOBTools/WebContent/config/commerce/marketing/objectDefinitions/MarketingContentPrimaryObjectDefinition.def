@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<Definitions>
+	<PrimaryObjectDefinition creatable="false" definitionName="mktBaseMarketingContentPrimaryObjectDefinition" displayName="${mktMarketingResources.content}" displayNameProperty="name" headerIcon="contentHeaderIcon" helpLink="tasks/tsbmccreate.htm" icon="contentIcon" idProperty="uniqueId" isBaseDefinition="true" newDisplayName="${mktMarketingResources.contentNew}" newObjectMenuItemText="${mktMarketingResources.contextMenuNewContent}" objectGroups="MarketingContentGroup" propertiesDefinitionName="mktMarketingContentProperties" searchType="FindMarketingContent" writeUsage="IBM_ManageMarketingTool">
+
+		<RefreshService url="/cmc/GetMarketingContentById">
+			<ServiceParam name="storeId"/>
+			<ServiceParam name="uniqueIDs" propertyName="uniqueId"/>
+		</RefreshService>
+		<!--- Retrieves the child Product, Item and Category objects for URL generation and {@link mktMarketingContentAttachmentReferenceObjectDefinition attachment objects}. -->
+		<GetChildrenService url="/cmc/GetMarketingContentChildren">
+			<ServiceParam name="storeId"/>
+			<ServiceParam name="uniqueIDs" propertyName="uniqueId"/>
+			<ServiceParam name="masterCatalogId"/>
+		</GetChildrenService>
+		<UpdateService url="/cmc/SaveMarketingContent">
+			<ServiceParam name="storeId" parameterName="storeId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="MarketingContent" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="storeId2" parameterName="storeId" propertyName="objectStoreId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="InheritedMarketingContent" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="uniqueId" propertyName="uniqueId"/>
+		</UpdateService>
+		<DeleteService url="/cmc/DeleteMarketingContent">
+			<ServiceParam name="storeId" parameterName="storeId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="MarketingContent" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="storeId2" parameterName="storeId" propertyName="objectStoreId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="InheritedMarketingContent" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="uniqueId" propertyName="uniqueId"/>
+		</DeleteService>
+		<!--- Retrieves the child {@link mktMarketingContentDescription} objects. -->
+		<GetChildrenService objectTypes="MarketingContentDescription" url="/cmc/GetMarketingContentDescriptions">
+			<ServiceParam name="storeId"/>
+			<ServiceParam name="uniqueId" propertyName="uniqueId"/>
+		</GetChildrenService>
+
+		<Xml name="template">
+			<format>File</format>
+			<behavior>0</behavior>
+		</Xml>
+
+		<ChildObjectDefinition baseDefinitionName="mktMarketingContentDescription"/>
+
+		<PreviewFileClientAction displayName="${mktMarketingResources.preview}" externalObjectTypes="AttachmentAssetWithURLType" fileTypeValues="File" filenamePropertyName="fileName" formatPropertyName="format" languageIdsPropertyName="assetLanguageIds" objectPath="ChildAttachment/AttachmentGroup/AttachmentAssetGroup" pathPropertyName="path" textObjectPath="MarketingContentDescription" textPropertyName="text" toolbarIcon="PreviewListToolbarIcon"/>
+
+		<PropertyDefinition displayName="${mktMarketingResources.objectName}" maximumSize="30" propertyName="name" required="true" trim="true"/>
+		<PropertyDefinition propertyName="format">
+			<PropertyValue displayName="${mktMarketingResources.formatFile}" value="File"/>
+			<PropertyValue displayName="${mktMarketingResources.formatText}" value="Text"/>
+			<PropertyValue displayName="${mktMarketingResources.formatSMS}" value="Sms"/>
+		</PropertyDefinition>
+		<PropertyDefinition displayName="${mktMarketingResources.url}" propertyName="url" trim="true"/>
+
+		<PropertyDefinition propertyName="behavior">
+			<PropertyValue displayName="${mktMarketingResources.contentBehaviorStatic}" value="0"/>
+			<PropertyValue displayName="${mktMarketingResources.contentBehaviorDynamic}" value="1"/>
+		</PropertyDefinition>
+		
+		<!-- attachment objects -->
+		<ReferenceObjectDefinition baseDefinitionName="mktMarketingContentAttachmentReferenceObjectDefinition" objectType="InheritedAttachmentReference" referencedType="InheritedAttachment"/>
+		
+		<!-- catalog objects for URL generation -->
+		<ReferenceObjectDefinition allowDuplicates="false" derivedId="true" idProperty="childCatentryId" objectGroups="CatalogProducts" objectType="ChildInheritedProducts" referencedTypes="InheritedProduct,InheritedBundle,InheritedCatalogGroupSKU,InheritedProductSKU,InheritedKit"/>
+		<ReferenceObjectDefinition allowDuplicates="false" derivedId="true" idProperty="childCatentryId" objectGroups="CatalogItems" objectType="ChildInheritedItems" referencedTypes="InheritedCatalogGroupSKU,InheritedProductSKU,InheritedKit"/>
+		<ReferenceObjectDefinition allowDuplicates="false" derivedId="true" idProperty="childCatalogGroupId" objectGroups="CatalogGroups" objectType="ChildInheritedCatalogGroup" referencedTypes="InheritedCatalogGroup,InheritedSalesCatalogGroup"/>		
+		
+		<MarketingContentValidator package="mkt" validatorId="contentValidator"/>
+	</PrimaryObjectDefinition>
+
+	<ChildObjectDefinition definitionName="mktMarketingContentDescription" displayName="" idProperty="languageId" languageSensitive="true" objectType="MarketingContentDescription" releaseWhenClosed="false">
+
+		<CreateService url="/cmc/CreateMarketingContentDescription">
+			<ServiceParam name="storeId" parameterName="storeId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="MarketingContent" parentProperty="true" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="storeId2" parameterName="storeId"  parentProperty="true" propertyName="objectStoreId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="InheritedMarketingContent" parentProperty="true" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="uniqueId" parentProperty="true" propertyName="uniqueId"/>
+			<ServiceParam name="languageId" propertyName="languageId"/>
+			<ServiceParam name="format" parentProperty="true" propertyName="format"/>
+		</CreateService>
+		<UpdateService url="/cmc/SaveMarketingContentDescription">
+			<ServiceParam name="storeId" parameterName="storeId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="MarketingContent" parentProperty="true" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="storeId2" parameterName="storeId" parentProperty="true"  propertyName="objectStoreId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="InheritedMarketingContent" parentProperty="true" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="uniqueId" parentProperty="true" propertyName="uniqueId"/>
+			<ServiceParam name="languageId" propertyName="languageId"/>
+			<ServiceParam name="format" parentProperty="true" propertyName="format"/>
+		</UpdateService>
+		
+		<PropertyDefinition displayName="${mktMarketingResources.contentDescriptionText}" propertyName="text">
+			<RequiredPropertyValidator validatorId="contentRequiredPropertyValidator">
+				<EnablementOrCondition conditionId="condition1">
+					<EnablementCondition conditionId="condition11" enablementValue="Sms" parentProperty="true" propertyName="format"/>
+					<EnablementCondition conditionId="condition12" enablementValue="Text" parentProperty="true" propertyName="format"/>
+				</EnablementOrCondition>
+			</RequiredPropertyValidator>
+			
+			<PropertySizeValidator maximumSize="160" validatorId="contentPropertySizeValidatorSMS">
+				<EnablementCondition conditionId="condition2" enablementValue="Sms" parentProperty="true" propertyName="format"/>
+			</PropertySizeValidator>
+			
+		</PropertyDefinition>
+	</ChildObjectDefinition>
+	<PrimaryObjectDefinition baseDefinitionName="mktBaseMarketingContentPrimaryObjectDefinition" creatable="true" definitionName="MarketingContent" objectType="MarketingContent">
+		<CreateService url="/cmc/CreateMarketingContent">
+			<ServiceParam name="storeId"/>
+		</CreateService>
+		
+		<!-- attachment objects -->
+		<ReferenceObjectDefinition baseDefinitionName="mktMarketingContentAttachmentReferenceObjectDefinition" objectType="AttachmentReference" referencedType="Attachment"/>
+		
+		<!-- catalog objects for URL generation -->
+		<ReferenceObjectDefinition allowDuplicates="false" derivedId="true" idProperty="childCatentryId" objectGroups="CatalogProducts" objectType="ChildProducts" referencedTypes="Product,Bundle,CatalogGroupSKU,ProductSKU,Kit"/>
+		<ReferenceObjectDefinition allowDuplicates="false" derivedId="true" idProperty="childCatentryId" objectGroups="CatalogItems" objectType="ChildItems" referencedTypes="CatalogGroupSKU,ProductSKU,Kit"/>
+		<ReferenceObjectDefinition allowDuplicates="false" derivedId="true" idProperty="childCatalogGroupId" objectGroups="CatalogGroups" objectType="ChildCatalogGroup" referencedTypes="CatalogGroup,SalesCatalogGroup"/>
+	</PrimaryObjectDefinition>
+	<PrimaryObjectDefinition baseDefinitionName="mktBaseMarketingContentPrimaryObjectDefinition" compatibleObjectTypes="MarketingContent" creatable="false" definitionName="InheritedMarketingContent" headerIcon="contentInheritedHeaderIcon" icon="contentInheritedIcon" objectType="InheritedMarketingContent">
+	</PrimaryObjectDefinition>
+	
+	<ReferenceObjectDefinition allowDuplicates="false" definitionName="mktMarketingContentAttachmentReferenceObjectDefinition" idProperty="attachmentRefId" objectGroups="ChildAttachment" objectType="AttachmentReference" referencedType="Attachment">
+
+		<CreateService url="/cmc/CreateMarketingContentAttachment">
+			<ServiceParam name="storeId" parameterName="storeId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="MarketingContent" parentProperty="true" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="storeId2" parameterName="storeId" parentProperty="true" propertyName="objectStoreId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="InheritedMarketingContent" parentProperty="true" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="uniqueId" parentProperty="true" propertyName="uniqueId"/>
+			<ServiceParam name="attachmentId" objectPath="AttachmentGroup" propertyName="attachmentId"/>
+		</CreateService>
+		<DeleteService url="/cmc/DeleteMarketingContentAttachment">
+			<ServiceParam name="storeId" parameterName="storeId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="MarketingContent" parentProperty="true" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="storeId2" parameterName="storeId" parentProperty="true" propertyName="objectStoreId">
+				<EnablementCondition checkObjectDefinition="true" conditionId="contentCondition" enablementValue="InheritedMarketingContent" parentProperty="true" propertyName="objectType"/>
+			</ServiceParam>
+			<ServiceParam name="uniqueId" parentProperty="true" propertyName="uniqueId"/>
+			<ServiceParam name="attachmentRefId" propertyName="attachmentRefId"/>
+			<ServiceParam name="attachmentId" objectPath="AttachmentGroup" propertyName="attachmentId"/>
+		</DeleteService>
+	</ReferenceObjectDefinition>
+</Definitions>

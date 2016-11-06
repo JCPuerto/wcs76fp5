@@ -1,0 +1,57 @@
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2007, 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<library>
+	<!---
+		This summary view provides brief information about the {@link mktReplaceOrAddSearchCriteriaElementObject} flow element.
+		It is shown beneath the element on the Activity Builder flow diagram and to generate the text, it looks at the
+		following property names of the {@link mktReplaceOrAddSearchCriteriaElementObject} object:
+		<ul>
+			<li>searchTermList</li>
+			<li>searchActionFilter/filterName</li>
+		</ul>
+	-->
+	<class name="mktReplaceOrAddSearchCriteriaSummary" extends="wcfFlowElementSummary">
+		<wcfFlowSummaryParam name="searchTermList" propertyName="searchTermList"/>
+		<wcfFlowSummaryParam name="filterName" objectPath="filterGroup" propertyName="displayName" checkObjectDefinition="true" forceResolveAll="true"/>
+		
+		<!--- @keywords private -->
+		<handler name="oninit">
+			<![CDATA[
+			this.updateSummaryDel.register(mktMarketingResources.addOrReplaceSearchCriteria_replaceKeyword, "onstring");
+			this.updateSummaryDel.register(mktMarketingResources.addOrReplaceSearchCriteria_filter, "onstring");
+			]]>
+		</handler>
+
+		<!---
+			Sets the summary text for the {@link mktReplaceOrAddSearchCriteriaElementObject} flow element. Classes overriding
+			this method must call <code>setSummaryText</code> with the desired summary text.
+		-->
+		<method name="updateSummary" args="e=null">
+			<![CDATA[
+				var summaryText = "";
+
+				var searchKeyword = this.resolvedParams["searchTermList"];
+				if ( searchKeyword != null && searchKeyword != "" ) {
+					summaryText = mktMarketingResources.replaceValues("addOrReplaceSearchCriteria_replaceKeyword", [searchKeyword]);
+				}
+
+				var filterNames = this.getValuesList("filterName");
+				if ( filterNames != "" ){
+					summaryText = mktMarketingResources.replaceValues("addOrReplaceSearchCriteria_filter", [filterNames]);
+				}
+				this.setSummaryText(summaryText);
+			]]>
+		</method>
+	</class>
+</library>

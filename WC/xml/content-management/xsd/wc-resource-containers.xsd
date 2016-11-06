@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--********************************************************************-->
+<!--  Licensed Materials - Property of IBM                              -->
+<!--                                                                    -->
+<!--  WebSphere Commerce                                                -->
+<!--                                                                    -->
+<!--  (c) Copyright IBM Corp. 2006                                      -->
+<!--                                                                    -->
+<!--  US Government Users Restricted Rights - Use, duplication or       -->
+<!--  disclosure restricted by GSA ADP Schedule Contract with IBM Corp. -->
+<!--                                                                    -->
+<!--********************************************************************-->
+
+<schema targetNamespace="http://www.ibm.com/xmlns/prod/WebSphereCommerce"
+			xmlns="http://www.w3.org/2001/XMLSchema"
+			xmlns:wc="http://www.ibm.com/xmlns/prod/WebSphereCommerce">
+    <element name="ContentManagement">
+        <complexType>
+            <sequence>
+                <element ref="wc:DefaultConfiguration" minOccurs="0" maxOccurs="1"/>
+                <element ref="wc:ResourceContainers" minOccurs="0" maxOccurs="1"/>
+                <element ref="wc:QuickPublishConfiguration" minOccurs="1" maxOccurs="1" />
+            </sequence>
+        </complexType>
+    </element>
+    <element name="DefaultConfiguration">
+        <complexType>
+            <attribute name="enableDynamicWorkspaceCreation"
+                type="string" use="optional"/>
+            <attribute name="lockingPolicy" type="string" use="optional"/>
+            <attribute name="readPrefixName" type="string" use="optional"/>
+            <attribute name="writePrefixName" type="string" use="optional"/>
+        </complexType>
+    </element>
+    <element name="ResourceContainer">
+        <complexType>
+            <attribute name="className" type="string" use="required"/>
+            <attribute name="id" use="required" type="string">
+            	</attribute>
+            <attribute name="name" type="string" use="required"/>
+            <attribute name="configurationFile" type="string" use="required"/>
+            <attribute name="lockingPolicy" type="string" use="optional"/>
+        </complexType>
+    </element>
+    <element name="ResourceContainers">
+        <complexType>
+            <sequence>
+                <element maxOccurs="unbounded" minOccurs="1" ref="wc:ResourceContainer"/>
+            </sequence>
+        </complexType>
+    </element>
+    
+    <element name="QuickPublishConfiguration">
+    	<complexType>
+    		<all>
+    			<element ref="wc:Publisher" />
+    		</all>
+    	</complexType>
+    </element>
+    <element name="Publisher">
+    	<complexType>
+    		<attribute name="className" type="string" use="required"/>
+    		<attribute name="initParameters" type="string" use="optional"/>
+    	</complexType>
+    </element>
+</schema>

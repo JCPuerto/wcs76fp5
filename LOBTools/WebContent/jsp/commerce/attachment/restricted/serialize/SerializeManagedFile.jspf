@@ -1,0 +1,32 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2007, 2008 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+<c:set var="objectType" value="ManagedFile" /> 
+<c:set var="owningStoreId" value="${managedFile.managedFileIdentifier.externalIdentifier.storeIdentifier.uniqueID}" />
+<c:if test="${(param.storeId) != owningStoreId}">
+	<c:set var="objectType" value="InheritedManagedFile" /> 
+</c:if> 
+<c:set var="managedFileBean" value="${managedFile}" scope="request"/>
+<jsp:useBean id="managedFileBean" type="com.ibm.commerce.content.facade.datatypes.impl.ManagedFileTypeImpl" scope="request"/>
+<object objectType="${objectType}" moveable="false">
+		 <managedFileId><wcf:cdata data="${managedFile.managedFileIdentifier.uniqueID}"/></managedFileId>
+		 <objectStoreId><wcf:cdata data="${managedFile.managedFileIdentifier.externalIdentifier.storeIdentifier.uniqueID}"/></objectStoreId>
+		 <fileName readonly="true"><wcf:cdata data="${managedFile.managedFileIdentifier.externalIdentifier.fileName}"/></fileName>
+		 <path><wcf:cdata data="${managedFile.managedFileIdentifier.externalIdentifier.filePath}"/></path>
+		 <fullPath readonly="true"><wcf:cdata data="${managedFile.managedFileIdentifier.externalIdentifier.filePath}/${managedFile.managedFileIdentifier.externalIdentifier.fileName}"/></fullPath>
+		 <fileSize readonly="true"><wcf:cdata data="${managedFile.fileSize}"/></fileSize>
+		 <mimeType readonly="true"><wcf:cdata data="<%=com.ibm.commerce.server.MimeUtils.getContentTypeFromFilename(managedFileBean.getManagedFileIdentifier().getExternalIdentifier().getFileName())%>"/></mimeType>
+		 <c:set var="showVerb" value="${showVerb}" scope="request"/>
+		 <c:set var="businessObject" value="${managedFile}" scope="request"/>
+		 <jsp:include page="/cmc/SerializeChangeControlMetaData" />
+ </object>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2011, 2012 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<Definitions>
+	<!---
+		This search is used to find {@link TopCatalogGroupPage}, {@link CatalogGroupPage}, {@link InheritedTopCatalogGroupPage} and {@link InheritedCatalogGroupPage}. The search retrieves objects that match the search term. The search term text is compared with the values of the following properties:
+			<ul>
+			<li>name
+			</ul>
+	 -->
+	<SearchDefinition advancedSearchContentClass="catCategoriesAdvancedSearchContent" definitionName="FindCategoryPages"
+		displayName="${pglPageLayoutResources.findCategoryPagesSearchDefinition_DisplayName}"
+		icon="storePageIcon"
+		listDefinitionName="pglCategoryPageSearchGrid"
+		listTitle="${catalogResources.categorySearchTitle}"
+		searchType="FindCategoryPages"
+		tooltip="${pglPageLayoutResources.searchCategoryPagesTooltip}"
+		utilitiesListDefinitionName="pglCategoryUtilitiesSearchGrid"
+		objectTypeDisplayName="${catalogResources.category_DisplayName}"
+		helpLink="tasks/tpn_topcategories.htm">
+			<SearchService name="findAllCategories" url="/cmc/FindAllCategoryPages">
+				<ServiceParam name="storeId"/>
+				<ServiceParam name="assetStoreId"/>
+				<ServiceParam name="masterCatalogId"/>
+				<ServiceParam name="masterCatalogIdentifier"/>
+				<ServiceParam name="masterCatalogStoreId"/>			
+			</SearchService>
+	</SearchDefinition>
+</Definitions>

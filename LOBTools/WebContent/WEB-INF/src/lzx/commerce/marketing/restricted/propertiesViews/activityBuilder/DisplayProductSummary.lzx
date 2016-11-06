@@ -1,0 +1,99 @@
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2007, 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<library>
+	<!---
+		This summary view provides brief information about the {@link mktDisplayProductElementObject} flow element.
+		It is shown beneath the element on the Activity Builder flow diagram and to generate the text, it looks at the
+		following property names of the {@link mktDisplayProductElementObject} object:
+		<ul>
+			<li>ChildCatentry/CatalogEntry/CatalogEntryDescription[name]</li>
+			<li>elemTemplateName</li>
+			<li>searchTermList</li>
+			<li>useUserSearchTerm</li>
+			<li>searchActionFilter/filterName</li>
+			<li>displayMax</li>
+			<li>searchActionOrderBy/orderByField</li>
+		</ul>
+	-->
+	<class name="mktDisplayProductSummary" extends="wcfFlowElementSummary">
+		<wcfFlowSummaryParam name="productNames" objectPath="ChildCatentry/CatalogEntry/CatalogEntryDescription" propertyName="name"/>
+		<wcfFlowSummaryParam name="elemTemplateName" propertyName="elemTemplateName"/>
+		<wcfFlowSummaryParam name="searchTermList" propertyName="searchTermList"/>
+		<wcfFlowSummaryParam name="useUserSearchTerm" propertyName="useUserSearchTerm"/>
+		<wcfFlowSummaryParam name="displayMax" propertyName="displayMax"/>
+		<wcfFlowSummaryParam name="orderByField" objectPath="searchActionOrderBy" propertyName="orderByField" resolveDisplayName="true"/>
+		<wcfFlowSummaryParam name="filterName" objectPath="filterGroup" propertyName="displayName" checkObjectDefinition="true" forceResolveAll="true"/>
+
+		<!--- @keywords private -->
+		<handler name="oninit">
+			<![CDATA[
+			this.updateSummaryDel.register(mktMarketingResources.summarydisplayProduct_displayMax, "onstring");
+			this.updateSummaryDel.register(mktMarketingResources.summarydisplayProduct_searchTerm, "onstring");
+			this.updateSummaryDel.register(mktMarketingResources.summarydisplayProduct_shopperSearchTerm, "onstring");
+			this.updateSummaryDel.register(mktMarketingResources.summarydisplayProduct_filterBy, "onstring");
+			this.updateSummaryDel.register(mktMarketingResources.summarydisplayProduct_sortBy, "onstring");
+			]]>
+		</handler>
+
+		<!---
+			Sets the summary text for the {@link mktDisplayProductElementObject} flow element. Classes overriding
+			this method must call <code>setSummaryText</code> with the desired summary text.
+		-->
+		<method name="updateSummary" args="e=null">
+			<![CDATA[
+				var summaryText = "";
+				var products = this.getValuesList("productNames");
+				var choice = this.resolvedParams["elemTemplateName"];
+				if(products != "" && choice == "displayProduct") {
+					products = wcfStringUtil.escapeText(products);
+					summaryText += products;
+				}
+				else {
+					if ( choice == "displayProductStandardSearch") {
+						var maxDisplay = this.resolvedParams["displayMax"];
+						if(maxDisplay  != null && maxDisplay != "") {
+							var summaryMaxDisplay = mktMarketingResources.replaceValues("summarydisplayProduct_displayMax", [maxDisplay]);
+							summaryText += summaryMaxDisplay;
+						}
+
+						var useShopperKeyword = this.resolvedParams["useUserSearchTerm"];
+						if(useShopperKeyword == "true") {
+							var shopperKeywordText = mktMarketingResources.summarydisplayProduct_shopperSearchTerm.string;
+							summaryText += "\n" + shopperKeywordText;
+						}
+						
+						var searchKeyword = this.resolvedParams["searchTermList"];
+						if ( useShopperKeyword == "false" && searchKeyword != null && searchKeyword != "" ) {
+							var summaryKeyword = mktMarketingResources.replaceValues("summarydisplayProduct_searchTerm", [searchKeyword]);
+							summaryText += "\n" + summaryKeyword;
+						}
+
+						var filterNames = this.getValuesList("filterName");
+						if ( filterNames != "" ){
+							var summaryFilter = mktMarketingResources.replaceValues("summarydisplayProduct_filterBy", [filterNames]);
+							summaryText += "\n" + summaryFilter;
+						}
+
+						var orderByFields = this.getValuesList("orderByField");
+						if ( orderByFields != "" ){
+							var summarySort = mktMarketingResources.replaceValues("summarydisplayProduct_sortBy", [orderByFields]);
+							summaryText += "\n" + summarySort;
+						}
+					}
+				}
+				this.setSummaryText(summaryText);
+			]]>
+		</method>
+	</class>
+</library>

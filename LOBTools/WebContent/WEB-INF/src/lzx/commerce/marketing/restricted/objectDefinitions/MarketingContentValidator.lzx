@@ -1,0 +1,61 @@
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2007, 2009 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<library>
+	<!---
+		Validator for {@link mktMarketingContentPrimaryObjectDefinition Marketing Content}. This ensures that at
+		least an {@link attAttachmentPrimaryObjectDefinition Attachment} is selected when the Marketing Content is of "File" type.
+		It also calls the {@link mktMarketingContentDescriptionValidator Marketing Content Description validator} on each 
+		{@link mktMarketingContentDescription Marketing Content Description} object.
+	-->
+	<class name="mktMarketingContentValidator" extends="wcfValidator">
+		<!--- Warning message to show when an attachment is missing. -->
+		<attribute name="attachmentRequiredErrorMessage" value="${mktMarketingResources.attachmentRequired.string}" type="string"/>
+		<!--- Object group of the ChildAttachment objects -->
+		<attribute name="attachmentObjectGroup" value="ChildAttachment" type="string"/>
+		<!--- Property name containing the Marketing Content format value -->
+		<attribute name="formatPropertyName" value="format" type="string"/>
+		<!--- Object type of the Marketing Content Description objects -->
+		<attribute name="contentDescriptionObjectType" value="MarketingContentDescription" type="string"/>
+
+		<!--- @keywords private -->		
+		<method name="validate" args="o, property=null">
+			<![CDATA[
+			if(!o){
+				return; // nothing to validate
+			}
+			
+			var selectedFormat = o.getPropertyValue(this.formatPropertyName);
+			var childAttachments = o.getObjects(this.attachmentObjectGroup);
+			var childContentDescriptions = o.getObjects(this.contentDescriptionObjectType);
+			
+			o.clearValidationError(this);
+			
+			if ((selectedFormat == "File") && (childAttachments.length != 1)){
+				o.addValidationError(this, this.attachmentRequiredErrorMessage);
+			}
+			else if (selectedFormat != "File") {
+				for (var i = 0; i < childAttachments.length; i++) {
+					childAttachments[i].deleteObject();
+				}
+			}
+									
+			for (var i = 0; i < childContentDescriptions.length; i++){
+				childContentDescriptions[i].validate();	
+			}
+			
+			]]>
+		</method>
+	</class>
+	
+</library>

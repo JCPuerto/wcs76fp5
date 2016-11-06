@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010, 2012 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<Definitions>
+	<BusinessObjectEditor browseUtilityFilterTypes="MasterCatalog,MasterCategories,SalesCategories,AttributeDictionary,AttributeDictionaryAttributes,All" definitionName="proPromotionManagement" displayName="${shellResourceBundle.promotionManagementDisplayName}" explorerFilterTypes="All" gettingStartedPageClass="wcfPromotionGettingStartedPage" helpLink="concepts/cprpromotools.htm">
+		<ObjectTypeFilter baseDefinitionName="catMasterCatalogFilter"/>
+		<ObjectTypeFilter baseDefinitionName="catMasterCatalogGroupsFilter"/>
+		<ObjectTypeFilter baseDefinitionName="catSalesCatalogGroupsAllowStorefrontAssetStoreFilter"/>
+		<ObjectTypeFilter baseDefinitionName="catAttributeDictionaryFilter"/>
+		<ObjectTypeFilter baseDefinitionName="catAttributeDictionaryAttributesFilter"/>
+		<ObjectTypeFilter displayName="${promotionResources.promotionObjectName}" filterType="All" isDefault="true" objectTypes="AllPromotionsTop,AllPromotionCodeImportsTop,AllPromotionCodeExportsTop, AllPromotionFoldersTop,PromotionFolder,InheritedPromotionFolder,PromotionFolderReference,InheritedPromotionFolderReference"/>
+							
+		<TopObjectDefinition baseDefinitionName="proPromotionTopObjectDefinition"/>
+		<OrganizationalObjectDefinition baseDefinitionName="AllPromotionsTop"/>
+		<OrganizationalObjectDefinition baseDefinitionName="AllPromotionCodeImportsTop"/>
+		<OrganizationalObjectDefinition baseDefinitionName="AllPromotionFoldersTop"/>
+		<OrganizationalObjectDefinition baseDefinitionName="AllPromotionCodeExportsTop"/>
+		
+		<PrimaryObjectDefinition baseDefinitionName="Promotion"/>
+		<PrimaryObjectDefinition baseDefinitionName="InheritedPromotion"/>		
+		<PrimaryObjectDefinition baseDefinitionName="PromotionCodeImport"/>
+		<PrimaryObjectDefinition baseDefinitionName="PromotionFolder"/>
+		<PrimaryObjectDefinition baseDefinitionName="InheritedPromotionFolder"/>
+		<PrimaryObjectDefinition baseDefinitionName="PromotionCodeExport"/>
+		<PrimaryObjectDefinition baseDefinitionName="InheritedPromotionCodeExport"/>
+		
+		<SearchDefinition baseDefinitionName="FindPromotions" isDefault="true"/>
+		<SearchDefinition baseDefinitionName="FindPromotionCodeImports"/>
+		<SearchDefinition baseDefinitionName="FindPromotionCodeExports"/>
+	</BusinessObjectEditor>
+</Definitions>

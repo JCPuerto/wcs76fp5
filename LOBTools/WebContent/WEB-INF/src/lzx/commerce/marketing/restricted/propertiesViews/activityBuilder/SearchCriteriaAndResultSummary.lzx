@@ -1,0 +1,79 @@
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<library>
+	<!---
+		This summary view provides brief information about the {@link mktSearchCriteriaAndResultElementObject} flow element.
+	-->
+	<class name="mktSearchCriteriaAndResultSummary" extends="wcfFlowElementSummary">
+		<wcfFlowSummaryParam name="elemTemplateName" propertyName="elemTemplateName"/>
+		<wcfFlowSummaryParam name="included" propertyName="included"/>
+		<wcfFlowSummaryParam name="productNames" objectPath="ChildCatentryGroup/CatalogEntry/CatalogEntryDescription" propertyName="name"/>
+		<wcfFlowSummaryParam name="filterName" objectPath="filterGroup" propertyName="displayName" checkObjectDefinition="true" forceResolveAll="true"/>
+
+		<!--- @keywords private -->
+		<handler name="oninit">
+			<![CDATA[
+
+			this.updateSummaryDel.register(mktMarketingResources.summaryViewSearchAnyCriteria, "onstring");
+			this.updateSummaryDel.register(mktMarketingResources.summaryViewSearchNotAnyCriteria, "onstring");
+			this.updateSummaryDel.register(mktMarketingResources.summaryViewSearchAnyProducts, "onstring");
+			this.updateSummaryDel.register(mktMarketingResources.summaryViewSearchNotAnyProducts, "onstring");
+			]]>
+		</handler>
+
+		<method name="updateSummary" args="e=null">
+			<![CDATA[
+				var summaryText = "";
+				summaryText = this.getSearchSummary();
+				this.setSummaryText(summaryText);
+			]]>
+		</method>
+		
+		<!--- @keywords private -->
+		<method name="getSearchSummary">
+			<![CDATA[
+				var summary = "";
+				var included = this.resolvedParams["included"];
+				var elemTemplateName = this.resolvedParams["elemTemplateName"];
+				
+				if((elemTemplateName != null) && (elemTemplateName == "searchCriteria")) {
+					var filterNames = this.getValuesList("filterName");
+					if (filterNames != null && filterNames.length > 0 ){
+						if(included == "true") {
+							summary = mktMarketingResources.replaceValues("summaryViewSearchAnyCriteria", [filterNames]);
+						}
+						else {
+							summary = mktMarketingResources.replaceValues("summaryViewSearchNotAnyCriteria", [filterNames]);
+						}
+					}
+				}
+				else {
+					var productText = this.getValuesList("productNames");
+					if((elemTemplateName != null) && (elemTemplateName == "searchResult") && (productText != "")) {
+						if(included == "true") {
+							summary = mktMarketingResources.replaceValues("summaryViewSearchAnyProducts", [productText]);
+						}
+						else {
+							summary = mktMarketingResources.replaceValues("summaryViewSearchNotAnyProducts", [productText]);
+						}
+					}
+				}
+			
+
+				return summary;
+			]]>
+		</method>
+	</class>
+
+</library>

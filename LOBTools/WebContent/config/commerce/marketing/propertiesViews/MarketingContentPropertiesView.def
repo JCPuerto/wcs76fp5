@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010, 2011 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+-->
+<Definitions>
+	<ObjectProperties definitionName="mktMarketingContentProperties">
+		<PropertyPane name="pane">
+			<PropertyGroup baseDefinitionName="wcfPropertyAssetInformationGroup" name="assetGroup"/>
+			<PropertyGroup groupTitle="${mktMarketingResources.contentProperties}" hideHeaderWhenOnlyGroup="true" name="group1" open="true">
+				<PropertyInputText helpText="${mktMarketingResources.help_content_name}" promptText="${mktMarketingResources.objectName}" propertyName="name" required="true"/>
+				<PropertyCombobox promptText="${mktMarketingResources.formatLabel}" propertyName="format"/>
+				
+				<PropertyGroup collapsable="false" name="group2">
+					<EnablementCondition conditionId="formatCondition" enablementValue="File" propertyName="format"/>
+					<PropertyChildListEditor helpText="${mktMarketingResources.help_content_attachment}" listDefinitionName="mktContentAttachmentGrid" name="attachmentList" newButtonResource="URLListToolbarIcon" objectTypes="AttachmentReference,InheritedAttachmentReference" promptText="${mktMarketingResources.associatedAsset}" required="true" singleChild="true"/>
+				</PropertyGroup>
+				
+				<PropertyGroup collapsable="false" name="group2_text1">															
+					<EnablementOrCondition>
+						<EnablementCondition conditionId="formatCondition" enablementValue="File" propertyName="format"/>
+						<EnablementCondition conditionId="formatCondition2" enablementValue="Text" propertyName="format"/>
+					</EnablementOrCondition>
+					<PropertyRichTextEditor objectPath="MarketingContentDescription" promptText="${mktMarketingResources.contentDescriptionText}" propertyName="text"/>
+				</PropertyGroup>
+				<PropertyGroup collapsable="false" name="group2_text2">
+					<PropertyInputMultiLineText objectPath="MarketingContentDescription" promptText="${mktMarketingResources.contentDescriptionText}" propertyName="text"/>
+					<EnablementCondition conditionId="formatCondition" enablementValue="Sms" propertyName="format"/>				
+				</PropertyGroup>
+				
+				<PropertyGroup collapsable="false" name="group3">
+					<EnablementOrCondition>
+						<EnablementCondition conditionId="formatCondition" enablementValue="File" propertyName="format"/>
+						<EnablementCondition conditionId="formatCondition2" enablementValue="Text" propertyName="format"/>
+					</EnablementOrCondition>								
+					<PropertyURLGenerator helpText="${mktMarketingResources.help_content_clickaction}" package="mkt" promptText="${mktMarketingResources.clickAction}" propertyName="url"/>
+				</PropertyGroup>
+							
+				<PropertyCombobox promptText="${mktMarketingResources.contentBehaviorLabel}" helpText="${mktMarketingResources.help_content_behavior}" propertyName="behavior"/>																
+			</PropertyGroup>
+		</PropertyPane>
+	</ObjectProperties>
+</Definitions>
