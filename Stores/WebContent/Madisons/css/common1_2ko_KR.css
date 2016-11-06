@@ -1,0 +1,70 @@
+@charset "utf-8";
+
+/*
+ *-----------------------------------------------------------------
+ * Licensed Materials - Property of IBM
+ *
+ * WebSphere Commerce
+ *
+ * (C) Copyright IBM Corp. 2009, 2010 All Rights Reserved.
+ *
+ * US Government Users Restricted Rights - Use, duplication or
+ * disclosure restricted by GSA ADP Schedule Contract with
+ * IBM Corp.
+ *-----------------------------------------------------------------
+ */
+
+/* CSS Document */
+@import url("common1_2.css");
+
+a, fieldset, form, h1, h2, h3, h4, h5, h6, p, li, ol, ul, body, html, tr, td, img, .font3, #shopping-cart .text, #wishlist, #footer p, #copyright, 
+.required-field-text, .form_2column .column_registration, a.button_remove, span.primary_button ,#shipping .shipping_method .checkbox .text ,
+#second_level_category_popup .bodycontent .product_details .product_information select,
+#quick_order
+{
+   font-size:11px;
+}
+
+h2, .scrollPanePrice{
+   font-size:12px;
+}
+
+.sidebar_header_link {
+	font-size:13px;
+}
+#shopping-cart .body {
+	margin-top:-22px;
+}
+#left_nav h2 {
+	line-height:12px;
+	margin-right:7px;
+	padding-bottom:5px;
+}
+.form_2column .column {
+   width:325px;
+}
+.wishlist_button_drop {
+	height: 18px;
+	*height:17px; /*height for ie*/
+}
+#horizontal_grid tr.item_container td.information, #horizontal_grid tr.item_container td.information p {
+	width: 230px;
+}
+#horizontal_grid tr.item_container td.information h3 {
+	font-size: 11px;
+	width: 230px;
+}
+.tabs .on .text {
+	*margin-right:-5px;
+}
+#quick_order .input_form {
+    width:290px;
+}
+			
+.ranking_list_table .ul .rank_catEntry_description {
+	width:58%;
+}
+
+.feed_widget_label,.feed_widget_label_invert {
+	display: inline;
+}

@@ -1,0 +1,143 @@
+@charset "utf-8";
+
+/*
+ *-----------------------------------------------------------------
+ * Licensed Materials - Property of IBM
+ *
+ * WebSphere Commerce
+ *
+ * (C) Copyright IBM Corp. 2009, 2010 All Rights Reserved.
+ *
+ * US Government Users Restricted Rights - Use, duplication or
+ * disclosure restricted by GSA ADP Schedule Contract with
+ * IBM Corp.
+ *-----------------------------------------------------------------
+ */
+
+/* CSS Document */
+@import url("common1_2.css");
+
+a, fieldset, form, h1, h2, h3, h4, h5, h6, p, li, ol, ul, body, html, tr, td, img, input, select, textarea,
+.search-txt, .font2, .dropDownButtonText, .ad_product .ad_content p,.ad_product .ad_contenttitle p, .required-field-text,  
+.rounded_content_box .contentgrad_text, .my_account .header,.card_info .col1,
+#wishist, #nav_links a.nav, #footer p, #box .display_text, #box .subheader_text, #box .content_text, #box .contentgrad_header .text,
+#location .location_select_label,#location .location_option_label,
+#four-grid .item .price,#four-grid-wishlist .item .price,#four-grid-espot .item .price,
+#shipping .shipping_method .checkbox .text, #quick_order,#tooltip_popup .popup_header_title,
+#location .location_select_label,#location .location_option_label,
+div#show_catentry_contract div.contentgrad_header span.contentgrad_text,
+span.primary_button, span.secondary_button,
+#four-grid .item .information h3,#four-grid-wishlist .item .information h3,#four-grid-espot .item .information h3,
+div#check_product_availability div.product_options h1 a,
+#second_level_category_popup .bodycontent h1 ,#requisition_list_popup .bodycontent h1,
+#second_level_category_popup .bodycontent .purchase_details .purchase_quanitity .quantity, 
+#second_level_category_popup .bodycontent .product_details .product_information select ,
+div#check_store_availability div.contentgrad_header div.heading ,
+div#check_store_availability div.contentgrad_header  span.contentgrad_text,
+div#check_product_availability div.product_options div.font3,
+.help_privacy .header 
+{
+   font-size:13px;
+}
+
+.sidebar_header_link {
+	font-size:14px;
+}
+.sidebar_header {
+	font-size:14px;
+	padding-bottom:2px;
+	font-weight: normal;
+}
+.font3,#shopping-cart .text {
+   font-size:11px;
+   font-family:MingLiu,arial, helvetica, sans-serif;
+}
+h3 {
+   font-size:12px;
+}
+#outerCartContainer {
+   margin-top: -28px;
+}
+#shopping-cart .right_corner {
+	margin-top:-24px;
+}
+#shopping-cart .body {
+	margin-top:-24px;
+}
+.dijitButtonNode {
+   font-size:13px;
+   margin-top:-3px;
+}
+#footer {
+	height: 77px;
+}
+
+.sign_in_registration .align {
+	height:195px;
+}
+
+.drop_down_language_select, .drop_down_registration ,.drop_down_shipment,.drop_down_country,.drop_down_checkout{
+   height:22px;
+}
+.form_2column .column {
+   width:325px;
+}
+.wishlist_button_drop {
+	height: 20px;
+}
+#horizontal_grid tr.item_container td.information {
+	width: 230px;
+}
+#horizontal_grid tr.item_container td.information p {
+	width: 230px;
+}
+#horizontal_grid tr.item_container td.information h3 {
+	font-size: 13px;
+	width: 230px;
+}		
+#horizontal_grid tr.item_container td.price {
+	width: 44px;
+}
+
+#total_breakdown #order_total .total_figures, #total_breakdown .figures p.price {
+    font-size:10.5px;
+}
+
+.tabs .on .text {
+	margin-left:-7px;
+	margin-right:-6px;
+	*margin-right:-8px; /*IE only*/
+}
+.tabs .off .text {
+	margin-left:-7px;
+	margin-right:-7px;
+}
+
+div#check_store_availability div.contentgrad_header  span.contentgrad_text {
+	font-size: 13px;
+	line-height: 24px;
+	height: 24px;
+}
+
+#quick_order .input_form {
+    width:290px;
+}
+
+.scrollableWishListPanel {
+   height: expression( this.scrollHeight > 119 ? "120px" : "auto" ); /* sets max-height for IE */
+	max-height:8em; 
+	overflow:auto;
+}
+body .rangeSelectorTooltip{ position: absolute; border-color: white; padding: 1px 0px 1px 0px; font-size: 13px; z-index: 30;}
+
+
+.ranking_list_table .ul .rank_catEntry_description {
+	width:56%;
+}
+div.browsing_history_espot .espot_header div.content_container {
+		_margin-top:-3px !important;
+}
+
+.feed_widget_label,.feed_widget_label_invert {
+	display: inline;
+}

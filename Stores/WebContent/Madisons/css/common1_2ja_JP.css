@@ -1,0 +1,62 @@
+@charset "utf-8";
+
+/*
+ *-----------------------------------------------------------------
+ * Licensed Materials - Property of IBM
+ *
+ * WebSphere Commerce
+ *
+ * (C) Copyright IBM Corp. 2009, 2010 All Rights Reserved.
+ *
+ * US Government Users Restricted Rights - Use, duplication or
+ * disclosure restricted by GSA ADP Schedule Contract with
+ * IBM Corp.
+ *-----------------------------------------------------------------
+ */
+
+/* CSS Document */
+@import url("common1_2.css");
+
+.font3 {
+   font-size:11px;
+}
+#shopping-cart .text {
+	font-size:11px;
+}
+.form_2column .column {
+   width:325px;
+}
+
+.sidebar_ad_remote_widget {
+	height: 25px;
+	padding: 4px 4px 4px 4px;
+}
+
+.scrollPanePrice{
+    font-size:12px;
+}
+#horizontal_grid tr.item_container td.information, #horizontal_grid tr.item_container td.information p, #horizontal_grid tr.item_container td.information h3 {
+	width: 230px;
+}
+#quick_order .input_form {
+    width:290px;
+}
+
+/** search results **/
+.Search_Result_Summary_Text,
+a .Search_Result_Summary_Text{
+	font-size: 12px;
+}
+.accordion .arrowTextDown {
+	display:none;
+}
+.ranking_list_table .ul .rank_catEntry_description {
+	width:54%;
+}
+body:first-of-type .ranking_list_table .ul .rank_catEntry_description{
+	width: 53%;
+}
+
+.feed_widget_label,.feed_widget_label_invert {
+	display: inline;
+}

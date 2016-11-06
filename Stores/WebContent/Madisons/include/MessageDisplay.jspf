@@ -1,0 +1,58 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2009, 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+
+<%-- 
+  *****
+  * This JSP fragment is used to display error or informative messages at the top of a page.
+  *****
+--%>
+
+<!-- BEGIN MessageDisplay.jspf -->
+<div id="MessageArea" class="msgpopup1">
+	<div id="msgpopup_content_wrapper" class="msgpopup_content_wrapper">
+		<div id="msgpopup1_left" class="left"></div>
+		<div id="msgpopup1_content" class="content">
+			<div id=msggroup1_icon" class="icon">
+				<div id="msgpopup1_exc" class="exc"></div>
+			</div>
+			<div id="msgpopup1_txt" class="message_text">
+				<span id="ErrorMessageText" class="error_msg" tabindex='1'>
+					<c:if test="${!empty errorMessage}">
+							<c:out value="${errorMessage}"/>
+					</c:if>
+				</span>
+			</div>
+			
+			<div id="msgpopup1_close" class="close">
+				<div id="msgpopup1_x" class="msgpopup1_x">
+					<span id="msgpopup_close_text" class="msgpopup_close_text">
+						<a id="clickableErrorMessage" href="#" onclick="JavaScript:MessageHelper.hideMessageArea();return false;" onkeypress="JavaScript:MessageHelper.hideMessageArea();return false;" tabindex='2'><fmt:message key="CLOSE" bundle="${storeText}" /></a>
+					</span>
+					<a id="clickableErrorMessageImg" href="#" onclick="JavaScript:MessageHelper.hideMessageArea();return false;" onkeypress="JavaScript:MessageHelper.hideMessageArea();return false;" tabindex='2'><img src="<c:out value='${jspStoreImgDir}${vfileColor}'/>msgpopup1_x.png" alt="<fmt:message key="CLOSE" bundle="${storeText}"/>" title="<fmt:message key="CLOSE" bundle="${storeText}"/>"/></a>
+				</div>			
+			</div>
+		</div>
+		<div id="msgpopup1_right" class="right"></div>
+		<div id="msgpopup1_shadow" class="shadow"></div>
+	</div>
+</div>
+<script type="text/javascript">
+	dojo.addOnLoad(function(){
+		dojo.connect(window, 'onresize', function(){
+			MessageHelper.adjustCoordinates();
+		});
+	});
+</script>
+<!-- END MessageDisplay.jspf -->

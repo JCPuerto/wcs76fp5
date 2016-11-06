@@ -1,0 +1,64 @@
+@charset "utf-8";
+
+/*$SkipWCCopr$*/
+/*
+ *-----------------------------------------------------------------
+ * Licensed Materials - Property of IBM
+ *
+ * WebSphere Commerce
+ *
+ * (C) Copyright IBM Corp. 2008, 2010 All Rights Reserved.
+ *
+ * US Government Users Restricted Rights - Use, duplication or
+ * disclosure restricted by GSA ADP Schedule Contract with
+ * IBM Corp.
+ *-----------------------------------------------------------------
+ */
+@import url("common1_1.css");
+
+.font3 {
+	font-size: 11px;
+}
+#total_breakdown #order_total  .total_figures {
+	font-size:10.5px;
+}
+
+#checkout_crumb .continue_shopping {
+	padding-right:16px;
+}
+.form_2column .column {
+	width:275px;
+}
+.button_side_message {
+	padding-left:3px;
+}
+span.primary_button span.button_container span.button_top span.button_bottom a, span.secondary_button span.button_container span.button_top span.button_bottom a, #shopping-cart .text{
+	font-size:11px;
+}
+#four-grid .item .description,#four-grid-wishlist .item .description,#four-grid-espot .item .description{
+	height:70px;
+}
+.scrollPanePrice{
+	font-size:12px;
+}
+#order_details tr.nested th {
+	padding:1px 7px 0px 7px;
+}
+
+/** search results **/
+.Search_Result_Summary_Text,
+a .Search_Result_Summary_Text{
+	font-size: 12px;
+}
+.ranking_list_table .ul {
+	display: table-row;
+}
+.ranking_list_table .ul .rank_catEntry_description {
+	width:54%;
+}
+body:first-of-type .ranking_list_table .ul .rank_catEntry_description{
+	width: 53%;
+}
+.feed_widget_label,.feed_widget_label_invert {
+	display: inline;
+}

@@ -1,0 +1,91 @@
+@charset "utf-8";
+
+/*$SkipWCCopr$*/
+/*
+ *-----------------------------------------------------------------
+ * Licensed Materials - Property of IBM
+ *
+ * WebSphere Commerce
+ *
+ * (C) Copyright IBM Corp. 2008, 2010 All Rights Reserved.
+ *
+ * US Government Users Restricted Rights - Use, duplication or
+ * disclosure restricted by GSA ADP Schedule Contract with
+ * IBM Corp.
+ *-----------------------------------------------------------------
+ */
+
+/* CSS Document */
+@import url("common1_1.css");
+
+a, fieldset, form, h3, h4, h5, h6, p, li, ol, ul, body, html, tr, td, img, #footer p, #copyright, .required-field-text, #second_level_category_popup .bodycontent h1, 
+#requisition_list_popup .bodycontent h1, #second_level_category_popup .bodycontent .purchase_details .purchase_quanitity .quantity, 
+#second_level_category_popup .bodycontent .product_details .product_information select, a.buttons, a.button_remove, span.primary_button, span.secondary_button, 
+#horizontal_grid tr.item_container td.information h3, #quick_order,#wishlist,#shipping .shipping_method .checkbox .text,
+#second_level_category_popup .bodycontent .purchase_details .purchase_quanitity .quantity
+{
+	font-size:11px;
+}
+h1{
+	font-size:14px;
+}
+h2{
+	font-size:12px;
+}
+#header_nav {
+	height:24px;
+}
+div.info_table div.row div.label2 {  
+	width: 100px;  
+}  
+div.info_table div.row div.info_content1 {
+	width: 210px;
+}  
+.sidebar_header_link {
+	font-size:13px;
+}
+.form_2column {
+	padding:5px 12px 0px 12px;
+}
+.form_2column .column {
+	width:275px;
+}
+.wishlist_button_drop {
+	height: 18px;
+	*height:17px; /*height for ie*/
+}
+#four-grid .item .add_to_cart,#four-grid-wishlist .item .add_to_cart,#four-grid-espot .item .add_to_cart {
+	width:200px;
+}
+#four-grid .item .information,#four-grid-wishlist .item .information,#four-grid-espot .item .information, 
+#four-grid .item .information p,#four-grid-wishlist .item .information p,#four-grid-espot .item .information p {
+	width: 250px;
+}
+#four-grid .item .information h3,#four-grid-wishlist .item .information h3,#four-grid-espot .item .information h3 {
+	font-size: 11px;
+	width: 250px;
+}
+#four-grid .item .description,#four-grid-wishlist .item .description,#four-grid-espot .item .description{
+	height:70px;
+}
+#total_breakdown {
+	padding:5px 9px 10px 0px;
+}
+
+.my_account_wishlist .content {
+        border-left: 1px solid #acacac;
+        border-right:solid 1px #acacac;
+        position: relative;
+}
+.my_account .header {
+	color: #004d7d;
+}
+body .rangeSelectorTooltip{ position: absolute; border-color: white; padding: 1px 0px 1px 0px; font-size: 11px; z-index: 30;}
+
+.ranking_list_table .ul .rank_catEntry_description {
+	width: 58%;
+}
+
+.feed_widget_label,.feed_widget_label_invert {
+	display: inline;
+}

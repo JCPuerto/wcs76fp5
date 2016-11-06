@@ -1,0 +1,65 @@
+<%--
+ =================================================================
+  Licensed Materials - Property of IBM
+
+  WebSphere Commerce
+
+  (C) Copyright IBM Corp. 2010 All Rights Reserved.
+
+  US Government Users Restricted Rights - Use, duplication or
+  disclosure restricted by GSA ADP Schedule Contract with
+  IBM Corp.
+ =================================================================
+--%>
+
+<%-- 
+	This JSPF fragment creates a clickable button for the store. A link will be created if the CSS is missing, or buttonStyle is missing. 
+	
+	REQUIRED PARAMETER: 
+		-buttonStyle	  : Style of the button. Use Primary for confirmation buttons.  
+		-buttonLink		  : link to load or action to executed when the button is clicked.
+		
+	OPTIONAL PARAMETER:
+		-buttonId		  : ID of the button
+		-buttonAttributes : extra attributes that the button should contain. This can be IDs, or roles etc.
+		
+			
+	SAMPLE:
+		- The following code snippet will create an add to cart button using the primary button style
+			
+		<c:set var="buttonStyle" value="primary"/>
+		<c:set var="buttonAttributes">
+			id="addToCartButton" title="Add To Cart"
+		</c:set>
+		<c:set var="buttonLink">
+			<a class="ajaxAddToCart" href="javascript: setCurrentId('WC_CatalogEntryDBThumbnailDisplayJSPF_<c:out value='${catEntryIdentifier}'/>_links_11'); categoryDisplayJS.AddItem2ShopCartAjax('<c:out value='${catEntryIDToUse}'/>',1)" id="WC_CatalogEntryDBThumbnailDisplayJSPF_<c:out value='${catEntryIdentifier}'/>_links_11" waistate:controls="MiniShoppingCart"><fmt:message key="ADDTOCART" bundle="${storeText}"/></a>													
+		</c:set>
+		<%@ include file="StoreButton.jspf" %>		
+--%>
+
+
+
+
+<c:choose>
+	<c:when test="${buttonStyle == 'primary'}">
+		<div class="primary_button_shadow" <c:out value='${buttonAttributes}' escapeXml="false"/>>
+			<div class="primary_button">
+				<c:out value="${buttonLink}" escapeXml="false"/>													
+			</div>
+		</div>
+	</c:when>
+	<c:when test="${buttonStyle == 'secondary'}">
+		<div class="tertiary_button_shadow" <c:out value='${buttonAttributes}' escapeXml="false"/>>
+			<div class="tertiary_button">
+				<c:out value="${buttonLink}" escapeXml="false"/>																	
+			</div>
+		</div>	
+	</c:when>
+	<c:otherwise>
+		<c:out value="${buttonLink}" escapeXml="false"/>
+	</c:otherwise>
+</c:choose>
+
+<c:remove var="buttonStyle"/>
+<c:remove var="buttonLink"/>
+<c:remove var="buttonAttributes"/>
