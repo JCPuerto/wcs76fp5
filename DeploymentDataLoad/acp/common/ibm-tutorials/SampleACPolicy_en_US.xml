@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?> 
+<!DOCTYPE PoliciesNLS SYSTEM "../dtd/accesscontrolpoliciesnls.dtd">
+
+<PoliciesNLS LanguageID="en_US">
+
+	<Action_nls ActionName="com.ibm.commerce.sample.commands.MyNewControllerCmd" DisplayName_nls="MyNewControllerCmd" Description_nls="Run MyNewControllerCmd" />
+              
+	<ActionGroup_nls ActionGroupName="MyNewControllerCmdActionGroup" DisplayName_nls="MyNewControllerCmd Action Group" Description_nls="MyNewControllerCmd Action Group" />
+
+	<ResourceCategory_nls ResourceCategoryName="com.ibm.commerce.extension.objects.Bonus" DisplayName_nls="Bonus Resource" Description_nls="Bonus Resource" />
+
+	<ResourceGroup_nls ResourceGroupName="BonusResourceGroup" DisplayName_nls="Bonus Resources Group" Description_nls="Bonus Resources"  />
+
+	<Policy_nls PolicyName="AllUsersUpdateBonusResourceGroup"
+				OwnerID="7000000000000000002"
+				DisplayName_nls="All Users Update Bonus Resource Group"
+				Description_nls="All Users Update Bonus Resource Group" />
+		
+	<Policy_nls PolicyName="AllUsersExecuteMyNewControllerCmdOnUserResource"
+				OwnerID="7000000000000000002"
+				DisplayName_nls="All Users Execute MyNewControllerCmd On User Resource"
+				Description_nls="All Users Execute MyNewControllerCmd On User Resource"  />
+
+</PoliciesNLS>

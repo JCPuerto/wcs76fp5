@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?> 
+<!DOCTYPE Policies SYSTEM "../dtd/accesscontrolpolicies.dtd">
+
+<Policies>
+	<Action Name="MyNewView" CommandName="MyNewView" />
+	<ActionGroup Name="AllSiteUsersViews" OwnerID="RootOrganization">
+		<ActionGroupAction Name="MyNewView" />
+	</ActionGroup>
+</Policies>

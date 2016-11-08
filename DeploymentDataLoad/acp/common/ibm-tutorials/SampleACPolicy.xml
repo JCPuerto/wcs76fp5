@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?> 
+<!DOCTYPE Policies SYSTEM "../dtd/accesscontrolpolicies.dtd">
+
+<Policies>
+	
+	<Action Name="MyNewControllerCmd" CommandName="com.ibm.commerce.sample.commands.MyNewControllerCmd" />
+
+	<ResourceCategory Name="com.ibm.commerce.extension.objects.BonusResourceCategory" ResourceBeanClass="com.ibm.commerce.extension.objects.Bonus" >
+		<ResourceAction Name="MyNewControllerCmd"/>             
+	</ResourceCategory>
+
+	<ActionGroup Name="MyNewControllerCmdActionGroup" OwnerID="RootOrganization">
+		<ActionGroupAction Name="MyNewControllerCmd"/>
+	</ActionGroup>
+
+	<ResourceGroup Name="BonusResourceGroup"  OwnerID="RootOrganization" >
+		<ResourceGroupResource Name="com.ibm.commerce.extension.objects.BonusResourceCategory" />
+	</ResourceGroup>
+
+	<Policy Name="AllUsersUpdateBonusResourceGroup"
+			OwnerID="7000000000000000002"
+			UserGroup="AllUsers"
+			UserGroupOwner="RootOrganization"
+			ActionGroupName="MyNewControllerCmdActionGroup"
+			ResourceGroupName="BonusResourceGroup" 
+			RelationName="creator"
+			PolicyType="groupableStandard" />
+
+	<Policy Name="AllUsersExecuteMyNewControllerCmdOnUserResource"
+			OwnerID="7000000000000000002"
+			UserGroup="AllUsers"
+			UserGroupOwner="RootOrganization"
+			ActionGroupName="MyNewControllerCmdActionGroup"
+			ResourceGroupName="UserDataResourceGroup"
+			RelationName="owner"
+			PolicyType="groupableStandard" />
+          
+	<PolicyGroup Name="ManagementAndAdministrationPolicyGroup" OwnerID="RootOrganization">
+
+		<!-- Define policies in this policy group -->
+		<PolicyGroupPolicy 	Name="AllUsersUpdateBonusResourceGroup" PolicyOwnerID="7000000000000000002" />
+		<PolicyGroupPolicy 	Name="AllUsersExecuteMyNewControllerCmdOnUserResource" PolicyOwnerID="7000000000000000002" />
+
+	</PolicyGroup>
+
+</Policies>
