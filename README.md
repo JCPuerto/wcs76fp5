@@ -8,7 +8,7 @@ WebSphere Commerce 7 Fix Pack 6 Feature Pack 5
 
 ### How do I get set up? ###
 
-* Mount the image fpr Commerce 7 Fix Pack 6 Feature Pack 5
+* Mount the image for Commerce 7 Fix Pack 6 Feature Pack 5
 * Restore the database from the repo https://bitbucket.org/JCPuerto/wcs_db
 * Pull the latest changes
 * Enjoy!
