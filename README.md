@@ -1,6 +1,6 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+WebSphere Commerce 7 Fix Pack 6 Feature Pack 5
 
 ### What is this repository for? ###
 
