@@ -15,7 +15,7 @@
         <servlet-class>com.ibm.commerce.struts.ECActionServlet</servlet-class>
         <init-param>
             <param-name>config</param-name>
-            <param-value>/WEB-INF/struts-config.xml,/WEB-INF/struts-config-GiftCenter.xml,/WEB-INF/struts-config-migrate.xml,/WEB-INF/struts-config-ext.xml</param-value>
+            <param-value>/WEB-INF/struts-config.xml,/WEB-INF/struts-config-GiftCenter.xml,/WEB-INF/struts-config-migrate.xml,/WEB-INF/struts-config-ext.xml,/WEB-INF/struts-config-ibm-tutorials.xml</param-value>
         </init-param>
         <init-param>
             <param-name>detail</param-name>
