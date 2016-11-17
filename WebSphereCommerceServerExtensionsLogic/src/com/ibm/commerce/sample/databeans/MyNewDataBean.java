@@ -40,19 +40,17 @@ public class MyNewDataBean extends SmartDataBeanImpl implements SmartDataBean {
 	 
 	
 
-/*	
 /// Section 1 /////////////////////////////////////////////
 // create fields and accessors (setter/getter methods) 
 	
-	private java.lang.String callingCommandName = null;
+	private String callingCommandName = null;
 	private boolean calledByControllerCmd = false;
 
-	
-	public java.lang.String getCallingCommandName() {
+	public String getCallingCommandName() {
 		return callingCommandName;
 	}
 	
-	public void setCallingCommandName(java.lang.String newCallingCommandName) {
+	public void setCallingCommandName(String newCallingCommandName) {
 		callingCommandName = newCallingCommandName;
 	}
 	
@@ -65,7 +63,6 @@ public class MyNewDataBean extends SmartDataBeanImpl implements SmartDataBean {
 	}
 	
 /// End of Section 1 ////////////////////////////////////
-*/
 
 /*
 /// Section 2 ///////////////////////////////////////////

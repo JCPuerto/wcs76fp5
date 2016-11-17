@@ -26,12 +26,11 @@ package com.ibm.commerce.sample.commands;
 //*---------------------------------------------------------------------
 
 
-/*
 /// Import Section 1 ///////////////////////////////
 
 import com.ibm.commerce.sample.databeans.MyNewDataBean;
 /// End of Import Section 1 ////////////////////////
-*/
+
 
 
 /*
@@ -205,7 +204,7 @@ public void performExecute() throws ECException {
 /// End of section 1 /////////////////////////////////////////
 
 
-/*
+
 /// Section 2 ////////////////////////////////////////////////
 
     /// The controller command passes variables to the JSP page
@@ -217,10 +216,10 @@ public void performExecute() throws ECException {
 	rspProp.put("controllerParm2", "Have a nice day!");
 
 /// End of section 2/////////////////////////////////////////
-*/
 
 
-/*
+
+
 /// Section 3A/////////////////////////////////////////
 
 	/// instantiate the MyNewDataBean databean and set the properties, then add the instance to resProp for response
@@ -229,7 +228,7 @@ public void performExecute() throws ECException {
 	mndb.setCalledByControllerCmd(true);
 
 /// end of section 3A/////////////////////////////////////////
-*/
+
 
 /*
 /// Section 3C/////////////////////////////////////////
@@ -241,12 +240,10 @@ public void performExecute() throws ECException {
 /// end of section 3C/////////////////////////////////////////
 */
 
-/*
 /// Section 3B/////////////////////////////////////////
 	rspProp.put("mndbInstance", mndb);
 
 /// end of section 3B/////////////////////////////////////////
-*/
 
 
 

@@ -44,11 +44,26 @@
 
 <!-- SECTION 4 -->
 
+<h3><fmt:message key="ParametersFromCmd" bundle="${tutorial}" /> </h3>
+
+<fmt:message key="ControllerParm1" bundle="${tutorial}" />
+<c:out value="${controllerParm1}"/> <br />
+ 
+<fmt:message key="ControllerParm2" bundle="${tutorial}" />
+<c:out value="${controllerParm2}"/> <br /> <br />
+
 <!-- END OF SECTION 4 --> 
 
   
 
 <!-- SECTION 5 -->
+
+<c:if test="${mndbInstance.calledByControllerCmd}">
+   <fmt:message key="Example" bundle="${tutorial}" /> <br />
+   <fmt:message key="CalledByControllerCmd" bundle="${tutorial}" /> <br />
+   <fmt:message key="CalledByWhichControllerCmd" bundle="${tutorial}" /> 
+   <b><c:out value="${mndbInstance.callingCommandName}" /></b> <br /> <br />
+</c:if>
 
 <!-- END OF SECTION 5 --> 
 
