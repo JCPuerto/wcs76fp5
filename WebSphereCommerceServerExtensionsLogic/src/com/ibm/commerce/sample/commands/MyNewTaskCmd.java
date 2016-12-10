@@ -44,7 +44,7 @@ public interface MyNewTaskCmd extends com.ibm.commerce.command.TaskCommand {
 	*/
 
 	public static final String COPYRIGHT = com.ibm.commerce.copyright.IBMCopyright.SHORT_COPYRIGHT;
-/*
+
 /// Section 1 ///////////////////////////////////////////////
 
 // set default command implement class
@@ -54,34 +54,32 @@ public interface MyNewTaskCmd extends com.ibm.commerce.command.TaskCommand {
 
 
 /// End of section 1//////////////////////////////////////////
-*/
 
 
-/*
+
 /// Section 2 ////////////////////////////////////////////////
 // set interface methods
 
-	public void setInputUserName(java.lang.String inputUserName);
+	public void setInputUserName(String inputUserName);
 	public void setInputPoints(Integer inputPoints);
-	public void setGreetings(java.lang.String greeting);
+	public void setGreetings(String greeting);
 
-	public java.lang.String getInputUserName();
-	public java.lang.Integer getInputPoints();
-	public java.lang.String getGreetings();
+	public String getInputUserName();
+	public Integer getInputPoints();
+	public String getGreetings();
 
 /// End of section 2//////////////////////////////////////////
-*/
 
-/*
+
 /// Section 3 ////////////////////////////////////////////////
 
-	public void setFoundUserId(java.lang.String inputUserId);
-	public java.lang.String getFoundUserId();
+	public void setFoundUserId(String inputUserId);
+	public String getFoundUserId();
 
 	public void setUserRegistryAccessBean(UserRegistryAccessBean rrb);
 
 /// End of section 3//////////////////////////////////////////
-*/
+
 
 /*
 /// Section 4 ////////////////////////////////////////////////

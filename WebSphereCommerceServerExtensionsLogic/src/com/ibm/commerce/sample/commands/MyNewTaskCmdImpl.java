@@ -24,11 +24,11 @@ package com.ibm.commerce.sample.commands;
 //* actual persons or business enterprises is entirely coincidental.
 //*---------------------------------------------------------------------
 
-/*
+
 /// Import section 1 ///////////////////////////////////////
 import com.ibm.commerce.user.objects.UserRegistryAccessBean;
 ///  End of Import section 1 ///////////////////////////////
-*/
+
 
 
 /*
@@ -49,26 +49,23 @@ public class MyNewTaskCmdImpl extends com.ibm.commerce.command.TaskCommandImpl i
 
 /// implement command's input fields and methods defined in interface
 
-/*
+
 //// Section 1A //////////////////////////////////////////////
 
-	private java.lang.String inputUserName;
-	private java.lang.String greetings;
-	private java.lang.Integer inputPoints;
+	private String inputUserName;
+	private String greetings;
+	private Integer inputPoints;
 
 ////End of Section 1A /////////////////////////////////////////
-*/
 
 
-/*
 //// Section 2A //////////////////////////////////////////////
 
-	private java.lang.String foundUserId = null;
+	private String foundUserId = null;
 
 	private UserRegistryAccessBean rrb = null;
 
 ////End of Section 2A /////////////////////////////////////////
-*/
 
 
 /*
@@ -84,10 +81,9 @@ public class MyNewTaskCmdImpl extends com.ibm.commerce.command.TaskCommandImpl i
 */
 
 
-/*
 //// Section 1B //////////////////////////////////////////////
 
-	public void setInputUserName(java.lang.String newInputUserName) {
+	public void setInputUserName(String newInputUserName) {
 		inputUserName = newInputUserName;
 	}
 
@@ -95,11 +91,11 @@ public class MyNewTaskCmdImpl extends com.ibm.commerce.command.TaskCommandImpl i
 		inputPoints = newInputPoints;
 	}
 
-	public void setGreetings(java.lang.String newGreetings) {
+	public void setGreetings(String newGreetings) {
 		greetings = newGreetings;
 	}
 
-	public java.lang.String getInputUserName() {
+	public String getInputUserName() {
 		return inputUserName;
 	}
 
@@ -107,32 +103,31 @@ public class MyNewTaskCmdImpl extends com.ibm.commerce.command.TaskCommandImpl i
 		return inputPoints;
 	}
 
-	public java.lang.String getGreetings() {
+	public String getGreetings() {
 		return greetings;
 	}
 
 
 ////End of Section 1B /////////////////////////////////////////
-*/
 
-/*
+
 //// Section 2B //////////////////////////////////////////////
 
 	public void setUserRegistryAccessBean(UserRegistryAccessBean newRRB) {
 		rrb = newRRB;
 	}
 
-	public void setFoundUserId(java.lang.String newFoundUserId) {
+	public void setFoundUserId(String newFoundUserId) {
 		foundUserId = newFoundUserId;
 	}
 
-	public java.lang.String getFoundUserId() {
+	public String getFoundUserId() {
 		return foundUserId;
 	}
 
 
 /// End of section 2B ///////////////////////////////////////////
-*/
+
 
 /*
 //// Section 3B //////////////////////////////////////////////
@@ -174,7 +169,6 @@ public void performExecute() throws ECException {
 
 	super.performExecute();
 
-/*
 /// Section 1 ////////////////////////////////////////////////
 
     /// modify the greetings and see it in the NVP list
@@ -182,7 +176,6 @@ public void performExecute() throws ECException {
 	setGreetings( "Hello " + getInputUserName() );
 
 /// End of section 1 ////////////////////////////////////////////
-*/
 
 
 /*
@@ -230,7 +223,7 @@ public void performExecute() throws ECException {
 
 public void validateParameters() throws ECException {
 
-/*
+
 // section 1 ///////////////////////////////////////////////////
 // use UserRegistryAccessBean to check user Id
 
@@ -239,8 +232,8 @@ public void validateParameters() throws ECException {
  		if (rrb!=null){
 	 	  setFoundUserId(rrb.getUserId());
  		} else {
- 		  rrb =new UserRegistryAccessBean();
- 		  rrb=rrb.findByUserLogonId(getInputUserName());
+ 		  rrb = new UserRegistryAccessBean();
+ 		  rrb = rrb.findByUserLogonId(getInputUserName());
 	 	  setFoundUserId(rrb.getUserId());
  		}
 
@@ -259,7 +252,6 @@ public void validateParameters() throws ECException {
  	}
 
 // end of section 1 ///////////////////////////////////////////////
-*/
 
 
 /*

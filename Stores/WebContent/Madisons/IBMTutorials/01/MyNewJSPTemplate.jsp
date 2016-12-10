@@ -69,16 +69,39 @@
 
 
 <!-- SECTION 6 -->
-  
+<fmt:message key="UserName" bundle="${tutorial}" />
+<c:out value="${mndbInstance.userName}"/> <br />
+ 
+<fmt:message key="Points" bundle="${tutorial}" /> 
+<c:out value="${mndbInstance.points}"/> <br />
 <!-- END OF SECTION 6 --> 
 
 
 <!-- SECTION 7 -->
-  
+
+<fmt:message key="Greeting" bundle="${tutorial}" />
+<c:out value="${taskOutputGreetings}"/> <br /> <br />
+
 <!-- END OF SECTION 7 --> 
 
 
 <!-- SECTION 8 -->
+
+<c:if test="${!empty taskOutputUserId}">
+   <fmt:message key="UserId" bundle="${tutorial}" />
+   <c:out value="${taskOutputUserId}"/> <br />
+   <fmt:message key="FirstInput" bundle="${tutorial}" />
+   <b><c:out value="${userName}"/></b>
+   <fmt:message key="RegisteredUser" bundle="${tutorial}" /> <br />
+   <fmt:message key="ReferenceNumber" bundle="${tutorial}" /> 
+   <b><c:out value="${taskOutputUserId}"/></b> <br /> <br />
+</c:if>
+
+<c:if test="${empty taskOutputUserId}">
+   <fmt:message key="FirstInput" bundle="${tutorial}" />
+   <b><c:out value="${userName}"/></b> 
+   <fmt:message key="NotRegisteredUser" bundle="${tutorial}" /> <br />
+</c:if>
 
 <!-- END OF SECTION 8 -->
 

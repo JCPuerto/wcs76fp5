@@ -60,42 +60,38 @@ public class MyNewControllerCmdImpl extends ControllerCommandImpl implements MyN
 
 	private static final String COPYRIGHT = com.ibm.commerce.copyright.IBMCopyright.SHORT_COPYRIGHT;
 
-/*
 /// Section 1 ////////////////////////////////////////////////
 /// create and implement controller command's fields and accessors (setter/getter methods)
 
-	private java.lang.String userName = null;
-	private java.lang.Integer points;
+	private String userName = null;
+	private Integer points;
 
 
-	public java.lang.Integer getPoints() {
+	public Integer getPoints() {
 		return points;
 	}
 
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return userName;
 	}
 
-	public void setPoints(java.lang.Integer newPoints) {
+	public void setPoints(Integer newPoints) {
 		points = newPoints;
 	}
 
-	public void setUserName(java.lang.String newUserName) {
+	public void setUserName(String newUserName) {
 		userName = newUserName;
 	}
 
 /// End of Section 1 /////////////////////////////////////////
-*/
 
 
-/*
 /// Section 2 ////////////////////////////////////////////////
 /// create a user registry accessbean resource instance variable
 
     private UserRegistryAccessBean rrb = null;
 
 /// End of Section 2 /////////////////////////////////////////
-*/
 
 
 /*
@@ -230,7 +226,6 @@ public void performExecute() throws ECException {
 /// end of section 3A/////////////////////////////////////////
 
 
-/*
 /// Section 3C/////////////////////////////////////////
 
 	// pass the input information to the databean
@@ -238,7 +233,7 @@ public void performExecute() throws ECException {
 	mndb.setPoints(this.getPoints());
 
 /// end of section 3C/////////////////////////////////////////
-*/
+
 
 /// Section 3B/////////////////////////////////////////
 	rspProp.put("mndbInstance", mndb);
@@ -249,7 +244,7 @@ public void performExecute() throws ECException {
 
 
 /// Area 4 ////////////////////////////////////////////////
-/*
+
 /// Section 4A
     /// The controller command calls a task command
 
@@ -267,15 +262,15 @@ public void performExecute() throws ECException {
 		cmd.setInputPoints(getPoints()); // change to Integer
 
 /// End Section 4A ///////////////////////////////////////
-*/
-		/*
+
+		
 		// Section 4D ////////////////////////////////////
 		/// pass rrb instance variable to the task command
 
 		cmd.setUserRegistryAccessBean(rrb);
 
 		// End of section 4D /////////////////////////////
-		*/
+		
 
 
 		/*
@@ -284,7 +279,7 @@ public void performExecute() throws ECException {
 		cmd.setBonusAccessBean(bb);
 		// End of section 4E /////////////////////////////
 		*/
-/*
+
 /// Section 4B ///////////////////////////////////
 
 		/// invoke the command's performExecute method
@@ -294,16 +289,16 @@ public void performExecute() throws ECException {
 		rspProp.put("taskOutputGreetings", cmd.getGreetings());
 
 /// End Section 4B /////////////////////////////////////
-*/
 
-		/*
+
+		
 		// Section 4F ///////////////////////////////////////
 		///using access bean to get information from databse
 		if (cmd.getFoundUserId() != null) {
 			rspProp.put("taskOutputUserId", cmd.getFoundUserId());
 		}
 		// End of section 4F /////////////////////////////
-		*/
+		
 
 
 		/*
@@ -323,7 +318,7 @@ public void performExecute() throws ECException {
 	    // End of section 4H ////////////////////////////////
 		*/
 
-/*
+
 /// Start Section 4C ////////////////////////////////////
 	} catch (ECException ex) {
 		/// throw the exception as is
@@ -331,7 +326,7 @@ public void performExecute() throws ECException {
 	}
 
 /// End Section 4C //////////////////////////////////////
-*/
+
 
 /// End of Area 4///////////////////////////////////////////
 
@@ -367,7 +362,7 @@ public void performExecute() throws ECException {
 
 public void validateParameters() throws ECException {
 
-/*
+
 /// Section 1 /////////////////////////////////////////////////
 /// uncomment to check parameters
 
@@ -378,7 +373,6 @@ public void validateParameters() throws ECException {
 	/// retrieve required parameters
 	try {
 		setUserName(prop.getString("input1"));
-
 	} catch (ParameterNotFoundException e) {
 		/// the next exception uses _ERR_CMD_MISSING_PARAM ECMessage object defined in ECMessage class
 		throw new ECApplicationException(ECMessage._ERR_CMD_MISSING_PARAM, this.getClass().getName(), strMethodName,
@@ -390,6 +384,6 @@ public void validateParameters() throws ECException {
 	setPoints(prop.getInteger("input2",0));
 
 /// End of section 1//////////////////////////////////////////////////////////
-*/
+
 }
 }

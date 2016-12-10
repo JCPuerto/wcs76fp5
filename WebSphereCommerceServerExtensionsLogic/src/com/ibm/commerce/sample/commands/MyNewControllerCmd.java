@@ -47,22 +47,22 @@ public interface MyNewControllerCmd extends ControllerCommand {
 /// End of section 1//////////////////////////////////////////////////////////
 
 
-/*
+
 /// Section 2 ////////////////////////////////////////////////
 
 // set interface methods
 
 
-	public java.lang.Integer getPoints() ;
+	public Integer getPoints() ;
 
-	public java.lang.String getUserName() ;
+	public String getUserName() ;
 
-	public void setPoints(java.lang.Integer newPoints) ;
+	public void setPoints(Integer newPoints) ;
 
-	public void setUserName(java.lang.String newUserName)  ;
+	public void setUserName(String newUserName)  ;
 
 
 /// End of section 2//////////////////////////////////////////
-*/
+
 
 }

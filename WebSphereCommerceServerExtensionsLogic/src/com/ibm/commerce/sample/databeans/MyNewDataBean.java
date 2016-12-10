@@ -64,18 +64,18 @@ public class MyNewDataBean extends SmartDataBeanImpl implements SmartDataBean {
 	
 /// End of Section 1 ////////////////////////////////////
 
-/*
+
 /// Section 2 ///////////////////////////////////////////
 
-	private java.lang.String userName = null;
-	private java.lang.Integer points;
+	private String userName = null;
+	private Integer points;
 	
 	
 	public String getUserName() {
 		return userName;
 	}
 	
-	public void setUserName(java.lang.String newUserName) {
+	public void setUserName(String newUserName) {
 		userName = newUserName;
 	}
 	
@@ -84,13 +84,12 @@ public class MyNewDataBean extends SmartDataBeanImpl implements SmartDataBean {
 		return points;
 	}
 	
-	public void setPoints(java.lang.Integer newPoints) {
+	public void setPoints(Integer newPoints) {
 		points = newPoints;
 	}
 	
-	
 /// End of Section 2 ////////////////////////////////////
-*/
+
 
 /**
  * Constructor for an ErrorDataBean.
