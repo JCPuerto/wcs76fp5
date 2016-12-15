@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.mycompany.com/schema"
+	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:myco="http://www.mycompany.com/schema"
+	xmlns:oa="http://www.openapplications.org/oagis/9">
+	<import namespace="http://www.openapplications.org/oagis/9"
+		schemaLocation="../../../Resources/Nouns/BOD.xsd">
+	</import>
+	<include schemaLocation="../Resources/Nouns/Customer.xsd"></include>
+
+	<complexType name="SyncCustomerDataAreaType">
+		<sequence>
+			<element ref="oa:Sync"></element>
+			<element ref="myco:Customer" maxOccurs="1"></element>
+		</sequence>
+	</complexType>
+
+	<complexType name="SyncCustomerType">
+		<complexContent>
+			<extension base="oa:BusinessObjectDocumentType">
+				<sequence>
+					<element name="DataArea" type="myco:SyncCustomerDataAreaType"></element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+    <element name="SyncCustomer" type="myco:SyncCustomerType"></element>
+</schema>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.mycompany.com/schema" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:myco="http://www.mycompany.com/schema">
+
+    <complexType name="CustomerDemographicsType">
+    	<sequence>
+    		<element name="Gender" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="IncomeCurrency" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="MaritalStatus" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="Hobbies" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="AdditionalInformation" type="string"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="Age" type="int" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="Income" type="int" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="AuthenticationType">
+    	<sequence>
+    		<element name="Logon" type="string"></element>
+    		<element name="Password" type="string"></element>
+    		<element name="PasswordVerify" type="string"></element>
+    		<element name="ChallengeQuestion" type="string"></element>
+    		<element name="ChallengeAnswer" type="string"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="AddressType">
+    	<sequence>
+    		<element name="StreetAddress" type="string"></element>
+    		<element name="City" type="string"></element>
+    		<element name="State" type="string"></element>
+    		<element name="Country" type="string"></element>
+    		<element name="ZipCode" type="string"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ContactType">
+    	<sequence>
+    		<element name="FirstName" type="string"></element>
+    		<element name="LastName" type="string"></element>
+    		<element name="PhoneNumber" type="string"></element>
+    		<element name="FaxNumber" type="string"></element>
+    		<element name="Email" type="string"></element>
+    		<element name="Address" type="myco:AddressType" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="CustomerType">
+    	<sequence>
+    		<element name="DisplayName" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="ParentOrganization" type="string"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="ProfileType" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="PreferredCurrency" type="string"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="Store" type="int" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="PreferredLanguage" type="int" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="Authentication"
+    			type="myco:AuthenticationType" minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="Contact" type="myco:ContactType"
+    			minOccurs="0" maxOccurs="1">
+    		</element>
+    		<element name="Demographics" type="myco:CustomerDemographicsType" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="Customer" type="myco:CustomerType"></element>
+</schema>

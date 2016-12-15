@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions name="MyCompany-CustomerServices" targetNamespace="http://www.mycompany.com/" xmlns:myco="http://www.mycompany.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsd1="http://www.openapplications.org/oagis/9" xmlns:xsd2="http://www.mycompany.com/schema">
+  <wsdl:types>
+
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  	<xsd:import namespace="http://www.openapplications.org/oagis/9"
+  		schemaLocation="../../component-services/xsd/OAGIS/9.0/BODs/Developer/ConfirmBOD.xsd">
+  	</xsd:import>
+  	<xsd:import namespace="http://www.mycompany.com/schema"
+  		schemaLocation="../../xsd/OAGIS/9.0/Overlays/MyCompany/BODs/SyncCustomer.xsd">
+  	</xsd:import></xsd:schema></wsdl:types>
+  <wsdl:message name="SyncCustomer">
+  	<wsdl:part name="SyncCustomer" element="xsd2:SyncCustomer"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ConfirmBOD">
+  	<wsdl:part name="ConfirmBOD" element="xsd1:ConfirmBOD"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="MyCompany-CustomerServicesPortType">
+    <wsdl:operation name="SyncCustomer">
+      <wsdl:input message="myco:SyncCustomer" name="SyncCustomer"/>
+      <wsdl:output message="myco:ConfirmBOD" name="ConfirmBOD"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MyCompany-CustomerServicesSOAP" type="myco:MyCompany-CustomerServicesPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="SyncCustomer">
+      <soap:operation soapAction="http://www.mycompany.com/NewOperation"/>
+      <wsdl:input name="SyncCustomer">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ConfirmBOD">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MyCompany-CustomerServices">
+    <wsdl:port binding="myco:MyCompany-CustomerServicesSOAP" name="CustomerServices">
+      <soap:address location="http://localhost/webapp/wcs/services/CustomerServices"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
