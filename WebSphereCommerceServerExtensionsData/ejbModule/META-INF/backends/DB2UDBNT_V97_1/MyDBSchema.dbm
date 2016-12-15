@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<xmi:XMI xmlns:datamodelversion="http://www.ibm.com/com.ibm.datatools.core/model/data/1.1.0.0" xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:DB2Model="http:///com/ibm/db/models/db2/db2.ecore" xmlns:LUW="http:///com/ibm/db/models/db2/luw.ecore" xmlns:SQLConstraints="http:///org/eclipse/datatools/modelbase/sql/constraints.ecore" xmlns:SQLDataTypes="http:///org/eclipse/datatools/modelbase/sql/datatypes.ecore" xmlns:datanotation="http:///datanotation.ecore">
+  <LUW:LUWDatabase xmi:id="_j09bYMLEEeaGd-p5P_eVag" name="Database" vendor="DB2 UDB" version="V9.7" schemas="_kC7l8MLEEeaGd-p5P_eVag _4sj8YMLEEeaGd-p5P_eVag"/>
+  <DB2Model:DB2Schema xmi:id="_kC7l8MLEEeaGd-p5P_eVag" name="Schema" database="_j09bYMLEEeaGd-p5P_eVag">
+    <eAnnotations xmi:id="_kE1qcMLEEeaGd-p5P_eVag" source="diagram">
+      <contents xsi:type="datanotation:DataDiagram" xmi:id="_kE1qccLEEeaGd-p5P_eVag" type="IE_CrowFoot" name="Diagram1" viewKind="ProjectExplorer" notation="IE_CrowFoot" kind="Physical">
+        <styles xsi:type="datanotation:DataAttributeStyle" xmi:id="_kE1qcsLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataCompartmentStyle" xmi:id="_kE1qc8LEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDisplayStyle" xmi:id="_kE1qdMLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDiagramRelationshipStyle" xmi:id="_kE1qdcLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataShapeNameStyle" xmi:id="_kE1qdsLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDiagramFormattingStyle" xmi:id="_kE1qd8LEEeaGd-p5P_eVag"/>
+        <element xsi:nil="true"/>
+      </contents>
+    </eAnnotations>
+    <eAnnotations xmi:id="_kiFAEMLEEeaGd-p5P_eVag" source="diagram">
+      <contents xsi:type="datanotation:DataDiagram" xmi:id="_kiFAEcLEEeaGd-p5P_eVag" type="IE_CrowFoot" name="Diagram2" viewKind="ProjectExplorer" notation="IE_CrowFoot" kind="Physical">
+        <styles xsi:type="datanotation:DataAttributeStyle" xmi:id="_kiFAEsLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataCompartmentStyle" xmi:id="_kiFAE8LEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDisplayStyle" xmi:id="_kiFAFMLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDiagramRelationshipStyle" xmi:id="_kiFAFcLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataShapeNameStyle" xmi:id="_kiFAFsLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDiagramFormattingStyle" xmi:id="_kiFAF8LEEeaGd-p5P_eVag"/>
+        <element xsi:nil="true"/>
+      </contents>
+    </eAnnotations>
+  </DB2Model:DB2Schema>
+  <DB2Model:DB2Schema xmi:id="_4sj8YMLEEeaGd-p5P_eVag" name="NULLID" tables="_-QdCwMLEEeaGd-p5P_eVag" database="_j09bYMLEEeaGd-p5P_eVag">
+    <eAnnotations xmi:id="_4skjcMLEEeaGd-p5P_eVag" source="diagram">
+      <contents xsi:type="datanotation:DataDiagram" xmi:id="_4slKgMLEEeaGd-p5P_eVag" type="IE_CrowFoot" name="Diagram1" viewKind="ProjectExplorer" notation="IE_CrowFoot" kind="Physical">
+        <styles xsi:type="datanotation:DataAttributeStyle" xmi:id="_4slKgcLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataCompartmentStyle" xmi:id="_4slKgsLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDisplayStyle" xmi:id="_4slKg8LEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDiagramRelationshipStyle" xmi:id="_4slKhMLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataShapeNameStyle" xmi:id="_4slKhcLEEeaGd-p5P_eVag"/>
+        <styles xsi:type="datanotation:DataDiagramFormattingStyle" xmi:id="_4slKhsLEEeaGd-p5P_eVag"/>
+        <element xsi:nil="true"/>
+      </contents>
+    </eAnnotations>
+  </DB2Model:DB2Schema>
+  <LUW:LUWTable xmi:id="_-QdCwMLEEeaGd-p5P_eVag" name="XBONUS" schema="_4sj8YMLEEeaGd-p5P_eVag">
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_EGfCAMLFEeaGd-p5P_eVag" name="MEMBERID" nullable="false">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_HkCG8MLFEeaGd-p5P_eVag" name="BIGINT" primitiveType="BIGINT"/>
+    </columns>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_LVGk0MLFEeaGd-p5P_eVag" name="BONUSPOINT" nullable="false">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_QTz6gMLFEeaGd-p5P_eVag" name="INTEGER" primitiveType="INTEGER"/>
+    </columns>
+    <columns xsi:type="LUW:LUWColumn" xmi:id="_QxQrgMLFEeaGd-p5P_eVag" name="OPTCOUNTER" nullable="false">
+      <containedType xsi:type="SQLDataTypes:IntegerDataType" xmi:id="_UJImQMLFEeaGd-p5P_eVag" name="SMALLINT" primitiveType="SMALLINT"/>
+    </columns>
+    <constraints xsi:type="SQLConstraints:PrimaryKey" xmi:id="_ExFeMMLFEeaGd-p5P_eVag" name="XBONUS_PK" members="_EGfCAMLFEeaGd-p5P_eVag"/>
+  </LUW:LUWTable>
+</xmi:XMI>

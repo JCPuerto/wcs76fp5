@@ -107,6 +107,56 @@
 
 <!-- SECTION 9 -->
 
+<h2><fmt:message key="BonusAdmin" bundle="${tutorial}" /> </h2>
+
+<c:if test="${!empty taskOutputUserId}">
+	<ul>
+		<li> 
+			<b>
+			<fmt:message key="PointBeforeUpdate" bundle="${tutorial}" />
+			<c:out value="${oldBonusPoints}"/>
+			</b>
+		</li>
+		<li>
+			<b>
+			<fmt:message key="PointAfterUpdate" bundle="${tutorial}" /> 
+	    	<c:out value="${bdbInstance.bonusPoint}" />
+	    	</b>
+	    </li>
+	</ul>
+</c:if>
+ 
+
+<br />
+<b><fmt:message key="EnterPoint" bundle="${tutorial}" /></b><p />
+
+ 
+<form name="Bonus" action="MyNewControllerCmd">
+<table>
+	<tr>
+		<td>
+			<b>Logon ID </b>
+		</td>
+		<td>
+			<input type="text" name="input1" value="<c:out value="${userName}"/>" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Bonus Point</b>
+		</td>
+		<td>
+			<input type="text" name="input2" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="submit" />
+		</td>
+	</tr>
+</table>
+</form>
+
 <!-- END OF SECTION 9 -->
 
 

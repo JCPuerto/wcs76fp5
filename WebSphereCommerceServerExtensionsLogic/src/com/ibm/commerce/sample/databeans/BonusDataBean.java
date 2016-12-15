@@ -51,19 +51,17 @@ public class BonusDataBean extends BonusAccessBean implements SmartDataBean {
 	private CommandContext iCommandContext = null;
 	private com.ibm.commerce.datatype.TypedProperty requestProperties;
 
-/*
 /// Section 1 ///////////////////////////////////////////////
 // create fields and accessors (setter/getter methods)
 
-	private java.lang.String userId;
-	private java.lang.Integer totalBonusPoints;
+	private String userId;
+	private Integer totalBonusPoints;
 
-
-	public java.lang.String getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(java.lang.String newUserId) {
+	public void setUserId(String newUserId) {
 		userId = newUserId;
 
 		///////////////////////////////////////
@@ -76,17 +74,15 @@ public class BonusDataBean extends BonusAccessBean implements SmartDataBean {
 	}
 
 
-    public java.lang.Integer getTotalBonusPoints() {
+    public Integer getTotalBonusPoints() {
 		return totalBonusPoints;
 	}
-	public void setTotalBonusPoints(java.lang.Integer newTotalBonusPoints) {
-		totalBonusPoints= newTotalBonusPoints;
+	public void setTotalBonusPoints(Integer newTotalBonusPoints) {
+		totalBonusPoints = newTotalBonusPoints;
 	}
 
 
 //// End of section 1 ////////////////////////////////////////////
-*/
-
 
 
 /**
@@ -98,7 +94,6 @@ public BonusDataBean() {
 }
 
 
-/*
 /// Section 2///////////////////////////////////////////////
 // create a new constructor for passing access bean into databean so that JSP can work with the access bean
 
@@ -118,7 +113,7 @@ public BonusDataBean(BonusAccessBean bb) throws com.ibm.commerce.exception.ECExc
 }
 
 //// End of section 2 ////////////////////////////////////////////
-*/
+
 
 /*
  * Populate the databean. The bean properties will be populated
@@ -127,7 +122,6 @@ public BonusDataBean(BonusAccessBean bb) throws com.ibm.commerce.exception.ECExc
  */
 public void populate() throws com.ibm.commerce.exception.ECException, CreateException{
 
-/*
 //// Section 3 /////////////////////////////////////////////////
 // set additional data field that is used for instantiating BonusAccessbean
 
@@ -155,7 +149,7 @@ public void populate() throws com.ibm.commerce.exception.ECException, CreateExce
 
 
 ///// End of Section 3 /////////////////////////////////////////
-*/
+
 
 }
 
@@ -198,14 +192,14 @@ public TypedProperty getRequestProperties() {
 
 public void setRequestProperties(com.ibm.commerce.datatype.TypedProperty aParam)
 {
-/*
+
 /// Section 4 ///////////////////////////////////////////
-// copy input TypedProperteis to local
+// copy input TypedProperties to local
 
 	requestProperties = aParam;
 
 /// End of section 4 ////////////////////////////////////
-*/
+
 }
 
 }

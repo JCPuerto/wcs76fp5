@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejbrdbmapping:EjbRdbDocumentRoot xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:LUW="http:///com/ibm/db/models/db2/luw.ecore" xmlns:ejb="ejb.xmi" xmlns:ejbrdbmapping="ejbrdbmapping.xmi" xmlns:Mapping="Mapping.xmi" xmi:id="EjbRdbDocumentRoot_1481806681103" topToBottom="true" commandStack="">
+  <helper xmi:type="ejbrdbmapping:RdbSchemaProperies" xmi:id="RdbSchemaProperies_1481806681103" primitivesDocument="DB2UDBNT_V97"/>
+  <nested xmi:type="ejbrdbmapping:RDBEjbMapper" xmi:id="RDBEjbMapper_1481806767019">
+    <helper xmi:type="ejbrdbmapping:PrimaryTableStrategy" xmi:id="PrimaryTableStrategy_1481806767019">
+      <table xmi:type="LUW:LUWTable" href="META-INF/backends/DB2UDBNT_V97_1/MyDBSchema.dbm#_-QdCwMLEEeaGd-p5P_eVag"/>
+    </helper>
+    <nested xmi:type="ejbrdbmapping:RDBEjbFieldMapper" xmi:id="RDBEjbFieldMapper_1481806767019">
+      <inputs xmi:type="ejb:CMPAttribute" href="META-INF/ejb-jar.xml#CMPAttribute_1481806767019"/>
+      <outputs xmi:type="LUW:LUWColumn" href="META-INF/backends/DB2UDBNT_V97_1/MyDBSchema.dbm#_EGfCAMLFEeaGd-p5P_eVag"/>
+      <typeMapping href="JavatoDB2UDBNT_V97TypeMaps.V7.xmi#Long-BIGINT"/>
+    </nested>
+    <nested xmi:type="ejbrdbmapping:RDBEjbFieldMapper" xmi:id="RDBEjbFieldMapper_1481806767021">
+      <inputs xmi:type="ejb:CMPAttribute" href="META-INF/ejb-jar.xml#CMPAttribute_1481806767021"/>
+      <outputs xmi:type="LUW:LUWColumn" href="META-INF/backends/DB2UDBNT_V97_1/MyDBSchema.dbm#_LVGk0MLFEeaGd-p5P_eVag"/>
+      <typeMapping href="JavatoDB2UDBNT_V97TypeMaps.V7.xmi#Integer-INTEGER"/>
+    </nested>
+    <nested xmi:type="ejbrdbmapping:RDBEjbFieldMapper" xmi:id="RDBEjbFieldMapper_1481806767022" optimistic="true">
+      <inputs xmi:type="ejb:CMPAttribute" href="META-INF/ejb-jar.xml#CMPAttribute_1481806767022"/>
+      <outputs xmi:type="LUW:LUWColumn" href="META-INF/backends/DB2UDBNT_V97_1/MyDBSchema.dbm#_QxQrgMLFEeaGd-p5P_eVag"/>
+      <typeMapping href="JavatoDB2UDBNT_V97TypeMaps.V7.xmi#short-SMALLINT"/>
+    </nested>
+    <inputs xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#Bonus"/>
+    <outputs xmi:type="LUW:LUWTable" href="META-INF/backends/DB2UDBNT_V97_1/MyDBSchema.dbm#_-QdCwMLEEeaGd-p5P_eVag"/>
+  </nested>
+  <inputs xmi:type="ejb:EJBJar" href="META-INF/ejb-jar.xml#ejb-jar_ID"/>
+  <outputs xmi:type="LUW:LUWDatabase" href="META-INF/backends/DB2UDBNT_V97_1/MyDBSchema.dbm#_j09bYMLEEeaGd-p5P_eVag"/>
+  <typeMapping xmi:type="Mapping:MappingRoot" href="JavatoDB2UDBNT_V97TypeMaps.V7.xmi#Java_to_DB2UDBNT_V97_TypeMaps"/>
+</ejbrdbmapping:EjbRdbDocumentRoot>

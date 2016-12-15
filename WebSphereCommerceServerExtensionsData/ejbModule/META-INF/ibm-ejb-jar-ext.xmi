@@ -14,5 +14,29 @@
       </methodElements>
     </isolationLevelAttributes>
   </ejbExtensions>
+  <ejbExtensions xmi:type="ejbext:ContainerManagedEntityExtension" xmi:id="ContainerManagedEntityExtension_1481763753573" concurrencyControl="optimistic">
+    <runAsSettings xmi:id="SecurityIdentity_1481763952612" description="">
+      <methodElements xmi:id="MethodElement_1481763952612" name="*" type="Unspecified">
+        <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#Bonus"/>
+      </methodElements>
+      <runAsMode xmi:type="ejbext:UseSystemIdentity" xmi:id="UseSystemIdentity_1481763952612"/>
+    </runAsSettings>
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#Bonus"/>
+    <isolationLevelAttributes xmi:id="IsolationLevelAttributes_1481763895795" isolationLevel="READ_COMMITTED">
+      <methodElements xmi:id="MethodElement_1481763895795" name="*" type="Unspecified">
+        <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#Bonus"/>
+      </methodElements>
+    </isolationLevelAttributes>
+    <finderDescriptors xmi:type="ejbext:WhereClauseFinderDescriptor" xmi:id="WhereClauseFinderDescriptor_1481764463240" whereClause="T1.MEMBERID = ?">
+      <finderMethodElements xmi:id="MethodElement_1481764463240" name="findByMemberId" parms="java.lang.Long" type="Home">
+        <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#Bonus"/>
+      </finderMethodElements>
+    </finderDescriptors>
+    <accessIntents xmi:id="AccessIntent_1481763753573" intentType="READ">
+      <methodElements xmi:id="MethodElement_1481807220571" name="_copyFromEJB" parms="" type="Remote">
+        <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#Bonus"/>
+      </methodElements>
+    </accessIntents>
+  </ejbExtensions>
   <ejbJar href="META-INF/ejb-jar.xml#ejb-jar_ID"/>
 </ejbext:EJBJarExtension>

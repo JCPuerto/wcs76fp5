@@ -30,12 +30,9 @@ import com.ibm.commerce.user.objects.UserRegistryAccessBean;
 ///  End of Import section 1 ///////////////////////////////
 
 
-
-/*
 /// Import section 2 //////////////////////////////////////
 import com.ibm.commerce.extension.objects.BonusAccessBean;
 ///  End of Import section 2 ///////////////////////////////
-*/
 
 import com.ibm.commerce.exception.ECException;
 import com.ibm.commerce.exception.ECSystemException;
@@ -68,17 +65,15 @@ public class MyNewTaskCmdImpl extends com.ibm.commerce.command.TaskCommandImpl i
 ////End of Section 2A /////////////////////////////////////////
 
 
-/*
 //// Section 3A //////////////////////////////////////////////
 
-	private java.lang.Integer oldBonusPoints;
-	private java.lang.Integer totalBonusPoints;
+	private Integer oldBonusPoints;
+	private Integer totalBonusPoints;
 
 
 	private BonusAccessBean bb = null;
 
 ////End of Section 3A /////////////////////////////////////////
-*/
 
 
 //// Section 1B //////////////////////////////////////////////
@@ -129,7 +124,6 @@ public class MyNewTaskCmdImpl extends com.ibm.commerce.command.TaskCommandImpl i
 /// End of section 2B ///////////////////////////////////////////
 
 
-/*
 //// Section 3B //////////////////////////////////////////////
 
 	public void setBonusAccessBean(BonusAccessBean newBB) {
@@ -140,7 +134,7 @@ public class MyNewTaskCmdImpl extends com.ibm.commerce.command.TaskCommandImpl i
 		return bb;
 	}
 
-    public java.lang.Integer getOldBonusPoints() {
+    public Integer getOldBonusPoints() {
 		return oldBonusPoints;
 	}
 
@@ -150,7 +144,7 @@ public class MyNewTaskCmdImpl extends com.ibm.commerce.command.TaskCommandImpl i
 
 
 /// End of section 3B ///////////////////////////////////////////
-*/
+
 
 /**
  * This constructor does nothing but call the superclass constructor.
@@ -178,13 +172,12 @@ public void performExecute() throws ECException {
 /// End of section 1 ////////////////////////////////////////////
 
 
-/*
 /// Section 2 ///////////////////////////////////////////////////
 /// use BonusAccessBean to update new bonus point
 
 	int newBP =  oldBonusPoints.intValue() + getInputPoints().intValue();
 	totalBonusPoints = new Integer (newBP);
-	bb.setBonusPoint(totalBonusPoints)   ;
+	bb.setBonusPoint(totalBonusPoints);
 
 	try {
 	 	bb.commitCopyHelper();
@@ -203,7 +196,7 @@ public void performExecute() throws ECException {
 	}
 
 /// End of section 2 ////////////////////////////////////////////
-*/
+
 
 }
 
@@ -254,7 +247,6 @@ public void validateParameters() throws ECException {
 // end of section 1 ///////////////////////////////////////////////
 
 
-/*
 // section 2 /////////////////////////////////////////////////////
 // check if bonus bean instance variable bb == null
 
@@ -288,7 +280,7 @@ public void validateParameters() throws ECException {
  	}
 
 // end of section 2 ///////////////////////////////////////////////
-*/
+
 
  }
 

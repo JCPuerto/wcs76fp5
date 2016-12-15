@@ -10,6 +10,25 @@
 			<session-type>Stateless</session-type>
 			<transaction-type>Container</transaction-type>
 		</session>
+		<entity id="Bonus">
+			<ejb-name>Bonus</ejb-name>
+			<home>com.ibm.commerce.extension.objects.BonusHome</home>
+			<remote>com.ibm.commerce.extension.objects.Bonus</remote>
+			<ejb-class>com.ibm.commerce.extension.objects.BonusBean</ejb-class>
+			<persistence-type>Container</persistence-type>
+			<prim-key-class>com.ibm.commerce.extension.objects.BonusKey</prim-key-class>
+			<reentrant>false</reentrant>
+			<cmp-version>1.x</cmp-version>
+			<cmp-field id="CMPAttribute_1481806767019">
+				<field-name>memberId</field-name>
+			</cmp-field>
+			<cmp-field id="CMPAttribute_1481806767021">
+				<field-name>bonusPoint</field-name>
+			</cmp-field>
+			<cmp-field id="CMPAttribute_1481806767022">
+				<field-name>optCounter</field-name>
+			</cmp-field>
+		</entity>
 	</enterprise-beans>
 	<assembly-descriptor>
 		<security-role id="WCSecurityRoleId">
@@ -21,6 +40,13 @@
 			<role-name>WCSecurityRole</role-name>
 			<method id="WCMethodElement_1">
 				<ejb-name>ExtensionJDBCHelper</ejb-name>
+				<method-name>*</method-name>
+			</method>
+		</method-permission>
+		<method-permission>
+			<role-name>WCSecurityRole</role-name>
+			<method>
+				<ejb-name>Bonus</ejb-name>
 				<method-name>*</method-name>
 			</method>
 		</method-permission>

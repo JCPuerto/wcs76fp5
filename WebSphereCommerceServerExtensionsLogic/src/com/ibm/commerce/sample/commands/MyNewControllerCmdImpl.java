@@ -28,32 +28,22 @@ package com.ibm.commerce.sample.commands;
 
 /// Import Section 1 ///////////////////////////////
 
-import com.ibm.commerce.sample.databeans.MyNewDataBean;
-/// End of Import Section 1 ////////////////////////
-
-
-
-/*
-/// Import Section 2 ///////////////////////////////
-import com.ibm.commerce.extension.objects.BonusAccessBean;
-import com.ibm.commerce.sample.databeans.BonusDataBean;
-/// End of Import Section 2 ////////////////////////
-*/
-
-
+import com.ibm.commerce.accesscontrol.AccessVector;
+import com.ibm.commerce.command.CommandFactory;
+import com.ibm.commerce.command.ControllerCommandImpl;
 import com.ibm.commerce.datatype.TypedProperty;
-import com.ibm.commerce.user.objects.UserRegistryAccessBean;
-import com.ibm.commerce.user.objects.UserAccessBean;
 import com.ibm.commerce.exception.ECApplicationException;
 import com.ibm.commerce.exception.ECException;
 import com.ibm.commerce.exception.ECSystemException;
 import com.ibm.commerce.exception.ParameterNotFoundException;
+import com.ibm.commerce.extension.objects.BonusAccessBean;
 import com.ibm.commerce.ras.ECMessage;
 import com.ibm.commerce.ras.ECMessageHelper;
+import com.ibm.commerce.sample.databeans.BonusDataBean;
+import com.ibm.commerce.sample.databeans.MyNewDataBean;
 import com.ibm.commerce.server.ECConstants;
-import com.ibm.commerce.command.CommandFactory;
-import com.ibm.commerce.command.ControllerCommandImpl;
-import com.ibm.commerce.accesscontrol.AccessVector;
+import com.ibm.commerce.user.objects.UserAccessBean;
+import com.ibm.commerce.user.objects.UserRegistryAccessBean;
 
 
 public class MyNewControllerCmdImpl extends ControllerCommandImpl implements MyNewControllerCmd {
@@ -94,7 +84,6 @@ public class MyNewControllerCmdImpl extends ControllerCommandImpl implements MyN
 /// End of Section 2 /////////////////////////////////////////
 
 
-/*
 /// Section 3 ////////////////////////////////////////////////
 /// Create an instance variable of type AccessVector to hold the resources
 /// and a BonusAccessBean instance variable for access control purposes.
@@ -103,10 +92,8 @@ public class MyNewControllerCmdImpl extends ControllerCommandImpl implements MyN
     private BonusAccessBean bb = null;
 
 /// End of Section 3 /////////////////////////////////////////
-*/
 
 
-/*
 /// AccessControl Section ////////////////////////////////////
 
 public AccessVector getResources() throws ECException{
@@ -166,7 +153,6 @@ public AccessVector getResources() throws ECException{
 }
 
 /// End of AccessControl Section //////////////////////////////////
-*/
 
 
 /**
@@ -272,13 +258,11 @@ public void performExecute() throws ECException {
 		// End of section 4D /////////////////////////////
 		
 
-
-		/*
 		// Section 4E ////////////////////////////////////
 		/// pass bb instance variable to the task command
 		cmd.setBonusAccessBean(bb);
 		// End of section 4E /////////////////////////////
-		*/
+
 
 /// Section 4B ///////////////////////////////////
 
@@ -300,23 +284,18 @@ public void performExecute() throws ECException {
 		// End of section 4F /////////////////////////////
 		
 
-
-		/*
 		// Section 4G ///////////////////////////////////////
 		if (cmd.getOldBonusPoints() != null) {
 			rspProp.put("oldBonusPoints", cmd.getOldBonusPoints());
 		}
 		// End of section 4G /////////////////////////////
-		*/
 
 
-		/*
         // Section 4H ///////////////////////////////////////
 	    ///Instantiate the bonus databean , then put it into response properties
-        BonusDataBean bdb  = new com.ibm.commerce.sample.databeans.BonusDataBean(cmd.getBonusAccessBean());
+        BonusDataBean bdb  = new BonusDataBean(cmd.getBonusAccessBean());
 	    rspProp.put("bdbInstance", bdb );
 	    // End of section 4H ////////////////////////////////
-		*/
 
 
 /// Start Section 4C ////////////////////////////////////

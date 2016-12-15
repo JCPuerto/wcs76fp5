@@ -28,12 +28,9 @@ package com.ibm.commerce.sample.commands;
 
 import com.ibm.commerce.user.objects.UserRegistryAccessBean;
 
-/*
 /// Import section 2 /////////////////////////////////////
 import com.ibm.commerce.extension.objects.BonusAccessBean;
 /// End of import section 2 //////////////////////////////
-*/
-
 
 
 public interface MyNewTaskCmd extends com.ibm.commerce.command.TaskCommand {
@@ -81,10 +78,9 @@ public interface MyNewTaskCmd extends com.ibm.commerce.command.TaskCommand {
 /// End of section 3//////////////////////////////////////////
 
 
-/*
 /// Section 4 ////////////////////////////////////////////////
 
-	public java.lang.Integer getOldBonusPoints();
+	public Integer getOldBonusPoints();
 	public Integer getTotalBonusPoints();
 
 	public void setBonusAccessBean(BonusAccessBean bb);
@@ -92,6 +88,6 @@ public interface MyNewTaskCmd extends com.ibm.commerce.command.TaskCommand {
 
 
 /// End of section 4//////////////////////////////////////////
-*/
+
 
 }

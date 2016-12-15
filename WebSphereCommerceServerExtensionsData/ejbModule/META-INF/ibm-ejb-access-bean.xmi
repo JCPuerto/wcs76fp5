@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:accessbean="http:///accessbean.ecore" xmlns:ejb="ejb.xmi">
+  <accessbean:EJBShadow xmi:id="EJBShadow_1481807220572" name="Bonus" factoryPackageName="com.ibm.commerce.extension.objects">
+    <accessBeans xmi:type="accessbean:Type2AccessBean" xmi:id="Type2AccessBean_1481807220572" name="BonusAccessBean" package="com.ibm.commerce.extension.objects" version="WSAD-1.0">
+      <copyHelperProperties xmi:id="CopyHelperProperty_1481807220572" name="bonusPoint" type="java.lang.Integer" getterName="getBonusPoint" setterName="setBonusPoint"/>
+      <copyHelperProperties xmi:id="CopyHelperProperty_1481807220573" name="memberId" type="java.lang.Long" getterName="getMemberId"/>
+      <nullConstructor xmi:id="MethodElement_1481807220572" name="findByPrimaryKey" parms="com.ibm.commerce.extension.objects.BonusKey" type="Home">
+        <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#Bonus"/>
+      </nullConstructor>
+      <nullConstructorParameters xmi:id="Parameter_1481807220572" name="memberId" type="Long" isFieldFromKey="true"/>
+    </accessBeans>
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#Bonus"/>
+  </accessbean:EJBShadow>
+  <accessbean:EJBShadow xmi:id="EJBShadow_1481807220573" name="ExtensionJDBCHelper">
+    <enterpriseBean xmi:type="ejb:Session" href="META-INF/ejb-jar.xml#ExtensionJDBCHelper"/>
+  </accessbean:EJBShadow>
+</xmi:XMI>
