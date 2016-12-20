@@ -20,7 +20,51 @@
 ]>   <!-- Source comment: this ]> is required, do not remove -->
 
 <ECTemplate>
+	<TemplateDocument>
+		<DocumentType>SyncCustomer</DocumentType>
+		<StartElement>Customer</StartElement>
+		<TemplateTagName>SyncCustomerMap</TemplateTagName>
+		<CommandMapping>
+			<Command CommandName="com.ibm.commerce.usermanagement.commands.UserRegistrationAddCmd">
+				<Constant Field="URL">noURL</Constant>
+				<Constant Field="viewTaskName">ConfirmSyncCustomerSuccessBOD</Constant>
+				<Constant Field="errorViewName">ConfirmSyncCustomerErrorBOD</Constant>
+			</Command>
+		</CommandMapping>
+	</TemplateDocument>
+<TemplateTag name="SyncCustomerMap">
+		<Tag XPath="DisplayName" Field="displayName" />
+		<Tag XPath="Store" Field="storeId" />
+		<Tag XPath="ParentOrganization" Field="parentMember" />
+		<Tag XPath="ProfileType" Field="profileType" />
+		<Tag XPath="PreferredCurrency" Field="preferredCurrency" />
+		<Tag XPath="PreferredLanguage" Field="preferredLanguage" />
+		<Tag XPath="Authentication/Logon" Field="logonId" ></Tag>
+		<Tag XPath="Authentication/Password" Field="logonPassword" />
+		<Tag XPath="Authentication/PasswordVerify" Field="logonPasswordVerify" />
+		<Tag XPath="Authentication/ChallengeQuestion" Field="challengeQuestion" />
+		<Tag XPath="Authentication/ChallengeAnswer" Field="challengeAnswer" ></Tag>
+		<!--Contact Information-->
+		<Tag XPath="Contact/FirstName" Field="firstName" />
+		<Tag XPath="Contact/LastName" Field="lastName" />
+		<Tag XPath="Contact/PhoneNumber" Field="phone1" />
+		<Tag XPath="Contact/FaxNumber" Field="fax1" ></Tag>
+		<Tag XPath="Contact/Email" Field="email1" ></Tag>
+		<Tag XPath="Contact/Address/StreetAddress" Field="address1" />
+		<Tag XPath="Contact/Address/City" Field="city" />
+		<Tag XPath="Contact/Address/State" Field="state" />
+		<Tag XPath="Contact/Address/Country" Field="country" />
+		<Tag XPath="Contact/Address/ZipCode" Field="zipCode" />
+		<!--Demographics-->
+		<Tag XPath="Demographics/Gender" Field="gender" />
+		<Tag XPath="Demographics/Age" Field="age" />
+		<Tag XPath="Demographics/Income" Field="income" />
+		<Tag XPath="Demographics/IncomeCurrency" Field="incomeCurrency" />
+		<Tag XPath="Demographics/MaritalStatus" Field="maritalStatus" ></Tag>
+		<Tag XPath="Demographics/Hobbies" Field="hobbies" />
+		<Tag XPath="Demographics/AdditionalInformation" Field="demographicField5" />
+	</TemplateTag>
 
-	
+
 
 </ECTemplate>

@@ -12,4 +12,5 @@
 		</icon>
 		<servlet-name>OpenWebServiceBinding</servlet-name>
 		<servlet-class>com.ibm.commerce.webservices.OpenWebServiceBindingImpl</servlet-class>
-		<load-on-startup>1</load-on-startup></servlet></web-app>
+		<load-on-startup>1</load-on-startup></servlet>
+</web-app>

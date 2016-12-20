@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <com.ibm.etools.webservice.wsext:WsExtension xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.ibm.etools.webservice.wsext="http://www.ibm.com/websphere/appserver/schemas/5.0.2/wsext.xmi" xmi:id="WsExtension_1137596398972">
   <wsDescExt xmi:id="WsDescExt_1138195186167" wsDescNameLink="OMSService">
     <pcBinding xmi:id="PcBinding_1138195186167" pcNameLink="OMSWebServiceEngine"/>
@@ -14,5 +14,8 @@
   </wsDescExt>
   <wsDescExt xmi:id="WsDescExt_1151692144846" wsDescNameLink="WebSphereCommerce-PaymentServices">
     <pcBinding xmi:id="PcBinding_1151692144846" pcNameLink="PaymentServices"/>
+  </wsDescExt>
+  <wsDescExt xmi:id="WsDescExt_1482197667276" wsDescNameLink="MyCompany-CustomerServices">
+    <pcBinding xmi:id="PcBinding_1482197667276" pcNameLink="CustomerServices"/>
   </wsDescExt>
 </com.ibm.etools.webservice.wsext:WsExtension>

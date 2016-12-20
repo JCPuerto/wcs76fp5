@@ -1,0 +1,89 @@
+/**
+ * LocationABIEType_Helper.java
+ *
+ * This file was auto-generated from WSDL
+ * by the IBM Web services WSDL2Java emitter.
+ * cf231216.04 v42612222534
+ */
+
+package org.openapplications.www.oagis._9;
+
+public class LocationABIEType_Helper {
+    // Type metadata
+    private static final com.ibm.ws.webservices.engine.description.TypeDesc typeDesc =
+        new com.ibm.ws.webservices.engine.description.TypeDesc(LocationABIEType.class);
+
+    static {
+        typeDesc.setOption("buildNum","cf231216.04");
+        com.ibm.ws.webservices.engine.description.FieldDesc field = new com.ibm.ws.webservices.engine.description.AttributeDesc();
+        field.setFieldName("type");
+        field.setXmlName(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("", "type"));
+        field.setXmlType(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "NormalizedStringType"));
+        typeDesc.addFieldDesc(field);
+        field = new com.ibm.ws.webservices.engine.description.ElementDesc();
+        field.setFieldName("ID");
+        field.setXmlName(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "ID"));
+        field.setXmlType(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "IdentifierType"));
+        field.setMinOccursIs0(true);
+        field.setMaxOccurs(true);
+        typeDesc.addFieldDesc(field);
+        field = new com.ibm.ws.webservices.engine.description.ElementDesc();
+        field.setFieldName("name");
+        field.setXmlName(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "Name"));
+        field.setXmlType(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "NameType"));
+        field.setMinOccursIs0(true);
+        field.setMaxOccurs(true);
+        typeDesc.addFieldDesc(field);
+        field = new com.ibm.ws.webservices.engine.description.ElementDesc();
+        field.setFieldName("directions");
+        field.setXmlName(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "Directions"));
+        field.setXmlType(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "TextType"));
+        field.setMinOccursIs0(true);
+        typeDesc.addFieldDesc(field);
+        field = new com.ibm.ws.webservices.engine.description.ElementDesc();
+        field.setFieldName("coordinate");
+        field.setXmlName(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "Coordinate"));
+        field.setXmlType(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "CoordinateType"));
+        field.setMinOccursIs0(true);
+        typeDesc.addFieldDesc(field);
+        field = new com.ibm.ws.webservices.engine.description.ElementDesc();
+        field.setFieldName("address");
+        field.setXmlName(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "Address"));
+        field.setXmlType(com.ibm.ws.webservices.engine.utils.QNameTable.createQName("http://www.openapplications.org/oagis/9", "AddressType"));
+        field.setMinOccursIs0(true);
+        field.setMaxOccurs(true);
+        typeDesc.addFieldDesc(field);
+    };
+
+    /**
+     * Return type metadata object
+     */
+    public static com.ibm.ws.webservices.engine.description.TypeDesc getTypeDesc() {
+        return typeDesc;
+    }
+
+    /**
+     * Get Custom Serializer
+     */
+    public static com.ibm.ws.webservices.engine.encoding.Serializer getSerializer(
+           java.lang.String mechType, 
+           java.lang.Class javaType,  
+           javax.xml.namespace.QName xmlType) {
+        return 
+          new LocationABIEType_Ser(
+            javaType, xmlType, typeDesc);
+    };
+
+    /**
+     * Get Custom Deserializer
+     */
+    public static com.ibm.ws.webservices.engine.encoding.Deserializer getDeserializer(
+           java.lang.String mechType, 
+           java.lang.Class javaType,  
+           javax.xml.namespace.QName xmlType) {
+        return 
+          new LocationABIEType_Deser(
+            javaType, xmlType, typeDesc);
+    };
+
+}

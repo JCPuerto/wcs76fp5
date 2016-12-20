@@ -3,7 +3,7 @@
 
   <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   	<xsd:import namespace="http://www.openapplications.org/oagis/9"
-  		schemaLocation="../../component-services/xsd/OAGIS/9.0/BODs/Developer/ConfirmBOD.xsd">
+  		schemaLocation="../../xsd/OAGIS/9.0/BODs/Developer/ConfirmBOD.xsd">
   	</xsd:import>
   	<xsd:import namespace="http://www.mycompany.com/schema"
   		schemaLocation="../../xsd/OAGIS/9.0/Overlays/MyCompany/BODs/SyncCustomer.xsd">
